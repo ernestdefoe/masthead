@@ -5,7 +5,7 @@ front page. A navy masthead with a utility strip, a featured story with three
 beside it, a grid of the forum's sections, the latest discussions and a
 sidebar of widgets, on a grey ground of white cards.
 
-![Masthead's portal](screenshots/portal.png)
+![Masthead's portal: the masthead, a featured story and three beside it](screenshots/01-portal.png)
 
 ---
 
@@ -32,7 +32,13 @@ sidebar of widgets, on a grey ground of white cards.
   chips, the latest list and a floating **Start a discussion**.
 - **Dark mode**, following Flarum's own light, dark and high-contrast modes.
 
-<img src="screenshots/phone.png" alt="Masthead on a phone" width="390">
+![The whole portal, top to bottom](screenshots/portal-full.png)
+
+![Browse the forum: a tile for each section](screenshots/tag-grid.png)
+
+<img src="screenshots/widgets.png" alt="The Top posters this week widget" width="300">
+
+![Masthead on an iPhone and an Android phone](screenshots/04-phones.png)
 
 ---
 
@@ -62,9 +68,14 @@ Every discussion reads as an article with a discussion below it.
 It is Flarum's own discussion page underneath, so mentions, reactions,
 likes, best answers and anything else you have installed keep working.
 
-![A discussion in Masthead](screenshots/topic.png)
+![A discussion in Masthead: the story header, the article and the sidebar](screenshots/02-topic.png)
 
-<img src="screenshots/topic-phone.png" alt="A discussion on a phone" width="390">
+<p>
+<img src="screenshots/phone-topic-ios.png" alt="A discussion on an iPhone" width="260">
+<img src="screenshots/phone-topic-android.png" alt="A discussion on Android" width="260">
+<img src="screenshots/phone-portal-ios.png" alt="The portal on an iPhone" width="260">
+<img src="screenshots/phone-portal-android.png" alt="The portal on Android" width="260">
+</p>
 
 ---
 
@@ -86,13 +97,15 @@ Flarum's own primary colour or any colour you choose; the masthead can take any
 colour; the feature can be full width, split or off. Your changes stay when you
 switch presets.
 
-![The Sunday preset: charcoal, orange and a split feature](screenshots/preset-sunday.png)
+![Two presets side by side: Game Day and Broadsheet](screenshots/03-presets.png)
 
 ![Masthead in dark mode](screenshots/portal-dark.png)
 
 ---
 
 ## Settings
+
+![Masthead's settings: presets, accent, masthead colour, featured stories and footer links](screenshots/admin.png)
 
 | Setting | What it does |
 |---|---|
