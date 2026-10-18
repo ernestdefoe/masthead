@@ -40,7 +40,6 @@ ernestdefoe-masthead:
       title: Upcoming games
       at: "@ {team}"
       live: Live
-      empty: No games scheduled.
       cta: Make your picks
 
     footer:

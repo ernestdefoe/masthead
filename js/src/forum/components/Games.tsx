@@ -25,25 +25,21 @@ export default class Games extends Component<{ games: Game[] }> {
         <h2 id="masthead-games" className="MastheadWidget-title">
           {t('games.title')}
         </h2>
-        {games.length ? (
-          <ul className="MastheadGames-list">
-            {games.map((game) => (
-              <li className="MastheadGame" key={game.id}>
-                <span className="MastheadGame-team">
-                  {game.awayLogo ? <img src={game.awayLogo} alt="" loading="lazy" /> : null}
-                  {game.away}
-                </span>
-                <span className="MastheadGame-when">{kickoff(game)}</span>
-                <span className="MastheadGame-team">
-                  {game.homeLogo ? <img src={game.homeLogo} alt="" loading="lazy" /> : null}
-                  {t('games.at', { team: game.home })}
-                </span>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p className="MastheadEmpty">{t('games.empty')}</p>
-        )}
+        <ul className="MastheadGames-list">
+          {games.map((game) => (
+            <li className="MastheadGame" key={game.id}>
+              <span className="MastheadGame-team">
+                {game.awayLogo ? <img src={game.awayLogo} alt="" loading="lazy" /> : null}
+                {game.away}
+              </span>
+              <span className="MastheadGame-when">{kickoff(game)}</span>
+              <span className="MastheadGame-team">
+                {game.homeLogo ? <img src={game.homeLogo} alt="" loading="lazy" /> : null}
+                {t('games.at', { team: game.home })}
+              </span>
+            </li>
+          ))}
+        </ul>
         {app.routes.picks ? (
           <Link className="MastheadWidget-link" href={app.route('picks')}>
             {t('games.cta')}

@@ -62,7 +62,9 @@ export default class MastheadPortal extends Page {
     const items = new ItemList<Mithril.Children>();
     const games = getPortal()?.games;
 
-    if (games) items.add('games', <Games games={games} />, 100);
+    // Nothing between seasons: an empty schedule on a front page reads as
+    // broken (Picks' own leaderboard block hides when empty for the same reason).
+    if (games && games.length) items.add('games', <Games games={games} />, 100);
 
     items.add(
       'topPosters',
