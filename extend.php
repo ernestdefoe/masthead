@@ -104,6 +104,7 @@ return [
         ->default(Settings::POWERED_BY, true)
         ->default(Settings::SHOW_NAME, true)
         ->default(Settings::TAG_COUNT, 12)
+        ->default(Settings::LEAD_IMAGE, true)
 
         // read by less/lib/tokens.less
         ->registerLessConfigVar('masthead-accent', Settings::ACCENT, $look('accent'))
@@ -117,6 +118,8 @@ return [
         ->serializeToForum('mastheadPoweredBy', Settings::POWERED_BY, 'boolval')
         // read by Brand
         ->serializeToForum('mastheadShowName', Settings::SHOW_NAME, 'boolval')
+        // read by the article's lead image
+        ->serializeToForum('mastheadLeadImage', Settings::LEAD_IMAGE, 'boolval')
         // read by the portal's TagGrid, clamped there and here
         ->serializeToForum('mastheadTagCount', Settings::TAG_COUNT, fn ($v) => max(1, min(48, (int) $v))),
 

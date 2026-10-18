@@ -186,6 +186,17 @@ export default [
       );
     }, 63)
 
+    // Read by the discussion page's article (serialised as mastheadLeadImage).
+    .setting(
+      () => ({
+        setting: K('lead_image'),
+        label: t('topic.lead_image_label'),
+        help: t('topic.lead_image_help'),
+        type: 'boolean',
+      }),
+      62
+    )
+
     // Read by the portal's TagGrid (serialised as mastheadTagCount).
     .setting(() => {
       if (!has('flarum-tags')) return null;

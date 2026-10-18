@@ -44,6 +44,9 @@ final class Settings
     // serialised to the forum, read by the portal's TagGrid
     public const TAG_COUNT = self::PREFIX.'tag_count';
 
+    // serialised to the forum, read by the article's lead image (topic/index.tsx)
+    public const LEAD_IMAGE = self::PREFIX.'lead_image';
+
     // read by the font stamp in extend.php and the [data-masthead-fonts] rules
     public const FONTS = self::PREFIX.'fonts';
 

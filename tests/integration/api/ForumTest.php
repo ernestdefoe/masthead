@@ -46,6 +46,7 @@ class ForumTest extends MastheadTestCase
             $forum['mastheadFooterLinks']
         );
         $this->assertSame(12, $forum['mastheadTagCount']);
+        $this->assertTrue($forum['mastheadLeadImage']);
     }
 
     #[Test]

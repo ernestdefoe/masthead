@@ -46,6 +46,26 @@ ernestdefoe-masthead:
       label: Footer
       powered_by: Powered by Flarum
 
+    topic:
+      breadcrumb: Breadcrumb
+      forum: Forum
+      deleted_user: "[deleted]"
+      read_time: "{count} min read"
+      participants: "{count, plural, one {# participant} other {# participants}}"
+      jump_best: Jump to best answer
+      jump_best_short: Best answer ›
+      copy_link: Copy link
+      link_copied: Link copied.
+      share: Share
+      discussion_heading: "Discussion · {count, plural, one {# reply} other {# replies}}"
+      reply: Reply
+      about: About this discussion
+      started: Started
+      last_reply: Last reply
+      replies: Replies
+      participants_label: Participants
+      more_in: "More in {tag}"
+
   admin:
     section:
       home: Home page
@@ -118,6 +138,10 @@ ernestdefoe-masthead:
       tag_none: Choose a tag
       type_label: Page Builder content type
       type_help: The slug of the content type whose records are featured, such as articles.
+
+    topic:
+      lead_image_label: Show a lead image on discussions
+      lead_image_help: The first picture in a discussion's opening post, shown as a wide banner at the top of the article. Discussions without a picture show none.
 
     portal:
       tag_count_label: Sections in the grid

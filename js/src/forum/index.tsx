@@ -1,9 +1,11 @@
 import app from 'flarum/forum/app';
 import MastheadPortal from './components/Portal';
 import header from './header';
+import topic from './topic';
 import registerWidgets from './widgets';
 
 export { default as MastheadPortal } from './components/Portal';
+export { default as WidgetSlot } from './components/WidgetSlot';
 
 /*
  * The portal's route, registered before the app mounts: core decides which
@@ -16,6 +18,7 @@ app.initializers.add(
     app.routes['masthead.portal'] = { path: '/portal', component: MastheadPortal };
 
     header();
+    topic();
     registerWidgets();
   },
   // Last, so the header split runs after every extension has added its

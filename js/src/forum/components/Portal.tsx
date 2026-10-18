@@ -5,7 +5,7 @@ import type Mithril from 'mithril';
 import Hero from './Hero';
 import { TagChips, TagGrid } from './TagGrid';
 import LatestPanel from './LatestPanel';
-import TopPosters from './TopPosters';
+import WidgetSlot from './WidgetSlot';
 import Games from './Games';
 import ComposeFab from './ComposeFab';
 import { getPortal, loadPortal } from '../portalData';
@@ -16,7 +16,8 @@ import { has, isPhone, markPortal } from '../util';
  * a sidebar.
  *
  * Extensions add to the sidebar through `sidebarItems()`, exactly as they add
- * to any of core's ItemLists:
+ * to any of core's ItemLists, or to `WidgetSlot` to appear on the discussion
+ * page as well:
  *
  *   extend(MastheadPortal.prototype, 'sidebarItems', (items) => items.add('mine', <Mine />, 50));
  */
@@ -66,13 +67,9 @@ export default class MastheadPortal extends Page {
     // broken (Picks' own leaderboard block hides when empty for the same reason).
     if (games && games.length) items.add('games', <Games games={games} />, 100);
 
-    items.add(
-      'topPosters',
-      <section className="MastheadWidget">
-        <TopPosters />
-      </section>,
-      50
-    );
+    // The slot the discussion page shares: top posters, and whatever other
+    // extensions put there.
+    items.add('slot', <WidgetSlot where="portal" />, 50);
 
     return items;
   }
