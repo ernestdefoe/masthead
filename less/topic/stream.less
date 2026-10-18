@@ -130,7 +130,8 @@
   background: var(--mh-card);
   border: 1px solid var(--mh-line);
   border-radius: var(--mh-radius);
-  overflow: hidden;
+  // No overflow: hidden: it clipped the post's ⋯ menu. The lead picture
+  // rounds its own top corners.
   padding: 0;
 
   // The byline above already says who and when.
@@ -203,6 +204,7 @@
   aspect-ratio: 16 / 7;
   background: var(--mh-tone);
   overflow: hidden;
+  border-radius: calc(var(--mh-radius) - 1px) calc(var(--mh-radius) - 1px) 0 0;
 
   img {
     display: block;

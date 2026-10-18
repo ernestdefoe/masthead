@@ -47,10 +47,13 @@
 }
 
 // The white card every panel and widget is.
+//
+// 🚨 Never overflow: hidden. A card can hold a dropdown (the discussion
+// menu in About this discussion, an extension's widget), and clipping the
+// card clips the menu. Anything that paints into a corner rounds itself.
 .MastheadPanel,
 .MastheadWidget {
   background: var(--mh-card);
   border: 1px solid var(--mh-line);
   border-radius: var(--mh-radius);
-  overflow: hidden;
 }
