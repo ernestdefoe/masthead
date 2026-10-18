@@ -101,30 +101,47 @@ export function AccentPicker(value: Stream<string>) {
   );
 }
 
-/** The masthead's colour: the preset's, or a colour of the admin's own. */
-export function BarPicker(value: Stream<string>) {
+/**
+ * One exact colour, or "use the default" when empty: the masthead, the
+ * utility strip and the page ground (light and dark). `fallback` is what the
+ * swatch shows while nothing is set.
+ */
+export function ColourPicker(value: Stream<string>, key: string, fallback: string) {
   const current = value() || '';
-  const preset = presets()[app.data.settings['ernestdefoe-masthead.preset'] || 'gameday'];
 
   return (
     <div className="Form-group">
-      <label>{t('bar.label')}</label>
-      <p className="helpText">{t('bar.help')}</p>
+      <label>{t(`${key}.label`)}</label>
+      <p className="helpText">{t(`${key}.help`)}</p>
       <div className="MastheadAdmin-bar">
         <input
           type="color"
-          value={current || preset?.bar || '#0e2340'}
-          aria-label={t('bar.label')}
+          value={current || fallback}
+          aria-label={t(`${key}.label`)}
           oninput={(e: InputEvent) => value((e.target as HTMLInputElement).value)}
+        />
+        <input
+          className="FormControl MastheadAdmin-hex"
+          value={current}
+          placeholder={fallback}
+          aria-label={t('colour.hex')}
+          oninput={(e: InputEvent) => value((e.target as HTMLInputElement).value.trim())}
         />
         {current ? (
           <button type="button" className="Button Button--link" onclick={() => value('')}>
-            {t('bar.reset')}
+            {t(`${key}.reset`)}
           </button>
         ) : (
-          <span className="helpText">{t('bar.using_preset')}</span>
+          <span className="helpText">{t(`${key}.using_default`)}</span>
         )}
       </div>
     </div>
   );
+}
+
+/** The masthead's colour: the preset's, or a colour of the admin's own. */
+export function BarPicker(value: Stream<string>) {
+  const preset = presets()[app.data.settings['ernestdefoe-masthead.preset'] || 'gameday'];
+
+  return ColourPicker(value, 'bar', preset?.bar || '#0e2340');
 }

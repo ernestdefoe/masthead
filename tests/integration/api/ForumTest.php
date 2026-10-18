@@ -86,10 +86,13 @@ class ForumTest extends MastheadTestCase
         $home->onDisable($this->app()->getContainer(), $extension);
         $this->assertSame('/all', $settings->get('default_route'));
 
-        // A home page the admin chose themselves is left alone both ways.
-        $settings->set('default_route', '/tags');
-        $home->onEnable($this->app()->getContainer(), $extension);
-        $home->onDisable($this->app()->getContainer(), $extension);
-        $this->assertSame('/tags', $settings->get('default_route'));
+        // A home page the admin chose themselves is left alone both ways:
+        // the tags page, or a Page Builder page owning `/` (as on Mailwright).
+        foreach (['/tags', '/home'] as $chosen) {
+            $settings->set('default_route', $chosen);
+            $home->onEnable($this->app()->getContainer(), $extension);
+            $home->onDisable($this->app()->getContainer(), $extension);
+            $this->assertSame($chosen, $settings->get('default_route'));
+        }
     }
 }

@@ -1,7 +1,7 @@
 import app from 'flarum/admin/app';
 import Admin from 'flarum/common/extenders/Admin';
 import Select from 'flarum/common/components/Select';
-import { AccentPicker, BarPicker, PresetPicker } from './components/PresetPicker';
+import { AccentPicker, BarPicker, ColourPicker, PresetPicker, presets } from './components/PresetPicker';
 import FooterLinks from './components/FooterLinks';
 
 /**
@@ -86,6 +86,19 @@ export default [
     .customSetting(function (this: any) {
       return BarPicker(this.setting(K('bar'), ''));
     }, 80)
+    // Read by Settings::look(): an exact strip colour, else derived from the bar.
+    .customSetting(function (this: any) {
+      const preset = presets()[app.data.settings[K('preset')] || 'gameday'];
+
+      return ColourPicker(this.setting(K('strip'), ''), 'strip', preset?.strip || '#0a1a30');
+    }, 79)
+    // Read by Settings::look(), compiled as @masthead-ground / -ground-dark.
+    .customSetting(function (this: any) {
+      return ColourPicker(this.setting(K('ground'), ''), 'ground', '#f3f4f6');
+    }, 78)
+    .customSetting(function (this: any) {
+      return ColourPicker(this.setting(K('ground_dark'), ''), 'ground_dark', '#111318');
+    }, 77)
 
     // Read by the masthead's Brand component.
     .setting(

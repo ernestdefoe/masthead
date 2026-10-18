@@ -121,7 +121,12 @@ return [
         // read by less/lib/tokens.less
         ->registerLessConfigVar('masthead-accent', Settings::ACCENT, $look('accent'))
         ->registerLessConfigVar('masthead-bar', Settings::BAR, $look('bar'))
-        ->registerLessConfigVar('masthead-strip', Settings::PRESET, $look('strip'))
+        ->registerLessConfigVar('masthead-strip', Settings::STRIP, $look('strip'))
+        ->registerLessConfigVar('masthead-ground', Settings::GROUND, $look('ground'))
+        ->registerLessConfigVar('masthead-ground-dark', Settings::GROUND_DARK, $look('groundDark'))
+        // Unused in the LESS itself; registered so that saving a new preset
+        // recompiles the stylesheet (see the note on $look above).
+        ->registerLessConfigVar('masthead-preset', Settings::PRESET, fn () => '0')
 
         // read by the masthead (logo tile and tagline)
         ->serializeToForum('mastheadTagline', Settings::TAGLINE)

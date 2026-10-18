@@ -105,11 +105,32 @@ ernestdefoe-masthead:
       primary: Flarum's primary colour
       custom: Custom
 
+    colour:
+      hex: Hex colour, such as #0e2340
+
     bar:
       label: Masthead colour
-      help: The header's background. The utility strip above it is drawn a shade darker.
+      help: The header's background. Unless you set the strip below, the utility strip above it is drawn a shade darker.
       reset: Use the preset's colour
-      using_preset: Using the preset's colour.
+      using_default: Using the preset's colour.
+
+    strip:
+      label: Utility strip colour
+      help: The thin bar above the header, with the date and the sign-in links. Leave empty to draw it a shade darker than the masthead.
+      reset: Derive it from the masthead
+      using_default: Derived from the masthead colour.
+
+    ground:
+      label: Page background (light mode)
+      help: The colour the white cards sit on.
+      reset: Use the default grey
+      using_default: Using the default grey.
+
+    ground_dark:
+      label: Page background (dark mode)
+      help: The colour the cards sit on in dark mode. Leave empty to follow Flarum's own dark background, a shade darker.
+      reset: Follow Flarum's dark background
+      using_default: Following Flarum's dark background.
 
     brand:
       tagline_label: Tagline

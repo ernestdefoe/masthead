@@ -25,6 +25,19 @@ final class Settings
     public const PRESET = self::PREFIX.'preset';
     public const ACCENT = self::PREFIX.'accent';
     public const BAR = self::PREFIX.'bar';
+    public const STRIP = self::PREFIX.'strip';
+    public const GROUND = self::PREFIX.'ground';
+    public const GROUND_DARK = self::PREFIX.'ground_dark';
+
+    /** The light-mode page ground when none is set: the mockup's grey. */
+    public const DEFAULT_GROUND = '#f3f4f6';
+
+    /**
+     * The dark-mode page ground when none is set: derived from core's own
+     * dark body colour, so a forum that changed that in Appearance keeps its
+     * shade rather than Masthead's.
+     */
+    public const DEFAULT_GROUND_DARK = 'color-mix(in srgb, var(--body-bg) 82%, #000000)';
 
     // read by Settings::look(), serialised as mastheadHero / mastheadCorners
     public const HERO_STYLE = self::PREFIX.'hero_style';
@@ -60,7 +73,12 @@ final class Settings
      * The resolved look: the preset, with each override that is set laid
      * over it.
      *
-     * @return array{accent: string, bar: string, strip: string, hero: string, corners: string}
+     * Every colour that defines the look can be set to an exact hex: the
+     * accent, the masthead, the utility strip, and the page ground in light
+     * and dark mode. Anything left empty comes from the preset (or, for the
+     * ground, from the theme's defaults).
+     *
+     * @return array{accent: string, bar: string, strip: string, hero: string, corners: string, ground: string, groundDark: string}
      */
     public function look(): array
     {
@@ -83,6 +101,14 @@ final class Settings
             // strip that was picked for a different one.
             $look['strip'] = 'color-mix(in srgb, '.$bar.' 78%, #000)';
         }
+
+        // An exact strip colour beats the one derived from the masthead.
+        if ($strip = Presets::hex($this->settings->get(self::STRIP))) {
+            $look['strip'] = $strip;
+        }
+
+        $look['ground'] = Presets::hex($this->settings->get(self::GROUND)) ?? self::DEFAULT_GROUND;
+        $look['groundDark'] = Presets::hex($this->settings->get(self::GROUND_DARK)) ?? self::DEFAULT_GROUND_DARK;
 
         $hero = (string) $this->settings->get(self::HERO_STYLE, '');
         if (in_array($hero, Presets::HERO_STYLES, true)) {

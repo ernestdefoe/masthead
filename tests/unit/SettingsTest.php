@@ -27,9 +27,11 @@ class SettingsTest extends TestCase
     #[Test]
     public function the_preset_supplies_everything_by_default()
     {
-        $this->assertSame(Presets::ALL['gameday'], $this->look([]));
-        $this->assertSame(Presets::ALL['royal'], $this->look([Settings::PRESET => 'royal']));
-        $this->assertSame(Presets::ALL['gameday'], $this->look([Settings::PRESET => 'nonsense']));
+        $defaults = ['ground' => Settings::DEFAULT_GROUND, 'groundDark' => Settings::DEFAULT_GROUND_DARK];
+
+        $this->assertSame(Presets::ALL['gameday'] + $defaults, $this->look([]));
+        $this->assertSame(Presets::ALL['royal'] + $defaults, $this->look([Settings::PRESET => 'royal']));
+        $this->assertSame(Presets::ALL['gameday'] + $defaults, $this->look([Settings::PRESET => 'nonsense']));
     }
 
     #[Test]
@@ -43,6 +45,27 @@ class SettingsTest extends TestCase
         $this->assertSame('overlay', $look['hero']);
 
         $this->assertSame('var(--primary-color)', $this->look([Settings::ACCENT => 'primary'])['accent']);
+    }
+
+    #[Test]
+    public function every_defining_colour_takes_an_exact_hex()
+    {
+        // Mailwright's palette, set colour by colour.
+        $look = $this->look([
+            Settings::BAR => '#0A1630',
+            Settings::STRIP => '#06101F',
+            Settings::ACCENT => '#0B57D0',
+            Settings::GROUND => '#F5F7FC',
+            Settings::GROUND_DARK => '#0B1220',
+        ]);
+
+        $this->assertSame(['#0a1630', '#06101f', '#0b57d0', '#f5f7fc', '#0b1220'], [$look['bar'], $look['strip'], $look['accent'], $look['ground'], $look['groundDark']]);
+
+        // Without an exact strip, it is derived from the masthead colour.
+        $this->assertSame('color-mix(in srgb, #0a1630 78%, #000)', $this->look([Settings::BAR => '#0A1630'])['strip']);
+
+        // Nothing but a hex reaches the stylesheet here either.
+        $this->assertSame(Settings::DEFAULT_GROUND, $this->look([Settings::GROUND => 'red;} body{display:none'])['ground']);
     }
 
     #[Test]
