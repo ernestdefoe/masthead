@@ -8,6 +8,12 @@
     --header-height-phone: 60px;
   }
 
+  // Core paints the phone's content area white so the drawer slides over a
+  // solid page; Masthead's page is the grey ground.
+  .App-content {
+    background: var(--mh-ground);
+  }
+
   .App-navigation {
     background: var(--mh-bar);
     box-shadow: inset 0 -3px 0 var(--mh-accent);
@@ -16,6 +22,70 @@
     .Button,
     .Button:hover {
       color: #fff;
+      background: transparent;
+      border-color: transparent;
+      box-shadow: none;
+    }
+  }
+
+  // The portal's bar: drawer button, brand, search on the right.
+  .App--masthead-portal .App-backControl {
+    right: 0;
+    display: flex;
+    align-items: center;
+    padding: 0 6px;
+    height: var(--header-height-phone);
+
+    .MastheadBrand {
+      padding: 0;
+      gap: 8px;
+    }
+
+    .MastheadBrand-tile {
+      width: 34px;
+      height: 34px;
+      flex-basis: 34px;
+      border-radius: 8px;
+      font-size: 18px;
+    }
+
+    .MastheadBrand-logo .Header-logo {
+      max-height: 34px;
+    }
+
+    .MastheadBrand {
+      min-width: 0;
+    }
+
+    .MastheadBrand-text {
+      min-width: 0;
+    }
+
+    .MastheadBrand-name {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    // A logo already says whose forum this is; beside it, the name would
+    // crowd search off the bar.
+    .MastheadBrand-logo + .MastheadBrand-text,
+    .MastheadBrand-tagline {
+      display: none;
+    }
+  }
+
+  .MastheadNav-search {
+    margin-left: auto;
+
+    .Search-input.Button {
+      width: 44px;
+      height: 44px;
+      padding: 0;
+      justify-content: center;
+    }
+
+    .Button-label {
+      display: none;
     }
   }
 
@@ -161,5 +231,11 @@
   .App--composer-open &,
   .App.composerOpen & {
     display: none;
+  }
+
+  // A bottom tab bar (fof/mobile-tab and its forks) sits where the button
+  // would; lift it clear rather than hide one under the other.
+  body:has(.MobileTab-bar) & {
+    bottom: calc(80px + env(safe-area-inset-bottom, 0px));
   }
 }

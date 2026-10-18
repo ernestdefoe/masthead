@@ -67,6 +67,17 @@ return [
             }
         }),
 
+    /*
+     * Where the fonts are, as an absolute URL baked into the stylesheet.
+     *
+     * 🚨 Not a relative url(). The stylesheet is not always served from
+     * /assets/: ernestdefoe/wardrobe serves each theme's compiled CSS from
+     * its own path, and a relative URL resolved against that 404s every font.
+     * The flarum-assets disk knows the real public URL (a CDN, a subfolder).
+     */
+    (new Extend\Theme())
+        ->addCustomLessVariable('masthead-fonts', fn () => '"'.resolve(Filesystem::class)->disk('flarum-assets')->url('extensions/ernestdefoe-masthead/fonts/').'"'),
+
     (new Extend\Frontend('admin'))
         ->js(__DIR__.'/js/dist/admin.js')
         ->css(__DIR__.'/less/admin.less')

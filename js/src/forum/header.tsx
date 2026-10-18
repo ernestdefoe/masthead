@@ -4,6 +4,8 @@ import HeaderPrimary from 'flarum/forum/components/HeaderPrimary';
 import HeaderSecondary from 'flarum/forum/components/HeaderSecondary';
 import IndexSidebar from 'flarum/forum/components/IndexSidebar';
 import Footer from 'flarum/forum/components/Footer';
+import Navigation from 'flarum/common/components/Navigation';
+import GlobalSearch from 'flarum/forum/components/GlobalSearch';
 import Button from 'flarum/common/components/Button';
 import LinkButton from 'flarum/common/components/LinkButton';
 import extractText from 'flarum/common/utils/extractText';
@@ -11,7 +13,7 @@ import Strip from './components/Strip';
 import Brand from './components/Brand';
 import MastheadFooter from './components/MastheadFooter';
 import { canStart, startDiscussion } from './components/compose';
-import { has, isPhone, t } from './util';
+import { has, isPhone, onPortal, t } from './util';
 
 /** The keys HeaderSecondary keeps on the masthead row; the rest go to the strip. */
 const ROW = ['search', 'mastheadCompose'];
@@ -104,6 +106,24 @@ export default function header() {
           90 - i
         );
       });
+  });
+
+  /*
+   * The phone's top bar on the portal: the drawer button, then the brand,
+   * then search — as the mockup has it. Every other page keeps core's bar,
+   * whose middle belongs to the page's own title control.
+   */
+  extend(Navigation.prototype, 'items', function (this: Navigation, items) {
+    if (!isPhone() || !(this.attrs as any).drawer || !onPortal()) return;
+
+    items.add('mastheadBrand', <Brand />, 85);
+    items.add(
+      'mastheadSearch',
+      <div className="MastheadNav-search">
+        <GlobalSearch state={app.search.state} />
+      </div>,
+      -100
+    );
   });
 
   // An override that keeps the original: core's footer is empty, but an

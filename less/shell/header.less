@@ -55,6 +55,8 @@
       font-weight: 600;
       color: var(--mh-on-dark-2);
       background: transparent;
+      border-color: transparent;
+      box-shadow: none;
 
       &:hover,
       &:focus-visible,
@@ -74,26 +76,39 @@
     gap: 10px;
   }
 
-  .Header-secondary .Search-input,
-  .Header-secondary .Search .FormControl {
+  // Core's search is a button that opens the search modal. On the masthead
+  // it is drawn as the search field the mockup has, prompt and all; it is
+  // still the same button underneath.
+  .Header-secondary .Search-input.Button {
     width: 220px;
-  }
-
-  .Header-secondary .Search .FormControl {
     height: 40px;
+    justify-content: flex-start;
+    gap: 10px;
+    padding: 0 14px;
     border-radius: var(--mh-radius-sm);
     border: 1px solid var(--mh-bar-line);
     background: var(--mh-bar-raised);
-    color: var(--mh-on-dark);
+    color: var(--mh-on-dark-3);
+    font-weight: 400;
 
-    &::placeholder {
-      color: var(--mh-on-dark-3);
+    .Button-label {
+      display: inline;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    &:hover,
+    &:focus-visible {
+      color: var(--mh-on-dark);
+      border-color: var(--mh-on-dark-3);
     }
   }
+}
 
-  .Header-secondary .Search-input .icon {
-    color: var(--mh-on-dark-3);
-  }
+.App-header {
+  background: var(--mh-bar) !important;
+  background-image: none !important;
 }
 
 .MastheadCompose.Button {
@@ -154,6 +169,8 @@
     font-size: 13px;
     color: #e6ebf2;
     background: transparent;
+    border-color: transparent;
+    box-shadow: none;
 
     &:hover,
     &:focus-visible {
