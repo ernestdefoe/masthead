@@ -98,6 +98,14 @@
     letter-spacing: 0.02em;
   }
 
+  // Core draws a phone modal's title and close button in the header colour
+  // (with !important), over the modal's own white top. Inside a modal the
+  // header colour is the page's ink instead of the masthead's white.
+  .Modal {
+    --header-color: var(--mh-ink);
+    --header-control-color: var(--mh-ink);
+  }
+
   // The drawer is the phone's menu: the brand at the top, then the controls.
   .App-drawer {
     background: var(--mh-bar);
@@ -227,11 +235,6 @@
   gap: 8px;
   box-shadow: 0 6px 18px color-mix(in srgb, var(--mh-bar) 35%, transparent);
   cursor: pointer;
-
-  .App--composer-open &,
-  .App.composerOpen & {
-    display: none;
-  }
 
   // A bottom tab bar (fof/mobile-tab and its forks) sits where the button
   // would; lift it clear rather than hide one under the other.

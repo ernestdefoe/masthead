@@ -68,6 +68,7 @@ class ForumTest extends MastheadTestCase
         $this->assertStringContainsString('"mastheadPortal"', $html);
         $this->assertStringContainsString('Story 1', $html, 'The stories are in the page as links, for crawlers');
         $this->assertStringContainsString('data-masthead-corners="soft"', $html);
+        $this->assertStringContainsString('<meta name="theme-color" content="#0e2340">', $html);
     }
 
     #[Test]

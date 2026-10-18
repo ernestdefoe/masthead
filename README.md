@@ -36,6 +36,38 @@ sidebar of widgets, on a grey ground of white cards.
 
 ---
 
+## The discussion page
+
+Every discussion reads as an article with a discussion below it.
+
+- **A story header**: the section as a coloured kicker and the other tags
+  beside it, the title as a headline, and a byline with the author's group,
+  the date, the reading time and the reply count. When
+  [fof/best-answer](https://github.com/FriendsOfFlarum/best-answer) has
+  marked an answer, there is a link straight to it.
+- **The opening post as the article**: a wide lead picture taken from the
+  post's own first image (you can turn this off), a comfortable reading
+  column, proper pull quotes, and **Copy link** and **Share** under it.
+- **Replies as cards** under a "Discussion · N replies" heading, each with
+  the author's group and the post number. The best answer gets a green rule.
+  Renames, tag changes and the like are a thin line between them.
+- **A sidebar** with *About this discussion* (started, last reply, replies,
+  who is taking part, Follow and the discussion menu), *More in* the
+  discussion's section, and the same widgets as the portal.
+- **Live replies look the same.** A reply that arrives while you read gets
+  exactly the same treatment as the rest.
+- **On phones**, the header, then the article, the replies and *More in* at
+  the end, with a floating **Reply** button.
+
+It is Flarum's own discussion page underneath, so mentions, reactions,
+likes, best answers and anything else you have installed keep working.
+
+![A discussion in Masthead](screenshots/topic.png)
+
+<img src="screenshots/topic-phone.png" alt="A discussion on a phone" width="390">
+
+---
+
 ## Presets
 
 Pick a look in one click. A preset sets the accent, the masthead colour, the
@@ -70,6 +102,7 @@ switch presets.
 | **Use the theme's fonts** | Barlow Condensed and Figtree, served from your forum. Off uses system fonts. |
 | **Layout**, **Stories from**, **Tag** / **Content type** | The featured stories. |
 | **Sections in the grid** | How many tags *Browse the forum* shows. |
+| **Show a lead image on discussions** | The opening post's first picture as a banner at the top of the article. |
 | **Footer links**, **Show "Powered by Flarum"** | The footer. Drag links to reorder. |
 
 ---
@@ -92,12 +125,14 @@ All optional. Masthead checks for each one and does without it.
 
 ## Light by design
 
-- **forum.js**: 16.5 KB (5.4 KB gzipped), the whole theme including the portal.
+- **forum.js**: 26 KB (7.9 KB gzipped), the whole theme: portal and discussion page.
 - **Stylesheet**: about 22 KB (4.6 KB gzipped) added to the forum's CSS.
 - **The portal page** runs 14 database queries in total on a forum with 60+
   extensions enabled, and the same with 7 tags or 32. Masthead's own share is five
   for the featured stories. The top-posters list and the online count are
   cached (10 minutes and 1 minute).
+- **The discussion page** adds one request per section (*More in*, kept for
+  five minutes) and nothing per post.
 - **Fonts** are served from your own forum, never from Google, and only the
   latin subset loads unless a page needs more.
 - Tested with a **database table prefix** on MariaDB, PostgreSQL and
@@ -123,6 +158,19 @@ php flarum cache:clear
 ```
 
 ---
+
+## For developers
+
+Add a widget to the portal's sidebar and the discussion page's sidebar at once
+by extending the shared slot:
+
+```js
+import { extend } from 'flarum/common/extend';
+
+extend(flarum.reg.get('ernestdefoe-masthead', 'forum/components/WidgetSlot').prototype, 'items', function (items) {
+  items.add('myWidget', <MyWidget />, 30);
+});
+```
 
 ## Translations
 

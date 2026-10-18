@@ -281,7 +281,8 @@ export default function topic() {
   extend(DiscussionPage.prototype, 'view', function (this: any, vdom: any) {
     const discussion = this.discussion;
 
-    if (!isPhone() || !discussion || this.loading || (app.session.user && !discussion.canReply()) || !Array.isArray(vdom?.children)) return;
+    if (!isPhone() || !discussion || this.loading || app.composer.isVisible()) return;
+    if ((app.session.user && !discussion.canReply()) || !Array.isArray(vdom?.children)) return;
 
     vdom.children.push(
       <button type="button" className="MastheadFab MastheadFab--reply" onclick={() => reply(discussion)}>

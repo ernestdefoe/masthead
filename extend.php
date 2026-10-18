@@ -56,6 +56,11 @@ return [
             $document->extraAttributes['data-masthead-corners'] = fn () => $look['corners'];
             $document->extraAttributes['data-masthead-fonts'] = fn () => $fonts ? 'on' : 'off';
 
+            // Mobile browsers tint their own toolbar from theme-color. Core
+            // sets it to the primary colour; under a navy masthead that is a
+            // green (or whatever) strip glued to the top of the page.
+            $document->meta['theme-color'] = $look['bar'];
+
             if ($fonts) {
                 // The two faces every page uses above the fold. The rest load
                 // on demand, by unicode-range, only when a page needs them.
