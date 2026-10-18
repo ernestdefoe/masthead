@@ -53,7 +53,8 @@ class PortalTest extends MastheadTestCase
     {
         $hero = collect($this->hero())->keyBy('id');
 
-        $this->assertSame('Week nine rankings.', $hero[1]['excerpt']);
+        // The heading is left out; the prose after it is the excerpt.
+        $this->assertSame('Rankings.', $hero[1]['excerpt']);
         $this->assertSame(2, $hero[1]['replies']);
         $this->assertSame(['name' => 'General', 'color' => '#1d4b8f'], $hero[1]['tag']);
         $this->assertSame('1-story-1', $hero[1]['slug']);

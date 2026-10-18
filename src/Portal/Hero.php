@@ -159,6 +159,12 @@ final class Hero
 
         // An image's address is its tag's text, and reads as noise in prose.
         $xml = (string) preg_replace('#<(IMG|UPL-IMAGE-PREVIEW)\b[^>]*>.*?</\1>#s', '', $xml);
+        // Headings are left out of an excerpt: in a single line of prose a
+        // heading reads as the start of the next sentence ("…at once. How the
+        // vote worked Every member…"). Block ends become spaces so the
+        // paragraphs either side never run together.
+        $xml = (string) preg_replace('#<(H[1-6])\b[^>]*>.*?</\1>#s', '', $xml);
+        $xml = (string) preg_replace('#(</(?:p|LI|QUOTE|CODE)>|<br\s*/>)#i', ' $1', $xml);
 
         try {
             $text = Utils::removeFormatting($xml);

@@ -74,7 +74,7 @@ abstract class MastheadTestCase extends TestCase
                 ['discussion_id' => 4, 'tag_id' => 1], ['discussion_id' => 5, 'tag_id' => 1], ['discussion_id' => 6, 'tag_id' => 1],
             ],
             Post::class => [
-                $p(1, 2, 1, '<r><p>Week nine rankings. <IMG src="https://example.com/a.png?x=1&amp;y=2"><s>![](</s>https://example.com/a.png?x=1&amp;y=2<e>)</e></IMG></p></r>'),
+                $p(1, 2, 1, '<r><H2><s>## </s>Week nine</H2><p>Rankings. <IMG src="https://example.com/a.png?x=1&amp;y=2"><s>![](</s>https://example.com/a.png?x=1&amp;y=2<e>)</e></IMG></p></r>'),
                 $p(2, 3, 2, '<r><p>Recruiting. <UPL-IMAGE-PREVIEW url="https://cdn.example.com/b.jpg" uuid="u1">[upl-image-preview url=https://cdn.example.com/b.jpg]</UPL-IMAGE-PREVIEW></p></r>'),
                 $p(3, 1, 3, '<t><p>Staff only</p></t>'),
                 $p(4, 2, 4, '<t><p>Hidden</p></t>'),

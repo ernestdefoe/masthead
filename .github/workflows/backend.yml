@@ -34,6 +34,9 @@ env:
 jobs:
   test:
     name: Tests (PHP 8.5, MariaDB 11.8 and PostgreSQL 18)
+    # Private repository only: once public, flarum-backend.yml runs Flarum's
+    # full matrix for free and this would only duplicate it.
+    if: ${{ github.event.repository.private }}
     runs-on: ubuntu-latest
 
     services:
