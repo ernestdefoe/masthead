@@ -4,6 +4,7 @@ import Link from 'flarum/common/components/Link';
 import LoadingIndicator from 'flarum/common/components/LoadingIndicator';
 import Avatar from 'flarum/common/components/Avatar';
 import humanTime from 'flarum/common/helpers/humanTime';
+import formatNumber from 'flarum/common/utils/formatNumber';
 import { isPhone, t } from '../util';
 
 type Tab = 'latest' | 'top';
@@ -142,7 +143,7 @@ export default class LatestPanel extends Component {
           </span>
           {phone ? null : (
             <span className="MastheadRow-count">
-              {replies}
+              {formatNumber(replies)}
               <small>{t('latest.replies_label', { count: replies })}</small>
             </span>
           )}
