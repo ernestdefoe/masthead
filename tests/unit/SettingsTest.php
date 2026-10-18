@@ -27,7 +27,7 @@ class SettingsTest extends TestCase
     #[Test]
     public function the_preset_supplies_everything_by_default()
     {
-        $defaults = ['ground' => Settings::DEFAULT_GROUND, 'groundDark' => Settings::DEFAULT_GROUND_DARK];
+        $defaults = ['ground' => Settings::DEFAULT_GROUND, 'groundDark' => Settings::DEFAULT_GROUND_DARK, 'darkBrand' => 'off'];
 
         $this->assertSame(Presets::ALL['gameday'] + $defaults, $this->look([]));
         $this->assertSame(Presets::ALL['royal'] + $defaults, $this->look([Settings::PRESET => 'royal']));
@@ -60,6 +60,7 @@ class SettingsTest extends TestCase
         ]);
 
         $this->assertSame(['#0a1630', '#06101f', '#0b57d0', '#f5f7fc', '#0b1220'], [$look['bar'], $look['strip'], $look['accent'], $look['ground'], $look['groundDark']]);
+        $this->assertSame('on', $look['darkBrand'], 'An exact dark ground tints the dark-mode cards too');
 
         // Without an exact strip, it is derived from the masthead colour.
         $this->assertSame('color-mix(in srgb, #0a1630 78%, #000)', $this->look([Settings::BAR => '#0A1630'])['strip']);

@@ -13,17 +13,28 @@ import Link from 'flarum/common/components/Link';
 export default class Brand extends Component {
   view() {
     const title = app.forum.attribute<string>('title') || '';
-    const logo = app.forum.attribute<string | null>('logoUrl');
-    const darkLogo = app.forum.attribute<string | null>('logoDarkModeUrl');
+    /*
+     * 🚨 The masthead is dark in light mode and in dark mode alike, so the
+     * logo on it is the one made for dark backgrounds: Flarum's dark-mode
+     * logo (Appearance → Dark mode logo) whenever one is uploaded, in BOTH
+     * modes. The normal logo is the fallback. A forum whose logo has dark
+     * text otherwise shows it unreadable on navy every time the reader is in
+     * light mode.
+     */
+    const logo = app.forum.attribute<string | null>('logoDarkModeUrl') || app.forum.attribute<string | null>('logoUrl');
     const tagline = app.forum.attribute<string>('mastheadTagline');
-    const showName = !logo || app.forum.attribute<boolean>('mastheadShowName') !== false;
+    /*
+     * The forum's name beside the brand: always without a logo (the tile
+     * alone says nothing), and with one only when the admin asked for it —
+     * most logos already contain the name. null means "never set".
+     */
+    const showName = !logo || app.forum.attribute<boolean | null>('mastheadShowName') === true;
 
     return (
       <Link href={app.forum.attribute<string>('basePath') + '/'} id="home-link" className="MastheadBrand">
         {logo ? (
           <span className="MastheadBrand-logo">
-            <img src={logo} alt={showName ? '' : title} className="Header-logo" />
-            {darkLogo ? <img src={darkLogo} alt={showName ? '' : title} className="Header-logo Header-logo--dark-mode" /> : null}
+            <img src={logo} alt={showName ? '' : title} className="Header-logo MastheadBrand-img" />
           </span>
         ) : (
           <span className="MastheadBrand-tile" aria-hidden="true">

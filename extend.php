@@ -114,7 +114,6 @@ return [
         ->default(Settings::HERO_SOURCE, 'latest')
         ->default(Settings::HERO_TYPE, 'articles')
         ->default(Settings::POWERED_BY, true)
-        ->default(Settings::SHOW_NAME, true)
         ->default(Settings::TAG_COUNT, 12)
         ->default(Settings::LEAD_IMAGE, true)
 
@@ -124,6 +123,7 @@ return [
         ->registerLessConfigVar('masthead-strip', Settings::STRIP, $look('strip'))
         ->registerLessConfigVar('masthead-ground', Settings::GROUND, $look('ground'))
         ->registerLessConfigVar('masthead-ground-dark', Settings::GROUND_DARK, $look('groundDark'))
+        ->registerLessConfigVar('masthead-dark-brand', Settings::GROUND_DARK, $look('darkBrand'))
         // Unused in the LESS itself; registered so that saving a new preset
         // recompiles the stylesheet (see the note on $look above).
         ->registerLessConfigVar('masthead-preset', Settings::PRESET, fn () => '0')
@@ -134,7 +134,9 @@ return [
         // read by the footer
         ->serializeToForum('mastheadPoweredBy', Settings::POWERED_BY, 'boolval')
         // read by Brand
-        ->serializeToForum('mastheadShowName', Settings::SHOW_NAME, 'boolval')
+        // null until an admin sets it: the name then shows only when there
+        // is no logo. A value saved before 1.0.1 (true or false) still wins.
+        ->serializeToForum('mastheadShowName', Settings::SHOW_NAME, fn ($v) => $v === null || $v === '' ? null : (bool) $v)
         // read by the article's lead image
         ->serializeToForum('mastheadLeadImage', Settings::LEAD_IMAGE, 'boolval')
         // read by the portal's TagGrid, clamped there and here

@@ -95,6 +95,21 @@ html[data-theme] {
   --mh-ink-mix:    45%;
 }
 
+// A dark ground set to an exact brand colour (say Mailwright's navy): the
+// cards, lines and core's own surfaces (modals, dropdowns, the composer)
+// are tints of it, not Flarum's neutral dark grey sitting on navy.
+.mh-dark-brand() when (@masthead-dark-brand = on) {
+  [data-theme^='dark'] {
+    --mh-card:       color-mix(in srgb, @masthead-ground-dark 90%, #ffffff);
+    --mh-line:       color-mix(in srgb, @masthead-ground-dark 74%, #ffffff);
+    --mh-line-soft:  color-mix(in srgb, @masthead-ground-dark 84%, #ffffff);
+    --body-bg:       var(--mh-card);
+    --control-bg:    color-mix(in srgb, @masthead-ground-dark 80%, #ffffff);
+  }
+}
+
+.mh-dark-brand();
+
 [data-theme='dark-hc'] {
   --mh-line:       color-mix(in srgb, var(--body-bg) 55%, #ffffff);
 }

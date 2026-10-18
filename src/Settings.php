@@ -78,7 +78,7 @@ final class Settings
      * and dark mode. Anything left empty comes from the preset (or, for the
      * ground, from the theme's defaults).
      *
-     * @return array{accent: string, bar: string, strip: string, hero: string, corners: string, ground: string, groundDark: string}
+     * @return array{accent: string, bar: string, strip: string, hero: string, corners: string, ground: string, groundDark: string, darkBrand: string}
      */
     public function look(): array
     {
@@ -108,7 +108,12 @@ final class Settings
         }
 
         $look['ground'] = Presets::hex($this->settings->get(self::GROUND)) ?? self::DEFAULT_GROUND;
-        $look['groundDark'] = Presets::hex($this->settings->get(self::GROUND_DARK)) ?? self::DEFAULT_GROUND_DARK;
+        $groundDark = Presets::hex($this->settings->get(self::GROUND_DARK));
+        $look['groundDark'] = $groundDark ?? self::DEFAULT_GROUND_DARK;
+        // An exact dark ground is a brand colour: the dark-mode surfaces are
+        // then derived from it too (tokens.less), so a navy ground does not
+        // carry Flarum's neutral grey cards.
+        $look['darkBrand'] = $groundDark ? 'on' : 'off';
 
         $hero = (string) $this->settings->get(self::HERO_STYLE, '');
         if (in_array($hero, Presets::HERO_STYLES, true)) {

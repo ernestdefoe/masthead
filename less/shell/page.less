@@ -54,6 +54,15 @@ body,
   color: var(--mh-muted);
 }
 
+// Flarum's welcome hero (and other plain heroes) as a band of card colour,
+// like the discussion page's story header, rather than core's grey: on a
+// branded ground the grey band looked patched in.
+.Hero.WelcomeHero {
+  --hero-bg: var(--mh-card);
+  background: var(--mh-card);
+  border-bottom: 1px solid var(--mh-line);
+}
+
 // The index (/all, a tag page): the list becomes one card, like the portal's.
 @media @tablet-up {
   .IndexPage .DiscussionList {

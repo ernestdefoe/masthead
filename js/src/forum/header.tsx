@@ -13,7 +13,7 @@ import Strip from './components/Strip';
 import Brand from './components/Brand';
 import MastheadFooter from './components/MastheadFooter';
 import { canStart, startDiscussion } from './components/compose';
-import { has, isPhone, onPortal, t } from './util';
+import { has, isPhone, t } from './util';
 
 /** The keys HeaderSecondary keeps on the masthead row; the rest go to the strip. */
 const ROW = ['search', 'mastheadCompose'];
@@ -109,14 +109,24 @@ export default function header() {
   });
 
   /*
-   * The phone's top bar on the portal: the drawer button, then the brand,
-   * then search — as the mockup has it. Every other page keeps core's bar,
-   * whose middle belongs to the page's own title control.
+   * The phone's top bar, on every page: the drawer button, the brand, then
+   * search. Where a page puts its own title in the middle of the bar (a
+   * discussion's scrubber) or its own action on the right, those take the
+   * place of the brand or of search — in CSS (phone.less), from what is
+   * actually on the page, so a page Masthead has never heard of (a Page
+   * Builder home page, an extension's own page) still gets a bar that says
+   * whose forum this is.
    */
   extend(Navigation.prototype, 'items', function (this: Navigation, items) {
-    if (!isPhone() || !(this.attrs as any).drawer || !onPortal()) return;
+    if (!isPhone() || !(this.attrs as any).drawer) return;
 
-    items.add('mastheadBrand', <Brand />, 85);
+    items.add(
+      'mastheadBrand',
+      <div className="MastheadNav-brand">
+        <Brand />
+      </div>,
+      85
+    );
     items.add(
       'mastheadSearch',
       <div className="MastheadNav-search">

@@ -47,6 +47,14 @@ class ForumTest extends MastheadTestCase
         );
         $this->assertSame(12, $forum['mastheadTagCount']);
         $this->assertTrue($forum['mastheadLeadImage']);
+        $this->assertNull($forum['mastheadShowName'], 'Never set: the name shows only without a logo');
+    }
+
+    #[Test]
+    public function a_show_name_saved_before_1_0_1_still_wins()
+    {
+        $this->setting('ernestdefoe-masthead.show_name', '1');
+        $this->assertTrue($this->forum()['mastheadShowName']);
     }
 
     #[Test]

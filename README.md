@@ -111,7 +111,8 @@ switch presets.
 |---|---|
 | **Home page** | The portal or the discussion list. The same setting as *Home page* in Basics. |
 | **Preset**, **Accent colour**, **Masthead colour** | The look, above. |
-| **Tagline**, **Monogram**, **Show the forum name beside the logo** | The title block. The logo is Flarum's own (Appearance → Logo). |
+| **Utility strip colour**, **Page background** (light and dark) | Exact colours for a brand palette. Empty means the default: the strip a shade darker than the masthead, the mockup grey, Flarum's dark background. A dark background you set also tints the dark-mode cards. |
+| **Tagline**, **Monogram**, **Show the forum name beside the logo** | The title block. The logo is Flarum's own (Appearance). The masthead is dark in both colour modes, so it shows your **dark-mode logo** whenever you have uploaded one, and your normal logo otherwise. The name shows beside a logo only if you turn it on; without a logo it always shows. |
 | **Use the theme's fonts** | Barlow Condensed and Figtree, served from your forum. Off uses system fonts. |
 | **Layout**, **Stories from**, **Tag** / **Content type** | The featured stories. |
 | **Sections in the grid** | How many tags *Browse the forum* shows. |
