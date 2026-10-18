@@ -21,8 +21,10 @@ function read(post: any) {
 
   const value = {
     html,
-    // Only an http(s) or same-site address becomes a banner.
-    image: /^(https?:\/\/|\/(?!\/))/i.test(src) ? src : null,
+    // Only an http(s) or same-site address becomes a banner; a path whose
+    // second character is a slash or a backslash is another site to a
+    // browser, so it is refused like the server's Images::safe refuses it.
+    image: /^(https?:\/\/|\/(?![\/\\]))/i.test(src) && !/[\s"'<>\\]/.test(src) ? src : null,
     // 230 words a minute, never "0 min read".
     minutes: Math.max(1, Math.round(words / 230)),
   };
