@@ -1,0 +1,165 @@
+// ============================================================================
+// Phones (under 768px): core's fixed top bar in the masthead's colours, the
+// hero stacked, a chip row instead of the grid, and a floating compose button.
+// ============================================================================
+
+@media @phone {
+  :root {
+    --header-height-phone: 60px;
+  }
+
+  .App-navigation {
+    background: var(--mh-bar);
+    box-shadow: inset 0 -3px 0 var(--mh-accent);
+    color: #fff;
+
+    .Button,
+    .Button:hover {
+      color: #fff;
+    }
+  }
+
+  .App-titleControl,
+  .App-titleControl .Button {
+    font-family: var(--mh-heading);
+    font-weight: 800;
+    font-size: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+
+  // The drawer is the phone's menu: the brand at the top, then the controls.
+  .App-drawer {
+    background: var(--mh-bar);
+    color: #fff;
+  }
+
+  .App-header .Header-controls .Button {
+    color: #fff;
+  }
+
+  .MastheadBrand {
+    justify-content: center;
+    padding: 6px 0;
+  }
+
+  .MastheadBrand-name {
+    font-size: 22px;
+  }
+
+  .MastheadPortal > .container {
+    padding: 14px 14px 96px;
+    gap: 18px;
+  }
+
+  .MastheadHero {
+    gap: 12px;
+  }
+
+  .MastheadHero-feature {
+    flex-basis: 100%;
+    min-height: 250px;
+    border-radius: var(--mh-radius-md);
+  }
+
+  .MastheadHero--split .MastheadHero-feature {
+    display: flex;
+
+    .MastheadHero-media {
+      position: absolute;
+      inset: 0;
+    }
+
+    .MastheadHero-body {
+      background: color-mix(in srgb, var(--mh-strip) 84%, transparent);
+    }
+  }
+
+  .MastheadHero-body {
+    padding: 16px;
+    gap: 6px;
+  }
+
+  .MastheadHero-title,
+  .MastheadHero--split .MastheadHero-title {
+    font-size: 26px;
+    line-height: 1.05;
+  }
+
+  // The mockup's phone hero is the feature alone; the excerpt and the side
+  // stories would push the latest list below the fold.
+  .MastheadHero-excerpt,
+  .MastheadHero-side {
+    display: none;
+  }
+
+  .MastheadPanel,
+  .MastheadWidget {
+    border-radius: var(--mh-radius-md);
+  }
+
+  .MastheadPanel-head {
+    padding: 12px 14px;
+    flex-wrap: wrap;
+
+    .MastheadHeading {
+      font-size: 20px;
+    }
+  }
+
+  .MastheadRow {
+    gap: 12px;
+    padding: 12px 14px;
+  }
+
+  .MastheadRow-avatar.Avatar {
+    --size: 36px;
+  }
+
+  .MastheadRow-title {
+    white-space: normal;
+    font-size: 14px;
+    line-height: 1.3;
+  }
+
+  .MastheadRow-meta {
+    font-size: 12px;
+
+    .MastheadTagChip {
+      display: none;
+    }
+  }
+
+  .MastheadSidebar {
+    flex-basis: 100%;
+  }
+
+  .MastheadFooter-powered {
+    margin-left: 0;
+  }
+}
+
+.MastheadFab {
+  position: fixed;
+  right: 16px;
+  bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+  z-index: calc(var(--zindex-header) - 1);
+  height: 52px;
+  padding: 0 20px;
+  border: 0;
+  border-radius: 26px;
+  background: var(--mh-accent);
+  color: #fff;
+  font: inherit;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 6px 18px color-mix(in srgb, var(--mh-bar) 35%, transparent);
+  cursor: pointer;
+
+  .App--composer-open &,
+  .App.composerOpen & {
+    display: none;
+  }
+}
