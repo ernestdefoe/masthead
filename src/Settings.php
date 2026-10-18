@@ -140,7 +140,10 @@ final class Settings
             return null;
         }
 
-        if (preg_match('#^/(?!/)#', $url) || preg_match('#^(https?://|mailto:)#i', $url)) {
+        // A path on this forum: one slash, not followed by a second one or by
+        // a backslash, which browsers read as a second slash ("/\\x.com" is
+        // a link to x.com).
+        if (preg_match('#^/(?![/\\\\])#', $url) || preg_match('#^(https?://|mailto:)#i', $url)) {
             return $url;
         }
 

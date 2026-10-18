@@ -159,7 +159,16 @@ final class Hero
 
         // An image's address is its tag's text, and reads as noise in prose.
         $xml = (string) preg_replace('#<(IMG|UPL-IMAGE-PREVIEW)\b[^>]*>.*?</\1>#s', '', $xml);
-        $text = trim((string) preg_replace('/\s+/u', ' ', Utils::removeFormatting($xml)));
+
+        try {
+            $text = Utils::removeFormatting($xml);
+        } catch (\Throwable) {
+            // Stored XML that does not parse (an import, a hand edit) costs
+            // the story its excerpt, never the front page.
+            return '';
+        }
+
+        $text = trim((string) preg_replace('/\s+/u', ' ', $text));
 
         return mb_strlen($text) > 180 ? rtrim(mb_substr($text, 0, 177)).'…' : $text;
     }

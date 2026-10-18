@@ -62,6 +62,9 @@ class SettingsTest extends TestCase
         $this->assertSame('mailto:a@b.c', Settings::safeUrl('mailto:a@b.c'));
         $this->assertNull(Settings::safeUrl('javascript:alert(1)'));
         $this->assertNull(Settings::safeUrl('//evil.example'));
+        // Browsers read a backslash after the leading slash as a second slash:
+        // "/\\evil.example" is a protocol-relative link off the forum.
+        $this->assertNull(Settings::safeUrl('/\\evil.example'));
         $this->assertNull(Settings::safeUrl('data:text/html,x'));
 
         $this->assertSame('https://x.test/a.png', Images::safe('https://x.test/a.png'));
