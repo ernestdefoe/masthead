@@ -9,8 +9,10 @@
 
 namespace ErnestDefoe\Masthead\Api;
 
+use ErnestDefoe\Masthead\ActiveTheme;
 use ErnestDefoe\Masthead\Portal\OnlineCount;
 use ErnestDefoe\Masthead\Settings;
+use Flarum\Api\Context;
 use Flarum\Api\Schema;
 
 /**
@@ -26,8 +28,10 @@ final class ForumAttributes
     public function __invoke(): array
     {
         return [
-            // read by the utility strip
+            // read by the utility strip; not even the cached count for a
+            // visitor Wardrobe is serving another theme
             Schema\Integer::make('mastheadOnline')
+                ->visible(fn ($forum, Context $context) => resolve(ActiveTheme::class)->for($context->request))
                 ->get(fn () => resolve(OnlineCount::class)->get()),
 
             // read by the portal's Hero, as a modifier class

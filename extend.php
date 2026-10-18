@@ -7,6 +7,7 @@
  * file that was distributed with this source code.
  */
 
+use ErnestDefoe\Masthead\ActiveTheme;
 use ErnestDefoe\Masthead\Api;
 use ErnestDefoe\Masthead\Content;
 use ErnestDefoe\Masthead\HomeRoute;
@@ -19,6 +20,7 @@ use Flarum\Frontend\Document;
 use Flarum\Settings\SettingsRepositoryInterface;
 use Flarum\User\Event as UserEvent;
 use Illuminate\Contracts\Filesystem\Factory as Filesystem;
+use Psr\Http\Message\ServerRequestInterface;
 
 /*
  * The three colours, compiled into the stylesheet.
@@ -48,7 +50,12 @@ return [
          * learned it from the word `compact`. A closure can never be mistaken
          * for one.
          */
-        ->content(function (Document $document) {
+        ->content(function (Document $document, ServerRequestInterface $request) {
+            // A visitor Wardrobe is serving another theme gets none of this.
+            if (! resolve(ActiveTheme::class)->for($request)) {
+                return;
+            }
+
             $settings = resolve(Settings::class);
             $look = $settings->look();
             $fonts = (bool) resolve(SettingsRepositoryInterface::class)->get(Settings::FONTS, true);

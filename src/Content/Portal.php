@@ -9,7 +9,9 @@
 
 namespace ErnestDefoe\Masthead\Content;
 
+use ErnestDefoe\Masthead\ActiveTheme;
 use ErnestDefoe\Masthead\Portal\Payload;
+use Flarum\Forum\Content\Index;
 use Flarum\Frontend\Document;
 use Flarum\Http\RequestUtil;
 use Flarum\Http\UrlGenerator;
@@ -24,12 +26,22 @@ use Psr\Http\Message\ServerRequestInterface as Request;
  */
 final class Portal
 {
-    public function __construct(protected Payload $payload, protected UrlGenerator $url)
+    public function __construct(protected Payload $payload, protected UrlGenerator $url, protected ActiveTheme $theme, protected Index $index)
     {
     }
 
     public function __invoke(Document $document, Request $request): Document
     {
+        /*
+         * A visitor ernestdefoe/wardrobe is serving another theme has no
+         * portal in their bundle: their app shows core's discussion list at
+         * `/`. Hand them core's own index content (its preloaded list, its
+         * crawlable links) rather than a portal payload nothing will read.
+         */
+        if (! $this->theme->for($request)) {
+            return ($this->index)($document, $request);
+        }
+
         $actor = RequestUtil::getActor($request);
 
         if (! $actor->can('viewForum')) {
