@@ -10,6 +10,7 @@
 namespace ErnestDefoe\Masthead\Tests\integration\api;
 
 use ErnestDefoe\Masthead\Tests\integration\MastheadTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 
 class PortalTest extends MastheadTestCase
@@ -46,6 +47,30 @@ class PortalTest extends MastheadTestCase
         $this->assertSame('https://example.com/a.png?x=1&y=2', $hero[1]['image']);
         $this->assertSame('https://cdn.example.com/b.jpg', $hero[2]['image']);
         $this->assertNull($hero[6]['image'], 'A javascript: address never reaches an img src');
+    }
+
+    #[Test]
+    #[DataProvider('noOwnPictureModes')]
+    public function pictures_off_and_backdrop_only_drop_the_posts_own_pictures(string $mode)
+    {
+        // Backdrop is not installed here, so "Backdrop only" has nothing to
+        // show and must not fall back to the post's picture.
+        $this->setting('ernestdefoe-masthead.pictures', $mode);
+
+        $this->assertSame([null], array_values(array_unique(array_column($this->hero(), 'image'))));
+    }
+
+    public static function noOwnPictureModes(): array
+    {
+        return [['off'], ['backdrop']];
+    }
+
+    #[Test]
+    public function pictures_image_only_keeps_the_posts_own_picture()
+    {
+        $this->setting('ernestdefoe-masthead.pictures', 'image');
+
+        $this->assertSame('https://example.com/a.png?x=1&y=2', collect($this->hero())->keyBy('id')[1]['image']);
     }
 
     #[Test]

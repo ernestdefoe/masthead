@@ -65,6 +65,9 @@ export default class Hero extends Component<HeroAttrs> {
     if (style === 'off' || !stories.length) return null;
 
     const [feature, ...side] = stories;
+    // The tag on each story, unless the admin turned it off (the stories'
+    // colours still come from their tags).
+    const tags = app.forum.attribute('mastheadHeroTags') !== false;
 
     return (
       <section className={`MastheadHero MastheadHero--${style}`} aria-label={t('hero.label')}>
@@ -75,7 +78,7 @@ export default class Hero extends Component<HeroAttrs> {
             {media(feature, true)}
             <div className="MastheadHero-body">
               <span className="MastheadKicker MastheadKicker--solid">
-                {feature.tag ? t('hero.kicker_tag', { tag: feature.tag.name }) : t('hero.kicker')}
+                {tags && feature.tag ? t('hero.kicker_tag', { tag: feature.tag.name }) : t('hero.kicker')}
               </span>
               <h2 className="MastheadHero-title">{feature.title}</h2>
               {feature.excerpt ? <p className="MastheadHero-excerpt">{feature.excerpt}</p> : null}
@@ -93,7 +96,7 @@ export default class Hero extends Component<HeroAttrs> {
                 <>
                   {media(story, false)}
                   <div className="MastheadStory-body">
-                    {story.tag ? <span className="MastheadKicker">{story.tag.name}</span> : null}
+                    {tags && story.tag ? <span className="MastheadKicker">{story.tag.name}</span> : null}
                     <span className="MastheadStory-title">{story.title}</span>
                     <span className="MastheadStory-meta">{meta(story)}</span>
                   </div>

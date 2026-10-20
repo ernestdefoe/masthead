@@ -3,6 +3,7 @@ import MastheadPortal from './components/Portal';
 import header from './header';
 import topic from './topic';
 import registerWidgets from './widgets';
+import tagsPage from './tagsPage';
 
 export { default as MastheadPortal } from './components/Portal';
 export { default as WidgetSlot } from './components/WidgetSlot';
@@ -20,6 +21,7 @@ app.initializers.add(
     header();
     topic();
     registerWidgets();
+    tagsPage();
   },
   // Last, so the header split runs after every extension has added its
   // controls — an item added after the split would land on the wrong row.

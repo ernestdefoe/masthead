@@ -143,7 +143,7 @@ final class Hero
             'slug' => $this->slugs->forResource(Discussion::class)->toSlug($discussion),
             'title' => $discussion->title,
             'excerpt' => $this->excerpt($xml),
-            'image' => $this->images->first($xml) ?? $this->images->cover($discussion->user),
+            'image' => $this->images->pick($this->images->first($xml), $discussion->user),
             'author' => $discussion->user?->display_name,
             'replies' => max(0, (int) $discussion->comment_count - 1),
             'createdAt' => $discussion->created_at?->toAtomString(),

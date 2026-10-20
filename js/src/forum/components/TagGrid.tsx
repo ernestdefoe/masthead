@@ -18,15 +18,15 @@ export function primaryTags(): any[] {
     .sort((a, b) => a.position() - b.position());
 }
 
-function tone(tag: any) {
+export function tone(tag: any) {
   return tag.color() ? { '--mh-tag': tag.color() } : undefined;
 }
 
-function tagHref(tag: any) {
+export function tagHref(tag: any) {
   return app.route('tag', { tags: tag.slug() });
 }
 
-function glyph(tag: any) {
+export function glyph(tag: any) {
   return (
     <span className="MastheadTile-icon" aria-hidden="true">
       {tag.icon() ? <Icon name={tag.icon()} /> : (tag.name() || '?').charAt(0)}

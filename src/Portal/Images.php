@@ -9,6 +9,7 @@
 
 namespace ErnestDefoe\Masthead\Portal;
 
+use ErnestDefoe\Masthead\Settings;
 use Flarum\Extension\ExtensionManager;
 use Flarum\User\User;
 use Illuminate\Contracts\Container\Container;
@@ -23,8 +24,25 @@ use Illuminate\Contracts\Container\Container;
  */
 final class Images
 {
-    public function __construct(protected ExtensionManager $extensions, protected Container $container)
+    public function __construct(protected ExtensionManager $extensions, protected Container $container, protected Settings $settings)
     {
+    }
+
+    /**
+     * A story's picture, as the Pictures setting asks: its own picture with
+     * the author's Backdrop cover behind it (the default), either one alone,
+     * or none (the striped placeholder).
+     *
+     * The cover is only looked up when the mode can use it.
+     */
+    public function pick(?string $own, ?User $author): ?string
+    {
+        return match ($this->settings->pictures()) {
+            'off' => null,
+            'image' => $own,
+            'backdrop' => $this->cover($author),
+            default => $own ?? $this->cover($author),
+        };
     }
 
     public function first(string $xml): ?string

@@ -115,7 +115,9 @@ return [
         ->default(Settings::HERO_TYPE, 'articles')
         ->default(Settings::POWERED_BY, true)
         ->default(Settings::TAG_COUNT, 12)
-        ->default(Settings::LEAD_IMAGE, true)
+        ->default(Settings::PICTURES, 'both')
+        ->default(Settings::HERO_TAGS, true)
+        ->default(Settings::TAGS_PAGE, true)
 
         // read by less/lib/tokens.less
         ->registerLessConfigVar('masthead-accent', Settings::ACCENT, $look('accent'))
@@ -138,7 +140,11 @@ return [
         // is no logo. A value saved before 1.0.1 (true or false) still wins.
         ->serializeToForum('mastheadShowName', Settings::SHOW_NAME, fn ($v) => $v === null || $v === '' ? null : (bool) $v)
         // read by the article's lead image
-        ->serializeToForum('mastheadLeadImage', Settings::LEAD_IMAGE, 'boolval')
+        ->serializeToForum('mastheadPictures', Settings::PICTURES, fn ($v) => in_array($v, Settings::PICTURE_MODES, true) ? $v : 'both')
+        // read by the portal's Hero
+        ->serializeToForum('mastheadHeroTags', Settings::HERO_TAGS, 'boolval')
+        // read by the tags page
+        ->serializeToForum('mastheadTagsPage', Settings::TAGS_PAGE, 'boolval')
         // read by the portal's TagGrid, clamped there and here
         ->serializeToForum('mastheadTagCount', Settings::TAG_COUNT, fn ($v) => max(1, min(48, (int) $v))),
 

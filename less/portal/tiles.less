@@ -71,6 +71,90 @@
   margin-top: 4px;
 }
 
+// -- The Tags page: the same tiles, roomier ----------------------------------
+
+.MastheadTiles--page {
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 18px;
+}
+
+// The phone gets one column; the grid's minimum is wider than the screen.
+@media @phone {
+  .MastheadTiles--page {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.MastheadTile--page {
+  position: relative;
+  padding: 22px;
+  gap: 16px;
+  min-height: 132px;
+
+  .MastheadTile-icon {
+    width: 52px;
+    height: 52px;
+    flex-basis: 52px;
+    font-size: 24px;
+  }
+
+  .MastheadTile-name {
+    font-size: 18px;
+  }
+
+  .MastheadTile-desc {
+    font-size: 14px;
+  }
+
+  // The name's link covers the whole tile, so the tile opens the tag; the
+  // subtags and the latest discussion are raised above that cover.
+  .MastheadTile-link {
+    color: inherit;
+    text-decoration: none !important;
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+    }
+  }
+
+  .MastheadTile-children,
+  .MastheadTile-last {
+    position: relative;
+    z-index: 1;
+  }
+
+  .MastheadTile-last {
+    color: var(--mh-ink);
+    font-weight: 600;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &:focus-within {
+    border-color: color-mix(in srgb, var(--mh-t) 50%, var(--mh-line));
+  }
+}
+
+.MastheadTile-children {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+
+  .MastheadTagChip {
+    text-decoration: none !important;
+
+    &:hover {
+      filter: brightness(0.95);
+    }
+  }
+}
+
 // -- Chips: the tag on a latest-discussion row, and the phone's tag row -------
 
 .MastheadTagChip,

@@ -70,7 +70,7 @@ final class PageBuilderArticles
                 'url' => '/c/'.rawurlencode($type->slug).'/'.rawurlencode($record->slug),
                 'title' => (string) $record->title,
                 'excerpt' => (string) ($record->excerpt(180) ?? ''),
-                'image' => Images::safe($record->coverUrl()) ?? $this->images->cover($record->user),
+                'image' => $this->images->pick(Images::safe($record->coverUrl()), $record->user),
                 'author' => $record->user?->display_name,
                 'replies' => null,
                 'createdAt' => $record->published_at?->toAtomString(),

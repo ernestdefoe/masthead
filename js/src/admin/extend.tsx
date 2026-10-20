@@ -1,6 +1,7 @@
 import app from 'flarum/admin/app';
 import Admin from 'flarum/common/extenders/Admin';
 import Select from 'flarum/common/components/Select';
+import Icon from 'flarum/common/components/Icon';
 import { AccentPicker, BarPicker, ColourPicker, PresetPicker, presets } from './components/PresetPicker';
 import FooterLinks from './components/FooterLinks';
 
@@ -23,21 +24,49 @@ function heading(key: string) {
   return <h3 className="MastheadAdmin-heading">{t(`section.${key}`)}</h3>;
 }
 
-/** Flarum's tags, fetched once for the hero's tag picker. */
+/**
+ * Every tag, for the hero's tag picker: primary tags in their order, each
+ * followed by its children, then the secondary tags by name. Any of them can
+ * feed the hero (Portal\Hero matches the tag id, whatever its kind).
+ *
+ * 🚨 Loaded through the tag list once: the admin's store may already hold a
+ * few tags (from another page), and "the store is not empty" is not "every
+ * tag is loaded".
+ */
 let tagsRequested = false;
-function tagOptions(): Record<string, string> {
-  const tags = app.store.all<any>('tags');
-
-  if (!tags.length && !tagsRequested && has('flarum-tags')) {
+function tagOptions(): [string, string][] {
+  if (!tagsRequested && has('flarum-tags')) {
     tagsRequested = true;
-    app.store.find('tags').then(() => m.redraw());
+    const list = (app as any).tagList;
+    (list ? list.load(['parent']) : app.store.find('tags', { include: 'parent' })).then(() => m.redraw());
   }
 
-  const options: Record<string, string> = { '0': t('hero.tag_none') as any };
+  const tags = app.store.all<any>('tags');
+  const byPosition = (a: any, b: any) => a.position() - b.position();
+  // A list, not an object: an object's numeric keys (tag ids) iterate in
+  // number order, which would undo the order built here.
+  const options: [string, string][] = [['0', t('hero.tag_none') as any]];
+  const add = (tag: any, label: any) => options.push([String(tag.id()), label]);
+
   tags
-    .filter((tag: any) => tag.position() !== null)
-    .sort((a: any, b: any) => a.position() - b.position())
-    .forEach((tag: any) => (options[tag.id()] = (tag.isChild() ? '— ' : '') + tag.name()));
+    .filter((tag: any) => tag.position() !== null && !tag.parent())
+    .sort(byPosition)
+    .forEach((tag: any) => {
+      add(tag, tag.name());
+      tags
+        .filter((child: any) => child.parent() === tag)
+        .sort(byPosition)
+        .forEach((child: any) => add(child, '— ' + child.name()));
+    });
+
+  tags
+    .filter((tag: any) => tag.position() === null && !tag.parent())
+    .sort((a: any, b: any) => a.name().localeCompare(b.name()))
+    .forEach((tag: any) => add(tag, t('hero.tag_secondary', { name: tag.name() })));
+
+  // A tag that is none of the above (a child whose parent is not loaded)
+  // still shows by name rather than going missing.
+  tags.filter((tag: any) => !options.some(([id]) => id === String(tag.id()))).forEach((tag: any) => add(tag, tag.name()));
 
   return options;
 }
@@ -183,7 +212,18 @@ export default [
       return (
         <div className="Form-group">
           <label>{t('hero.tag_label')}</label>
-          <Select value={this.setting(K('hero_tag'), '0')()} options={tagOptions()} onchange={this.setting(K('hero_tag'), '0')} />
+          <span className="Select">
+            <select
+              className="Select-input FormControl"
+              value={this.setting(K('hero_tag'), '0')()}
+              onchange={(e: Event) => this.setting(K('hero_tag'), '0')((e.target as HTMLSelectElement).value)}
+            >
+              {tagOptions().map(([id, label]) => (
+                <option value={id}>{label}</option>
+              ))}
+            </select>
+            <Icon name="fas fa-sort" className="Select-caret" />
+          </span>
         </div>
       );
     }, 64)
@@ -199,16 +239,36 @@ export default [
       );
     }, 63)
 
-    // Read by the discussion page's article (serialised as mastheadLeadImage).
+    // Read by Portal\Hero (the tag kicker on each story; serialised as mastheadHeroTags).
     .setting(
       () => ({
-        setting: K('lead_image'),
-        label: t('topic.lead_image_label'),
-        help: t('topic.lead_image_help'),
+        setting: K('hero_tags'),
+        label: t('hero.tags_label'),
+        help: t('hero.tags_help'),
         type: 'boolean',
       }),
-      62
+      62.5
     )
+
+    // Read by Portal\Images and the discussion page's article (serialised as
+    // mastheadPictures).
+    .setting(() => {
+      const options: Record<string, any> = {
+        both: t('pictures.both'),
+        image: t('pictures.image'),
+        backdrop: t('pictures.backdrop'),
+        off: t('pictures.off'),
+      };
+
+      return {
+        setting: K('pictures'),
+        label: t('pictures.label'),
+        help: t('pictures.help'),
+        type: 'select',
+        options,
+        default: 'both',
+      };
+    }, 62)
 
     // Read by the portal's TagGrid (serialised as mastheadTagCount).
     .setting(() => {
@@ -224,6 +284,18 @@ export default [
         default: 12,
       };
     }, 60)
+
+    // Read by the tags page (serialised as mastheadTagsPage).
+    .setting(() => {
+      if (!has('flarum-tags')) return null;
+
+      return {
+        setting: K('tags_page'),
+        label: t('portal.tags_page_label'),
+        help: t('portal.tags_page_help'),
+        type: 'boolean',
+      };
+    }, 59)
 
     // Read by the footer (serialised as mastheadFooterLinks, checked first).
     .customSetting(function (this: any) {

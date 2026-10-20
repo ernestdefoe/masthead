@@ -14,7 +14,7 @@ import listItems from 'flarum/common/helpers/listItems';
 import WidgetSlot from '../components/WidgetSlot';
 import MoreInTag from './MoreInTag';
 import groupBadge from './groupBadge';
-import { leadImage, readMinutes } from './lead';
+import { bannerFor, readMinutes } from './lead';
 import { has, isPhone, t } from '../util';
 
 /*
@@ -144,9 +144,9 @@ export default function topic() {
   extend(CommentPost.prototype, 'content', function (this: any, content: any[]) {
     const post = this.attrs.post;
 
-    if (post.number() !== 1 || !app.forum.attribute('mastheadLeadImage') || this.isEditing()) return;
+    if (post.number() !== 1 || this.isEditing()) return;
 
-    const image = leadImage(post);
+    const image = bannerFor(post);
     if (image) {
       content.unshift(
         // 🚨 No key: core's content() array is unkeyed, and one keyed child
@@ -168,7 +168,9 @@ export default function topic() {
     const post = this.attrs.post;
     if (post.number() !== 1 || !this.element) return;
 
-    const image = app.forum.attribute('mastheadLeadImage') && !this.isEditing() ? leadImage(post) : null;
+    // Only the post's own picture has a copy in the body to hide; a Backdrop
+    // banner never matches one.
+    const image = !this.isEditing() ? bannerFor(post) : null;
 
     this.element.querySelectorAll('.Post-body img').forEach((img: HTMLImageElement) => {
       img.classList.toggle('MastheadLead-source', !!image && img.getAttribute('src') === image);
