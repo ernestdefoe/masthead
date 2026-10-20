@@ -41,9 +41,10 @@ export default class Brand extends Component {
             {monogram(title)}
           </span>
         )}
-        {showName ? (
+        {/* The tagline stands on its own: beside a logo whose name is hidden it still shows. */}
+        {showName || tagline ? (
           <span className="MastheadBrand-text">
-            <span className="MastheadBrand-name">{title}</span>
+            {showName ? <span className="MastheadBrand-name">{title}</span> : null}
             {tagline ? <span className="MastheadBrand-tagline">{tagline}</span> : null}
           </span>
         ) : null}
