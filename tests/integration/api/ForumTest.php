@@ -34,6 +34,9 @@ class ForumTest extends MastheadTestCase
             ['label' => 'Protocol-relative', 'url' => '//evil.example'],
             ['label' => 'Discord', 'url' => 'https://discord.gg/x'],
             ['label' => '', 'url' => '/nameless'],
+            ['label' => 'Soon', 'url' => '#'],
+            ['label' => 'Contact', 'url' => '#contact'],
+            ['label' => 'Fragment script', 'url' => '#"><script>'],
         ]));
         $this->setting('ernestdefoe-masthead.preset', 'sunday');
 
@@ -42,12 +45,33 @@ class ForumTest extends MastheadTestCase
         $this->assertSame(1, $forum['mastheadOnline'], 'Only user 3 was seen in the last five minutes');
         $this->assertSame('split', $forum['mastheadHero'], 'Sunday\'s layout');
         $this->assertSame(
-            [['label' => 'Rules', 'url' => '/p/1-rules'], ['label' => 'Discord', 'url' => 'https://discord.gg/x']],
+            [
+                ['label' => 'Rules', 'url' => '/p/1-rules'],
+                ['label' => 'Discord', 'url' => 'https://discord.gg/x'],
+                ['label' => 'Soon', 'url' => '#'],
+                ['label' => 'Contact', 'url' => '#contact'],
+            ],
             $forum['mastheadFooterLinks']
         );
         $this->assertSame(12, $forum['mastheadTagCount']);
-        $this->assertTrue($forum['mastheadLeadImage']);
+        $this->assertSame('both', $forum['mastheadPictures']);
+        $this->assertTrue($forum['mastheadHeroTags']);
+        $this->assertTrue($forum['mastheadTagsPage']);
         $this->assertNull($forum['mastheadShowName'], 'Never set: the name shows only without a logo');
+    }
+
+    #[Test]
+    public function an_unknown_pictures_value_reads_as_the_default()
+    {
+        $this->setting('ernestdefoe-masthead.pictures', 'sideways');
+        $this->assertSame('both', $this->forum()['mastheadPictures']);
+    }
+
+    #[Test]
+    public function a_saved_pictures_mode_reaches_the_forum()
+    {
+        $this->setting('ernestdefoe-masthead.pictures', 'backdrop');
+        $this->assertSame('backdrop', $this->forum()['mastheadPictures']);
     }
 
     #[Test]

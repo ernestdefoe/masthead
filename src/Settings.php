@@ -57,8 +57,24 @@ final class Settings
     // serialised to the forum, read by the portal's TagGrid
     public const TAG_COUNT = self::PREFIX.'tag_count';
 
-    // serialised to the forum, read by the article's lead image (topic/index.tsx)
-    public const LEAD_IMAGE = self::PREFIX.'lead_image';
+    /**
+     * Which pictures the featured stories and a discussion's lead banner use:
+     * the post's own picture falling back to the author's Backdrop cover, the
+     * post's picture only, the Backdrop cover only, or none.
+     *
+     * Read by Settings::pictures() (Portal\Images) and serialised to the forum
+     * as mastheadPictures (topic/index.tsx). Replaced the lead_image boolean
+     * in 1.1.0; the migration carries a saved value over.
+     */
+    public const PICTURES = self::PREFIX.'pictures';
+
+    public const PICTURE_MODES = ['both', 'image', 'backdrop', 'off'];
+
+    // serialised to the forum, read by the portal's Hero: the tag on each story
+    public const HERO_TAGS = self::PREFIX.'hero_tags';
+
+    // serialised to the forum, read by the tags page (tagsPage.tsx)
+    public const TAGS_PAGE = self::PREFIX.'tags_page';
 
     // read by the font stamp in extend.php and the [data-masthead-fonts] rules
     public const FONTS = self::PREFIX.'fonts';
@@ -130,6 +146,13 @@ final class Settings
         return in_array($source, self::SOURCES, true) ? $source : 'latest';
     }
 
+    public function pictures(): string
+    {
+        $mode = (string) $this->settings->get(self::PICTURES, 'both');
+
+        return in_array($mode, self::PICTURE_MODES, true) ? $mode : 'both';
+    }
+
     public function heroTag(): int
     {
         return (int) $this->settings->get(self::HERO_TAG, 0);
@@ -145,7 +168,9 @@ final class Settings
      *
      * 🚨 An admin types these, and they are drawn on every page for every
      * visitor. A `javascript:` URL there is script on every page, so only a
-     * path on this forum, an http(s) address or mailto survives.
+     * path on this forum, an http(s) address, mailto or a #fragment (a
+     * placeholder while a site is being built, or an anchor on the page)
+     * survives.
      *
      * @return list<array{label: string, url: string}>
      */
@@ -178,6 +203,12 @@ final class Settings
         // a backslash, which browsers read as a second slash ("/\\x.com" is
         // a link to x.com).
         if (preg_match('#^/(?![/\\\\])#', $url) || preg_match('#^(https?://|mailto:)#i', $url)) {
+            return $url;
+        }
+
+        // A fragment: "#" alone, or an anchor id. Nothing that could leave
+        // the attribute or the page.
+        if (preg_match('/^#[A-Za-z0-9_\-:.]*$/', $url)) {
             return $url;
         }
 

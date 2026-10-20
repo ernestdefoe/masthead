@@ -232,8 +232,18 @@
     flex-basis: 100%;
   }
 
+  // One column on a phone, everything centred.
+  .MastheadFooter-inner {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+    text-align: center;
+    gap: 16px;
+  }
+
+  .MastheadFooter-links,
   .MastheadFooter-powered {
-    margin-left: 0;
+    grid-column: 1;
+    justify-self: center;
   }
 }
 

@@ -12,6 +12,35 @@ body,
   background: var(--mh-ground);
 }
 
+// The footer sits at the bottom of the window on a short page, instead of
+// floating halfway up it: the app is a column at least a screen tall, and
+// the content takes up the slack. In the flow, never position: fixed, so on
+// a long page the footer is simply at the end. Core already gives .App
+// min-height: 100vh (with box-sizing: border-box, so its header padding is
+// inside it); dvh keeps a phone's collapsing toolbar from pushing it off.
+.App {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+
+// Core keeps a strip of empty page under everything (--app-bottom-padding)
+// so a minimised composer never covers the last line. Under Masthead the
+// footer is the last thing, so that strip moves inside it: same room for the
+// composer, but painted the footer's colour instead of a band of page
+// ground under the footer.
+.App:has(> .App-footer .MastheadFooter) {
+  padding-bottom: 0;
+}
+
+.MastheadFooter {
+  padding-bottom: var(--app-bottom-padding);
+}
+
+.App-content {
+  flex: 1 0 auto;
+}
+
 // The condensed face is for headlines: Masthead's own section headings and
 // the page heroes. Discussion titles in lists stay in the text face, as in
 // the mockup — a column of condensed capitals reads as shouting.
