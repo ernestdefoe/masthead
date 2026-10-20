@@ -112,12 +112,14 @@ switch presets.
 | **Home page** | The portal or the discussion list. The same setting as *Home page* in Basics. |
 | **Preset**, **Accent colour**, **Masthead colour** | The look, above. |
 | **Utility strip colour**, **Page background** (light and dark) | Exact colours for a brand palette. Empty means the default: the strip a shade darker than the masthead, the mockup grey, Flarum's dark background. A dark background you set also tints the dark-mode cards. |
-| **Tagline**, **Monogram**, **Show the forum name beside the logo** | The title block. The logo is Flarum's own (Appearance). The masthead is dark in both colour modes, so it shows your **dark-mode logo** whenever you have uploaded one, and your normal logo otherwise. The name shows beside a logo only if you turn it on; without a logo it always shows. |
+| **Tagline**, **Monogram**, **Show the forum name beside the logo** | The title block. The logo is Flarum's own (Appearance). The masthead is dark in both colour modes, so it shows your **dark-mode logo** whenever you have uploaded one, and your normal logo otherwise. The name shows beside a logo only if you turn it on; without a logo it always shows. The tagline shows whenever it is set. |
 | **Use the theme's fonts** | Barlow Condensed and Figtree, served from your forum. Off uses system fonts. |
-| **Layout**, **Stories from**, **Tag** / **Content type** | The featured stories. |
+| **Layout**, **Stories from**, **Tag** / **Content type** | The featured stories. Any tag can be the source: primary, child or secondary. |
+| **Show the tag on each story** | The tag names in the featured stories. Off keeps their tag colours. |
 | **Sections in the grid** | How many tags *Browse the forum* shows. |
-| **Show a lead image on discussions** | The opening post's first picture as a banner at the top of the article. |
-| **Footer links**, **Show "Powered by Flarum"** | The footer. Drag links to reorder. |
+| **Draw the Tags page as section tiles** | The Tags page in the same tiles as *Browse the forum*, with subtags and the latest discussion. On by default. |
+| **Pictures** | The featured stories' pictures and the banner at the top of a discussion: the post's own picture falling back to the author's Backdrop cover, the post's picture only, the Backdrop cover only, or none. |
+| **Footer links**, **Show "Powered by Flarum"** | The footer, centred under the page and at the bottom of the window on short pages. Drag links to reorder. A `#` link is a placeholder that goes nowhere; `#name` scrolls to that part of the page. |
 
 ---
 
