@@ -233,9 +233,14 @@
 // (badges.tsx). The copies core and fof/badges draw elsewhere would repeat
 // it: core's floats into the avatar column, fof/badges' earned icons sit
 // unlabelled in the footer, and its primary badge trails the name.
+// ernestdefoe/nameplate's rank pills are the member's visible groups, which
+// the row already shows (the first as the chip, the rest as core's group
+// badges), so they would name the group a second time.
 .PostStream .CommentPost {
   .PostUser-badges,
   .PrimaryBadge,
+  .Nameplate-ranks,
+  .Nameplate-line .Nameplate-rank,
   .Post-footer li:has(> .PostBadges) {
     display: none;
   }
