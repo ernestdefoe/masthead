@@ -78,6 +78,26 @@
   .PostStream .CommentPost:not(.MastheadArticle) {
     padding: 12px 14px;
     border-radius: 12px;
+
+    // A reply's header is one line on a phone: earned badges keep their
+    // icon, and their name moves to the tooltip and screen readers.
+    .MastheadBadge:not(.MastheadBadge--more) {
+      gap: 0;
+      padding: 3px 5px;
+    }
+
+    .MastheadBadge-name {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+    }
+  }
+
+  .MastheadArticle .MastheadByline--article {
+    padding: 16px 16px 0;
   }
 
   .MastheadReplies-heading {

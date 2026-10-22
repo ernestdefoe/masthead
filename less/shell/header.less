@@ -244,3 +244,37 @@
   text-transform: uppercase;
   white-space: nowrap;
 }
+
+// -- Mark as read ------------------------------------------------------------
+//
+// Core hides each notification's ✓ until the row is hovered (so a touch
+// screen never sees it), and the dropdown's "mark all as read" inherits the
+// masthead's light-on-dark control colour: white on a white menu in light
+// mode. Both are a muted icon that is always there, and the accent on hover
+// or focus. The phone's Notifications page keeps its own header buttons.
+.HeaderList .HeaderList-header .Button,
+.HeaderList .HeaderListItem-actions > .Button {
+  opacity: 1;
+  // Between muted and the text colour: quieter than the notification, but
+  // never the near-invisible grey core fades it to in dark mode.
+  color: color-mix(in srgb, var(--mh-muted) 65%, var(--mh-ink));
+
+  &:hover,
+  &:focus-visible {
+    color: var(--mh-accent);
+  }
+}
+
+.HeaderList .HeaderListItem-actions > .Button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+
+  &:hover,
+  &:focus-visible {
+    background: var(--control-bg);
+  }
+}

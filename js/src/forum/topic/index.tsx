@@ -13,7 +13,7 @@ import DiscussionControls from 'flarum/forum/utils/DiscussionControls';
 import listItems from 'flarum/common/helpers/listItems';
 import WidgetSlot from '../components/WidgetSlot';
 import MoreInTag from './MoreInTag';
-import groupBadge from './groupBadge';
+import userBadges from './badges';
 import { bannerFor, readMinutes } from './lead';
 import { has, isPhone, t } from '../util';
 
@@ -130,8 +130,8 @@ export default function topic() {
 
     if (post.number() === 1) return;
 
-    const badge = groupBadge(post.user());
-    if (badge) items.add('mastheadGroup', badge, 90);
+    const badges = userBadges(post.user());
+    if (badges) items.add('mastheadBadges', badges, 90);
 
     // ernestdefoe/cross-references already shows the number (and links it);
     // drawing a second one beside it would read as a glitch.
@@ -145,6 +145,16 @@ export default function topic() {
     const post = this.attrs.post;
 
     if (post.number() !== 1 || this.isEditing()) return;
+
+    /*
+     * The byline again, at the top of the article, for when the story header
+     * above is not Masthead's: Marquee, Curio and Earshot replace the whole
+     * DiscussionHero view with their own, and the author vanished with it.
+     * story.less shows this copy only while the page has no story byline, so
+     * the author is named exactly once whichever hero won, including one that
+     * swaps in after its data loads.
+     */
+    content.unshift(<Byline discussion={post.discussion()} inArticle />);
 
     const image = bannerFor(post);
     if (image) {
@@ -314,12 +324,12 @@ class Byline {
     const participants = discussion.attribute('participantCount');
 
     return (
-      <div className="MastheadByline">
+      <div className={'MastheadByline' + (vnode.attrs.inArticle ? ' MastheadByline--article' : '')}>
         <Avatar user={user} className="MastheadByline-avatar" />
         <span className="MastheadByline-text">
           <span className="MastheadByline-who">
             {user ? <Link href={app.route.user(user)}>{user.displayName()}</Link> : t('topic.deleted_user')}
-            {groupBadge(user)}
+            {userBadges(user)}
           </span>
           <span className="MastheadByline-meta">
             {dayjs(discussion.createdAt()).format('LL')}

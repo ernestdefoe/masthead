@@ -115,6 +115,7 @@
 .MastheadByline-who {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 6px;
   font-weight: 700;
 
@@ -151,4 +152,82 @@
   background: var(--mh-tint);
   color: var(--mh-tink);
   white-space: nowrap;
+}
+
+// -- Who the author is: group chip, core badges, earned badges ---------------
+
+.MastheadBadges {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 5px;
+  font-weight: 600;
+  vertical-align: middle;
+}
+
+.MastheadBadges-core {
+  display: inline-flex;
+  gap: 3px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  .Badge {
+    .Badge--size(20px);
+  }
+}
+
+.MastheadBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  padding: 3px 7px;
+  border-radius: 5px;
+  border: 1px solid var(--mh-line);
+  background: var(--mh-card);
+  white-space: nowrap;
+  text-decoration: none !important;
+
+  color: var(--mh-ink);
+
+  i {
+    color: var(--mh-accent);
+    font-size: 10px;
+  }
+
+  &:hover,
+  &:focus-visible {
+    border-color: var(--mh-accent);
+  }
+}
+
+.MastheadBadge--more {
+  color: var(--mh-muted) !important;
+}
+
+// -- The byline inside the article ------------------------------------------
+//
+// A second copy of the byline that shows only while the page has no story
+// byline: Marquee, Curio and Earshot replace the whole story header with
+// their own hero, and the author went with it. Driven by :has() on the page
+// itself, so a hero that swaps in after its data loads flips it too.
+
+.MastheadArticle .MastheadByline--article {
+  display: none;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 28px 28px 0;
+}
+
+.DiscussionPage:not(:has(.MastheadStory .MastheadByline)) .MastheadArticle {
+  .MastheadByline--article {
+    display: flex;
+  }
+
+  .MastheadByline--article ~ .Post-body {
+    padding-top: 18px;
+  }
 }

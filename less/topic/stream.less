@@ -226,3 +226,17 @@
 .MastheadEnd {
   margin-top: 20px;
 }
+
+// -- Badges ------------------------------------------------------------------
+//
+// Masthead draws the author's badges as one labelled row beside the name
+// (badges.tsx). The copies core and fof/badges draw elsewhere would repeat
+// it: core's floats into the avatar column, fof/badges' earned icons sit
+// unlabelled in the footer, and its primary badge trails the name.
+.PostStream .CommentPost {
+  .PostUser-badges,
+  .PrimaryBadge,
+  .Post-footer li:has(> .PostBadges) {
+    display: none;
+  }
+}
