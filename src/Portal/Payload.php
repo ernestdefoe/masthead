@@ -26,12 +26,17 @@ final class Payload
     }
 
     /**
-     * @return array{hero: list<array<string, mixed>>, topPosters: list<array<string, mixed>>, games: list<array<string, mixed>>|null}
+     * @return array{hero: list<array<string, mixed>>, heroEmpty: array{source: string, name: string|null}|null, topPosters: list<array<string, mixed>>, games: list<array<string, mixed>>|null}
      */
     public function for(User $actor): array
     {
+        $hero = $this->hero->for($actor);
+
         return [
-            'hero' => $this->hero->for($actor),
+            'hero' => $hero,
+            // Admins only, and only when the chosen source is empty: the hint
+            // that stands where the hero would be.
+            'heroEmpty' => $hero === [] ? $this->hero->emptyHint($actor) : null,
             'topPosters' => $this->topPosters->get(),
             // null, not [], when Picks is absent: "no games this week" and "no
             // pick'em here" draw differently (the second draws nothing).

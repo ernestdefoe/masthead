@@ -239,6 +239,14 @@ export default [
       );
     }, 63)
 
+    // Read by Portal\Hero: off, a source with fewer than four keeps to its own.
+    // Offered only for a source that can run short.
+    .customSetting(function (this: any) {
+      if (this.setting(K('hero_source'), 'latest')() === 'latest') return null;
+
+      return this.buildSettingComponent({ setting: K('hero_fill'), label: t('hero.fill_label'), help: t('hero.fill_help'), type: 'boolean' });
+    }, 62.7)
+
     // Read by Portal\Hero (the tag kicker on each story; serialised as mastheadHeroTags).
     .setting(
       () => ({

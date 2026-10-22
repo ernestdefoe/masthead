@@ -86,11 +86,11 @@ class PortalTest extends MastheadTestCase
     }
 
     #[Test]
-    public function the_sticky_source_leads_with_sticky_and_tops_up_with_the_newest()
+    public function the_sticky_source_features_sticky_discussions_only()
     {
         $this->setting('ernestdefoe-masthead.hero_source', 'sticky');
 
-        $this->assertSame([6, 1, 2], array_column($this->hero(), 'id'));
+        $this->assertSame([6], array_column($this->hero(), 'id'));
     }
 
     #[Test]
@@ -99,8 +99,8 @@ class PortalTest extends MastheadTestCase
         $this->setting('ernestdefoe-masthead.hero_source', 'tag');
         $this->setting('ernestdefoe-masthead.hero_tag', '2');
 
-        $this->assertSame(3, $this->hero(1)[0]['id']);
-        $this->assertNotContains(3, array_column($this->hero(), 'id'));
+        $this->assertSame([3], array_column($this->hero(1), 'id'));
+        $this->assertSame([], $this->hero(), 'Nothing from another tag stands in for it');
     }
 
     #[Test]

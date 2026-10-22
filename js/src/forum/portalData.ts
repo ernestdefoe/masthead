@@ -34,6 +34,8 @@ export interface Game {
 
 interface PortalData {
   hero: Story[];
+  /** Admins only, when the chosen source has nothing to feature. */
+  heroEmpty: { source: string; name: string | null } | null;
   topPosters: Poster[];
   /** null when ernestdefoe/picks is not enabled (or the actor may not see it). */
   games: Game[] | null;

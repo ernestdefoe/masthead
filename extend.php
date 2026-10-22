@@ -113,6 +113,7 @@ return [
         ->default(Settings::FONTS, true)
         ->default(Settings::HERO_SOURCE, 'latest')
         ->default(Settings::HERO_TYPE, 'articles')
+        ->default(Settings::HERO_FILL, false)
         ->default(Settings::POWERED_BY, true)
         ->default(Settings::TAG_COUNT, 12)
         ->default(Settings::PICTURES, 'both')

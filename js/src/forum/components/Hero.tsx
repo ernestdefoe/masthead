@@ -55,14 +55,38 @@ function StoryLink(story: Story, className: string, children: any) {
 export interface HeroAttrs {
   stories: Story[];
   style: string;
+  empty?: { source: string; name: string | null } | null;
+}
+
+/**
+ * Where the hero would be, for an admin, when the chosen source has nothing
+ * to feature. Visitors see no block at all.
+ */
+function EmptyHint(empty: { source: string; name: string | null }) {
+  const name = empty.name || '';
+  const text =
+    empty.source === 'tag'
+      ? name
+        ? t('hero.empty_tag', { tag: name })
+        : t('hero.empty_tag_gone')
+      : empty.source === 'sticky'
+        ? t('hero.empty_sticky')
+        : t('hero.empty_pagebuilder', { type: name });
+
+  return (
+    <p className="MastheadHero MastheadHero--empty">
+      {text} <a href={app.forum.attribute<string>('adminUrl') + '#/extension/ernestdefoe-masthead'}>{t('hero.empty_settings')}</a>
+    </p>
+  );
 }
 
 /** The featured story and the three beside it. */
 export default class Hero extends Component<HeroAttrs> {
   view() {
-    const { stories, style } = this.attrs;
+    const { stories, style, empty } = this.attrs;
 
-    if (style === 'off' || !stories.length) return null;
+    if (style === 'off') return null;
+    if (!stories.length) return empty ? EmptyHint(empty) : null;
 
     const [feature, ...side] = stories;
     // The tag on each story, unless the admin turned it off (the stories'
@@ -88,7 +112,7 @@ export default class Hero extends Component<HeroAttrs> {
         )}
 
         {side.length ? (
-          <div className="MastheadHero-side">
+          <div className={`MastheadHero-side MastheadHero-side--${side.length}`}>
             {side.map((story) =>
               StoryLink(
                 story,

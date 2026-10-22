@@ -46,6 +46,8 @@ final class Settings
     public const HERO_SOURCE = self::PREFIX.'hero_source';
     public const HERO_TAG = self::PREFIX.'hero_tag';
     public const HERO_TYPE = self::PREFIX.'hero_type';
+    // off: a source with fewer than four keeps to its own; on: the newest fill the rest
+    public const HERO_FILL = self::PREFIX.'hero_fill';
 
     // serialised to the forum, drawn by the masthead and the footer
     public const TAGLINE = self::PREFIX.'tagline';
@@ -156,6 +158,11 @@ final class Settings
     public function heroTag(): int
     {
         return (int) $this->settings->get(self::HERO_TAG, 0);
+    }
+
+    public function heroFill(): bool
+    {
+        return (bool) $this->settings->get(self::HERO_FILL, false);
     }
 
     public function heroType(): string

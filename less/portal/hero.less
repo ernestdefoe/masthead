@@ -122,6 +122,18 @@
   }
 }
 
+// Admins only: the chosen source has nothing to feature yet.
+.MastheadHero--empty {
+  display: block;
+  margin: 0;
+  padding: 14px 18px;
+  border: 1px dashed var(--mh-line);
+  border-radius: var(--mh-radius-md);
+  background: var(--mh-card);
+  color: var(--mh-muted);
+  font-size: 14px;
+}
+
 // -- The three beside it ------------------------------------------------------
 
 .MastheadHero-side {
@@ -182,4 +194,13 @@
 .MastheadStory-meta {
   font-size: 13px;
   color: var(--mh-muted);
+}
+
+// Fewer than three beside it: each keeps its own height, top-aligned, rather
+// than one card stretched to the feature's full height.
+.MastheadHero-side--1,
+.MastheadHero-side--2 {
+  .MastheadStory {
+    flex: 0 0 auto;
+  }
 }

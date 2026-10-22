@@ -41,7 +41,7 @@ export default class MastheadPortal extends Page {
       <div className="MastheadPortal">
         <div className="container">
           {data ? (
-            <Hero stories={data.hero} style={app.forum.attribute<string>('mastheadHero') || 'overlay'} />
+            <Hero stories={data.hero} empty={data.heroEmpty} style={app.forum.attribute<string>('mastheadHero') || 'overlay'} />
           ) : (
             <div className="MastheadHero MastheadHero--loading" aria-hidden="true" />
           )}
