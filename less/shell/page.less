@@ -122,6 +122,17 @@ body,
     border-bottom-right-radius: calc(var(--mh-radius) - 1px);
   }
 
+  // An empty list: core's 40px top margin sat inside the card with nothing
+  // below it, so the text hugged the card's bottom edge.
+  .IndexPage .DiscussionList > .Placeholder {
+    margin: 0;
+    padding: 32px 16px;
+
+    p {
+      margin: 0;
+    }
+  }
+
   .IndexPage .DiscussionList-loadMore:empty {
     display: none;
   }
