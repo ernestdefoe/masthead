@@ -135,3 +135,75 @@
   padding: 0;
   background: transparent;
 }
+
+// fof/forum-widgets-core draws only a small grey title over bare content. In
+// its sections the widget is the same card as on the portal, title and all.
+.MastheadFofWidget {
+  padding: 12px 12px 6px;
+  background: var(--mh-card);
+  border: 1px solid var(--mh-line);
+  border-radius: var(--mh-radius);
+
+  .FofWidgets-Widget-title {
+    margin-bottom: 6px;
+    font-family: var(--mh-heading);
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 1.25;
+    text-transform: uppercase;
+    color: var(--mh-ink);
+  }
+
+  .FofWidgets-Widget-title-icon {
+    color: var(--mh-accent);
+  }
+
+  // Themes paint FoF's content area as a box of its own; here the card is the box.
+  .FofWidgets-Widget-content {
+    padding: 0;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+  }
+}
+
+/*
+ * 🚨 A narrow column (FoF's side column is 180px): the name and the count do
+ * not fit on one line, and the name was cut to "Reli…". The count goes under
+ * the name instead, so the name has the whole width.
+ */
+.MastheadPosters {
+  container-type: inline-size;
+}
+
+@container (max-width: 260px) {
+  .MastheadPoster {
+    display: grid;
+    grid-template-columns: auto auto minmax(0, 1fr);
+    column-gap: 8px;
+  }
+
+  .MastheadPoster-rank {
+    width: auto;
+    min-width: 12px;
+    grid-row: span 2;
+  }
+
+  .MastheadPoster-avatar.Avatar {
+    --size: 28px;
+    grid-row: span 2;
+  }
+
+  // Wrapped rather than cut: "Relic System" is the name, not "Relic Sys…".
+  .MastheadPoster-name {
+    white-space: normal;
+    overflow-wrap: anywhere;
+    line-height: 1.25;
+  }
+
+  .MastheadPoster-count {
+    margin-left: 0;
+    font-size: 12px;
+    line-height: 1.2;
+  }
+}
