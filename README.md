@@ -27,7 +27,7 @@ sidebar of widgets, on a grey ground of white cards.
 - **Widgets.** *Top posters this week*, and *Upcoming games* when
   [Picks](https://github.com/ernestdefoe/picks) is installed. Top posters can
   also be placed anywhere through Bespoke or fof/forum-widgets-core.
-- **A footer** with your own links.
+- **A footer** with your own links. Links to Facebook, X, Instagram, YouTube, Discord, TikTok, Bluesky and other social sites get their brand icon automatically. Any link can take a Font Awesome icon, and a link with no name shows just the icon.
 - **Phones** get a compact bar, the feature card, a scrolling row of section
   chips, the latest list and a floating **Start a discussion**.
 - **Dark mode**, following Flarum's own light, dark and high-contrast modes.
@@ -35,6 +35,8 @@ sidebar of widgets, on a grey ground of white cards.
 ![The whole portal, top to bottom](screenshots/portal-full.png)
 
 ![Browse the forum: a tile for each section](screenshots/tag-grid.png)
+
+![Footer links with brand icons](screenshots/footer-icons.png)
 
 <img src="screenshots/widgets.png" alt="The Top posters this week widget" width="300">
 
@@ -129,7 +131,7 @@ switch presets.
 | **Draw the Tags page as section tiles** | The Tags page in the same tiles as *Browse the forum*, with subtags and the latest discussion. On by default. |
 | **Pictures** | The featured stories' pictures and the banner at the top of a discussion: the post's own picture falling back to the author's Backdrop cover, the post's picture only, the Backdrop cover only, or none. |
 | **Show the post scrubber beside the posts** | The rail at the right of a discussion's posts on computers and tablets. On by default. Off leaves computers without one, as before. |
-| **Footer links**, **Show "Powered by Flarum"** | The footer, centred under the page and at the bottom of the window on short pages. Drag links to reorder. A `#` link is a placeholder that goes nowhere; `#name` scrolls to that part of the page. |
+| **Footer links**, **Show "Powered by Flarum"** | The footer, centred under the page and at the bottom of the window on short pages. Drag links to reorder. A `#` link is a placeholder that goes nowhere; `#name` scrolls to that part of the page. Social links (Facebook, X, Instagram, Threads, Bluesky, YouTube, TikTok, Discord, Reddit, GitHub, LinkedIn, Twitch, Pinterest, Telegram, WhatsApp, Snapchat, Spotify, Patreon, Steam, Mastodon) get their brand icon by themselves; **Icon** takes any Font Awesome class, such as `fas fa-envelope`. Leave **Name** empty to show only the icon. |
 
 ---
 

@@ -3,7 +3,7 @@ import Button from 'flarum/common/components/Button';
 import Icon from 'flarum/common/components/Icon';
 import type Stream from 'flarum/common/utils/Stream';
 
-type Row = { label: string; url: string };
+type Row = { label: string; url: string; icon?: string };
 
 const t = (key: string) => app.translator.trans(`ernestdefoe-masthead.admin.footer.${key}`);
 
@@ -73,6 +73,13 @@ export default function FooterLinks(value: Stream<string>) {
               aria-label={t('url')}
               value={row.url}
               oninput={(e: InputEvent) => write(rows.map((r, j) => (j === i ? { ...r, url: (e.target as HTMLInputElement).value } : r)))}
+            />
+            <input
+              className="FormControl MastheadAdmin-linkIcon"
+              placeholder={t('icon_placeholder')}
+              aria-label={t('icon')}
+              value={row.icon || ''}
+              oninput={(e: InputEvent) => write(rows.map((r, j) => (j === i ? { ...r, icon: (e.target as HTMLInputElement).value } : r)))}
             />
             <Button
               className="Button Button--icon Button--link"

@@ -37,6 +37,8 @@ class ForumTest extends MastheadTestCase
             ['label' => 'Soon', 'url' => '#'],
             ['label' => 'Contact', 'url' => '#contact'],
             ['label' => 'Fragment script', 'url' => '#"><script>'],
+            ['label' => '', 'url' => 'https://www.instagram.com/x'],
+            ['label' => 'Mail', 'url' => 'mailto:a@b.c', 'icon' => 'fas fa-envelope'],
         ]));
         $this->setting('ernestdefoe-masthead.preset', 'sunday');
 
@@ -47,9 +49,11 @@ class ForumTest extends MastheadTestCase
         $this->assertSame(
             [
                 ['label' => 'Rules', 'url' => '/p/1-rules'],
-                ['label' => 'Discord', 'url' => 'https://discord.gg/x'],
+                ['label' => 'Discord', 'url' => 'https://discord.gg/x', 'icon' => 'fab fa-discord'],
                 ['label' => 'Soon', 'url' => '#'],
                 ['label' => 'Contact', 'url' => '#contact'],
+                ['label' => 'Instagram', 'url' => 'https://www.instagram.com/x', 'icon' => 'fab fa-instagram', 'iconOnly' => true],
+                ['label' => 'Mail', 'url' => 'mailto:a@b.c', 'icon' => 'fas fa-envelope'],
             ],
             $forum['mastheadFooterLinks']
         );

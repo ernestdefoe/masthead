@@ -194,10 +194,12 @@ ernestdefoe-masthead:
 
     footer:
       label: Footer links
-      help: "Links shown in the footer of every page. An address can be a path on this forum (/p/1-rules), a web address, a mailto link, or # for a placeholder link that goes nowhere (#name scrolls to that part of the page). Drag to reorder."
+      help: "Links shown in the footer of every page. An address can be a path on this forum (/p/1-rules), a web address, a mailto link, or # for a placeholder link that goes nowhere (#name scrolls to that part of the page). Links to Facebook, X, Instagram, YouTube, Discord, TikTok, Bluesky and other social sites get their brand icon by themselves; for any other icon, type a Font Awesome class such as fas fa-envelope. Leave the name empty to show only the icon. Drag to reorder."
       name: Name
       url: Address
       url_placeholder: /p/1-about or https://…
+      icon: Icon
+      icon_placeholder: Icon (optional)
       remove: Remove this link
       add: Add a link
       powered_by_label: Show "Powered by Flarum"

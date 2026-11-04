@@ -182,7 +182,11 @@ final class Settings
      * placeholder while a site is being built, or an anchor on the page)
      * survives.
      *
-     * @return list<array{label: string, url: string}>
+     * A link to a social site gets that site's brand icon, or the admin's
+     * own icon; one with an icon and no name is drawn as the icon alone,
+     * named after the site for screen readers.
+     *
+     * @return list<array{label: string, url: string, icon?: string, iconOnly?: true}>
      */
     public function footerLinks(): array
     {
@@ -193,12 +197,91 @@ final class Settings
             $label = trim((string) ($link['label'] ?? ''));
             $url = self::safeUrl($link['url'] ?? '');
 
-            if ($label !== '' && $url !== null) {
-                $links[] = ['label' => mb_substr($label, 0, 60), 'url' => $url];
+            if ($url === null) {
+                continue;
             }
+
+            [$icon, $site] = self::linkIcon($url, (string) ($link['icon'] ?? ''));
+
+            if ($label === '' && $icon === null) {
+                continue;
+            }
+
+            $row = ['label' => mb_substr($label !== '' ? $label : $site, 0, 60), 'url' => $url];
+
+            if ($icon !== null) {
+                $row['icon'] = $icon;
+            }
+
+            if ($label === '') {
+                $row['iconOnly'] = true;
+            }
+
+            $links[] = $row;
         }
 
         return array_slice($links, 0, 12);
+    }
+
+    /** Sites whose links get their brand icon: host => [icon, name]. */
+    private const BRANDS = [
+        'facebook.com' => ['fab fa-facebook', 'Facebook'],
+        'fb.com' => ['fab fa-facebook', 'Facebook'],
+        'x.com' => ['fab fa-x-twitter', 'X'],
+        'twitter.com' => ['fab fa-x-twitter', 'X'],
+        'instagram.com' => ['fab fa-instagram', 'Instagram'],
+        'threads.net' => ['fab fa-threads', 'Threads'],
+        'threads.com' => ['fab fa-threads', 'Threads'],
+        'bsky.app' => ['fab fa-bluesky', 'Bluesky'],
+        'youtube.com' => ['fab fa-youtube', 'YouTube'],
+        'youtu.be' => ['fab fa-youtube', 'YouTube'],
+        'tiktok.com' => ['fab fa-tiktok', 'TikTok'],
+        'discord.gg' => ['fab fa-discord', 'Discord'],
+        'discord.com' => ['fab fa-discord', 'Discord'],
+        'reddit.com' => ['fab fa-reddit', 'Reddit'],
+        'github.com' => ['fab fa-github', 'GitHub'],
+        'linkedin.com' => ['fab fa-linkedin', 'LinkedIn'],
+        'twitch.tv' => ['fab fa-twitch', 'Twitch'],
+        'pinterest.com' => ['fab fa-pinterest', 'Pinterest'],
+        't.me' => ['fab fa-telegram', 'Telegram'],
+        'telegram.me' => ['fab fa-telegram', 'Telegram'],
+        'wa.me' => ['fab fa-whatsapp', 'WhatsApp'],
+        'whatsapp.com' => ['fab fa-whatsapp', 'WhatsApp'],
+        'snapchat.com' => ['fab fa-snapchat', 'Snapchat'],
+        'spotify.com' => ['fab fa-spotify', 'Spotify'],
+        'patreon.com' => ['fab fa-patreon', 'Patreon'],
+        'steamcommunity.com' => ['fab fa-steam', 'Steam'],
+        'steampowered.com' => ['fab fa-steam', 'Steam'],
+        'mastodon.social' => ['fab fa-mastodon', 'Mastodon'],
+    ];
+
+    /**
+     * A link's icon and the name of its site: the admin's icon when it is a
+     * Font Awesome class (and nothing else, since it lands in a class
+     * attribute), else the brand of a known social site, else none.
+     *
+     * @return array{0: ?string, 1: string}
+     */
+    public static function linkIcon(string $url, string $icon): array
+    {
+        $host = strtolower((string) parse_url($url, PHP_URL_HOST));
+        $host = preg_replace('/^(www|m|mobile)\./', '', $host) ?? $host;
+        $brand = null;
+
+        foreach (self::BRANDS as $domain => $known) {
+            if ($host === $domain || str_ends_with($host, '.'.$domain)) {
+                $brand = $known;
+                break;
+            }
+        }
+
+        $icon = trim(preg_replace('/\s+/', ' ', $icon) ?? '');
+
+        if (! preg_match('/^(fa[srb]|fa-(solid|regular|brands)) fa-[a-z0-9-]{1,40}$/', $icon)) {
+            $icon = $brand[0] ?? null;
+        }
+
+        return [$icon, $brand[1] ?? ($host ?: $url)];
     }
 
     public static function safeUrl(mixed $url): ?string

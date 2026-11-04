@@ -95,4 +95,22 @@ class SettingsTest extends TestCase
         $this->assertNull(Images::safe('https://x.test/a.png") , url(evil'));
         $this->assertNull(Images::safe('javascript:alert(1)'));
     }
+
+    #[Test]
+    public function social_links_get_their_brand_icon()
+    {
+        $this->assertSame(['fab fa-discord', 'Discord'], Settings::linkIcon('https://discord.gg/x', ''));
+        $this->assertSame(['fab fa-x-twitter', 'X'], Settings::linkIcon('https://www.twitter.com/a', ''));
+        $this->assertSame(['fab fa-youtube', 'YouTube'], Settings::linkIcon('https://m.youtube.com/@a', ''));
+        $this->assertSame(['fab fa-facebook', 'Facebook'], Settings::linkIcon('https://business.facebook.com/a', ''));
+        // A host that only ends in a brand's name is not that brand.
+        $this->assertSame([null, 'notx.com'], Settings::linkIcon('https://notx.com', ''));
+        $this->assertSame([null, '/p/1'], Settings::linkIcon('/p/1', ''));
+
+        // The admin's own icon wins, but only a plain Font Awesome class.
+        $this->assertSame(['fas fa-envelope', '/p/1'], Settings::linkIcon('/p/1', ' fas  fa-envelope '));
+        $this->assertSame(['fa-brands fa-mastodon', 'x.social'], Settings::linkIcon('https://x.social/@a', 'fa-brands fa-mastodon'));
+        $this->assertSame(['fab fa-discord', 'Discord'], Settings::linkIcon('https://discord.gg/x', 'fas fa-x" onmouseover="alert(1)'));
+        $this->assertSame([null, '/p/1'], Settings::linkIcon('/p/1', 'icon evil'));
+    }
 }

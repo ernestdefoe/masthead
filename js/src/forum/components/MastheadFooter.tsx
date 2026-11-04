@@ -1,10 +1,29 @@
 import app from 'flarum/forum/app';
 import Component from 'flarum/common/Component';
+import Icon from 'flarum/common/components/Icon';
 import { t } from '../util';
 
 interface FooterLink {
   label: string;
   url: string;
+  icon?: string;
+  iconOnly?: true;
+}
+
+/** A link's icon and name; an icon-only link keeps its name for screen readers and as a tooltip. */
+function content(link: FooterLink) {
+  if (!link.icon) return link.label;
+
+  return [<Icon name={link.icon} />, link.iconOnly ? null : <span>{link.label}</span>];
+}
+
+function attrs(link: FooterLink) {
+  return {
+    className: link.icon
+      ? 'MastheadFooter-link MastheadFooter-link--icon' + (link.iconOnly ? ' MastheadFooter-link--iconOnly' : '')
+      : 'MastheadFooter-link',
+    ...(link.iconOnly ? { 'aria-label': link.label, title: link.label } : {}),
+  };
 }
 
 /**
@@ -37,8 +56,8 @@ export default class MastheadFooter extends Component {
                 // are told not to hand this page to the one they open.
                 if (link.url.startsWith('#')) {
                   return (
-                    <a href={link.url} onclick={(e: MouseEvent) => jump(e, link.url)}>
-                      {link.label}
+                    <a href={link.url} {...attrs(link)} onclick={(e: MouseEvent) => jump(e, link.url)}>
+                      {content(link)}
                     </a>
                   );
                 }
@@ -46,8 +65,8 @@ export default class MastheadFooter extends Component {
                 const external = !link.url.startsWith('/') && !link.url.startsWith(base);
 
                 return (
-                  <a href={link.url} {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
-                    {link.label}
+                  <a href={link.url} {...attrs(link)} {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
+                    {content(link)}
                   </a>
                 );
               })}

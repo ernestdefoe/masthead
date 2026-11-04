@@ -138,10 +138,25 @@
 
 .MastheadAdmin-linkRow {
   display: grid;
-  grid-template-columns: auto 1fr 2fr auto;
+  grid-template-columns: auto minmax(0, 1fr) minmax(0, 2fr) minmax(0, 1fr) auto;
   gap: 8px;
   align-items: center;
   padding: 6px 0;
+
+  // A phone has no room for four fields in a row: the address and the icon
+  // go under the name.
+  @media @phone {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+
+    > .FormControl:not(:first-of-type) {
+      grid-column: 2;
+    }
+
+    > .Button {
+      grid-column: 3;
+      grid-row: 1;
+    }
+  }
 }
 
 .MastheadAdmin-handle {
