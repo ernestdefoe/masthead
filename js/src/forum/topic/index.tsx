@@ -11,6 +11,7 @@ import Icon from 'flarum/common/components/Icon';
 import humanTime from 'flarum/common/helpers/humanTime';
 import DiscussionControls from 'flarum/forum/utils/DiscussionControls';
 import listItems from 'flarum/common/helpers/listItems';
+import extractText from 'flarum/common/utils/extractText';
 import WidgetSlot from '../components/WidgetSlot';
 import MoreInTag from './MoreInTag';
 import userBadges from './badges';
@@ -285,6 +286,68 @@ export default function topic() {
   });
 
   /*
+   * The post scrubber, as a slim rail at the right of the posts (desktop and
+   * tablet). Masthead's sidebar holds the discussion's cards, so core's own
+   * scrubber moved out of it; this puts the same component back, beside the
+   * stream it scrolls.
+   *
+   * 🚨 Core's PostStreamScrubber itself, never a copy: dragging, keyboard
+   * use, the unread section and "Original post" / "Now" are core's, and
+   * stay so. It is added as a SIBLING of the stream inside the page's
+   * content, never as a wrapper around it: wrapping would remount the post
+   * stream, and the two are laid side by side in CSS (topic/stream.less).
+   */
+  extend(DiscussionPage.prototype, 'view', function (this: any, vdom: any) {
+    if (isPhone() || !this.discussion || this.loading || !this.stream || !this.PostStreamScrubber) return;
+    if (!app.forum.attribute('mastheadScrubber') || !Array.isArray(vdom?.children)) return;
+
+    vdom.children.push(
+      <nav className="MastheadRail" aria-label={extractText(t('topic.rail_label'))}>
+        <this.PostStreamScrubber stream={this.stream} className="MastheadRail-scrubber" />
+      </nav>
+    );
+  });
+
+  /*
+   * fof/best-answer's answer, marked on the rail at its place in the
+   * discussion and linked to it. PostStreamScrubber is a lazy chunk, so it
+   * is extended by module name.
+   */
+  extend('flarum/forum/components/PostStreamScrubber', 'view', function (this: any, vdom: any) {
+    if (!String(this.attrs.className || '').includes('MastheadRail-scrubber')) return;
+
+    const discussion = this.stream?.discussion;
+    const best = discussion && bestAnswer(discussion);
+    const ids: string[] = discussion?.postIds?.() || [];
+    const index = best ? ids.indexOf(String(best.id())) : -1;
+
+    if (index < 0 || ids.length < 2) return;
+
+    const scrollbar = findByClass(vdom, 'Scrubber-scrollbar');
+    if (!scrollbar) return;
+
+    const marker = (
+      <button
+        type="button"
+        className="MastheadRail-best"
+        style={{ top: ((index / (ids.length - 1)) * 100).toFixed(2) + '%' }}
+        // 🚨 core preventDefaults touchstart on the whole track, which swallows a tap's click
+        onmousedown={stopOnTrack}
+        ontouchstart={stopOnTrack}
+        onclick={(e: MouseEvent) => {
+          e.stopPropagation();
+          this.stream.goToNumber(best.number());
+        }}
+      >
+        <span className="MastheadRail-bestDot" aria-hidden="true" />
+        <span className="MastheadRail-bestLabel">{t('topic.rail_best')}</span>
+      </button>
+    );
+
+    scrollbar.children = [...(scrollbar.children || []), marker];
+  });
+
+  /*
    * The phone's floating Reply. Added to the page's own content, not around
    * the page: DiscussionPage's root element is the PageStructure, and wrapping
    * it in an array would change what `this.element` means to everything that
@@ -303,6 +366,32 @@ export default function topic() {
       </button>
     );
   });
+}
+
+/** The first vnode in a tree whose className contains `name`. */
+// keeps core's track handlers off the best-answer marker; no redraw needed
+function stopOnTrack(e: Event & { redraw?: boolean }) {
+  e.stopPropagation();
+  e.redraw = false;
+}
+
+function findByClass(node: any, name: string): any {
+  if (!node || typeof node !== 'object') return null;
+  if (Array.isArray(node)) {
+    for (const child of node) {
+      const hit = findByClass(child, name);
+      if (hit) return hit;
+    }
+    return null;
+  }
+  if (
+    String(node.attrs?.className || '')
+      .split(' ')
+      .includes(name)
+  )
+    return node;
+
+  return findByClass(node.children, name);
 }
 
 /** Wide enough for the sidebar beside the stream (the scope's 1100px). */

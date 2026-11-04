@@ -278,6 +278,18 @@ export default [
       };
     }, 62)
 
+    // Read by the discussion page's scrubber rail (serialised as mastheadScrubber).
+    .setting(
+      () => ({
+        setting: K('scrubber'),
+        label: t('topic.scrubber_label'),
+        help: t('topic.scrubber_help'),
+        type: 'boolean',
+        default: true,
+      }),
+      61
+    )
+
     // Read by the portal's TagGrid (serialised as mastheadTagCount).
     .setting(() => {
       if (!has('flarum-tags')) return null;

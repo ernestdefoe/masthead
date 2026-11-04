@@ -116,6 +116,7 @@ return [
         ->default(Settings::HERO_FILL, false)
         ->default(Settings::POWERED_BY, true)
         ->default(Settings::TAG_COUNT, 12)
+        ->default(Settings::SCRUBBER, true)
         ->default(Settings::PICTURES, 'both')
         ->default(Settings::HERO_TAGS, true)
         ->default(Settings::TAGS_PAGE, true)
@@ -147,7 +148,9 @@ return [
         // read by the tags page
         ->serializeToForum('mastheadTagsPage', Settings::TAGS_PAGE, 'boolval')
         // read by the portal's TagGrid, clamped there and here
-        ->serializeToForum('mastheadTagCount', Settings::TAG_COUNT, fn ($v) => max(1, min(48, (int) $v))),
+        ->serializeToForum('mastheadTagCount', Settings::TAG_COUNT, fn ($v) => max(1, min(48, (int) $v)))
+        // read by the scrubber rail beside a discussion's posts (topic/index.tsx)
+        ->serializeToForum('mastheadScrubber', Settings::SCRUBBER, 'boolval'),
 
     (new Extend\ApiResource(ForumResource::class))
         ->fields(Api\ForumAttributes::class),

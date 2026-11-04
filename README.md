@@ -60,6 +60,12 @@ Every discussion reads as an article with a discussion below it.
 - **A sidebar** with *About this discussion* (started, last reply, replies,
   who is taking part, Follow and the discussion menu), *More in* the
   discussion's section, and the same widgets as the portal.
+- **A post scrubber beside the posts**: a slim rail at the far right of the
+  replies on computers and tablets that stays in view as you read. Drag it,
+  jump to the original post or the newest, see where the unread replies start,
+  and, when [fof/best-answer](https://github.com/FriendsOfFlarum/best-answer)
+  has marked one, a green **Best answer** mark that takes you straight there.
+  Phones keep Flarum's own scrubber in the top bar. One setting turns it off.
 - **Live replies look the same.** A reply that arrives while you read gets
   exactly the same treatment as the rest.
 - **On phones**, the header, then the article, the replies and *More in* at
@@ -69,6 +75,8 @@ It is Flarum's own discussion page underneath, so mentions, reactions,
 likes, best answers and anything else you have installed keep working.
 
 ![A discussion in Masthead: the story header, the article and the sidebar](screenshots/02-topic.png)
+
+![The post scrubber rail at the right of a discussion's replies](screenshots/scrubber.png)
 
 <p>
 <img src="screenshots/phone-topic-ios.png" alt="A discussion on an iPhone" width="260">
@@ -120,6 +128,7 @@ switch presets.
 | **Sections in the grid** | How many tags *Browse the forum* shows. |
 | **Draw the Tags page as section tiles** | The Tags page in the same tiles as *Browse the forum*, with subtags and the latest discussion. On by default. |
 | **Pictures** | The featured stories' pictures and the banner at the top of a discussion: the post's own picture falling back to the author's Backdrop cover, the post's picture only, the Backdrop cover only, or none. |
+| **Show the post scrubber beside the posts** | The rail at the right of a discussion's posts on computers and tablets. On by default. Off leaves computers without one, as before. |
 | **Footer links**, **Show "Powered by Flarum"** | The footer, centred under the page and at the bottom of the window on short pages. Drag links to reorder. A `#` link is a placeholder that goes nowhere; `#name` scrolls to that part of the page. |
 
 ---
@@ -142,7 +151,7 @@ All optional. Masthead checks for each one and does without it.
 
 ## Light by design
 
-- **forum.js**: 26 KB (7.9 KB gzipped), the whole theme: portal and discussion page.
+- **forum.js**: 31 KB (9.1 KB gzipped), the whole theme: portal and discussion page.
 - **Stylesheet**: about 22 KB (4.6 KB gzipped) added to the forum's CSS.
 - **The portal page** runs 14 database queries in total on a forum with 60+
   extensions enabled, and the same with 7 tags or 32. Masthead's own share is five

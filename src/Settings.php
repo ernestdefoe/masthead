@@ -59,6 +59,9 @@ final class Settings
     // serialised to the forum, read by the portal's TagGrid
     public const TAG_COUNT = self::PREFIX.'tag_count';
 
+    // serialised to the forum, read by the discussion page's scrubber rail
+    public const SCRUBBER = self::PREFIX.'scrubber';
+
     /**
      * Which pictures the featured stories and a discussion's lead banner use:
      * the post's own picture falling back to the author's Backdrop cover, the

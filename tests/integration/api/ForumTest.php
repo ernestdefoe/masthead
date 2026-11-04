@@ -57,7 +57,15 @@ class ForumTest extends MastheadTestCase
         $this->assertSame('both', $forum['mastheadPictures']);
         $this->assertTrue($forum['mastheadHeroTags']);
         $this->assertTrue($forum['mastheadTagsPage']);
+        $this->assertTrue($forum['mastheadScrubber'], 'The scrubber rail is on by default');
         $this->assertNull($forum['mastheadShowName'], 'Never set: the name shows only without a logo');
+    }
+
+    #[Test]
+    public function the_scrubber_rail_can_be_turned_off()
+    {
+        $this->setting('ernestdefoe-masthead.scrubber', '0');
+        $this->assertFalse($this->forum()['mastheadScrubber']);
     }
 
     #[Test]
