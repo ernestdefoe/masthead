@@ -1,4 +1,5 @@
 import app from 'flarum/forum/app';
+import type Mithril from 'mithril';
 import TopPosters from './components/TopPosters';
 import { flarumGlobal, has } from './util';
 
@@ -58,6 +59,33 @@ function registerFof() {
       position: 1,
     })
     .extend(app, 'ernestdefoe-masthead');
+}
+
+/** The portal draws its own top posters: widget-core's copy would repeat it. */
+const OWN_FOF_WIDGET = 'ernestdefoe-masthead:mastheadTopPosters';
+
+/**
+ * The widgets an admin placed in one of fof/forum-widgets-core's areas, for
+ * the portal: widget-core draws its areas through core's PageStructure, which
+ * the portal (a page of its own) doesn't use. Their own section classes keep
+ * widget-core's styling. Null without widget-core or with nothing placed.
+ */
+export function fofSection(placement: string, className: string): Mithril.Children {
+  const widgets = (app as any).widgets;
+  if (!has('fof-forum-widgets-core') || typeof widgets?.get !== 'function') return null;
+
+  const placed = widgets
+    .get(placement)
+    .filter((widget: any) => widget.id !== OWN_FOF_WIDGET)
+    .sort((a: any, b: any) => (a.position ?? 0) - (b.position ?? 0));
+
+  if (!placed.length) return null;
+
+  return (
+    <div className={'MastheadFofSection FofWidgets-WidgetSection ' + className}>
+      {placed.map((widget: any) => widget.component.component({ state: widget.state }))}
+    </div>
+  );
 }
 
 function registerBespoke() {

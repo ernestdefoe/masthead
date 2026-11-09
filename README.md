@@ -27,6 +27,10 @@ sidebar of widgets, on a grey ground of white cards.
 - **Widgets.** *Top posters this week*, and *Upcoming games* when
   [Picks](https://github.com/ernestdefoe/picks) is installed. Top posters can
   also be placed anywhere through Bespoke or fof/forum-widgets-core.
+- **fof/forum-widgets-core on the portal.** Widgets placed in its areas show on
+  the portal too: its top and bottom areas above and below the latest
+  discussions, its side areas in the portal's sidebar, as cards in Masthead's
+  style.
 - **A footer** with your own links. Links to Facebook, X, Instagram, YouTube, Discord, TikTok, Bluesky and other social sites get their brand icon automatically. Any link can take a Font Awesome icon, and a link with no name shows just the icon.
 - **Phones** get a compact bar, the feature card, a scrolling row of section
   chips, the latest list and a floating **Start a discussion**.
@@ -146,7 +150,7 @@ All optional. Masthead checks for each one and does without it.
 - **ernestdefoe/header-nav**: when installed, it decides what the main navigation holds.
 - **ernestdefoe/backdrop**: an author's profile cover is the picture of last resort.
 - **ernestdefoe/picks**: the upcoming-games card.
-- **ernestdefoe/bespoke**, **fof/forum-widgets-core**: place *Top posters* in their zones.
+- **ernestdefoe/bespoke**, **fof/forum-widgets-core**: place *Top posters* in their zones. fof/forum-widgets-core's placed widgets also show on the portal.
 - **ernestdefoe/wardrobe**: offer Masthead as one of several themes members can choose.
 
 ---

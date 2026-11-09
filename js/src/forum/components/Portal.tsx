@@ -10,6 +10,7 @@ import Games from './Games';
 import ComposeFab from './ComposeFab';
 import { getPortal, loadPortal } from '../portalData';
 import { has, isPhone, markPortal } from '../util';
+import { fofSection } from '../widgets';
 
 /**
  * The front page: the hero, the forum's sections, the latest discussions and
@@ -48,10 +49,14 @@ export default class MastheadPortal extends Page {
 
           {has('flarum-tags') ? phone ? <TagChips /> : <TagGrid limit={app.forum.attribute<number>('mastheadTagCount') || 12} /> : null}
 
+          {fofSection('top', 'MastheadFofSection--top')}
+
           <div className="MastheadColumns">
             <LatestPanel />
             <aside className="MastheadSidebar">{this.sidebarItems().toArray()}</aside>
           </div>
+
+          {fofSection('bottom', 'MastheadFofSection--bottom')}
         </div>
 
         {phone ? <ComposeFab /> : null}
@@ -70,6 +75,15 @@ export default class MastheadPortal extends Page {
     // The slot the discussion page shares: top posters, and whatever other
     // extensions put there.
     items.add('slot', <WidgetSlot where="portal" />, 50);
+
+    // fof/forum-widgets-core's side areas: the portal has one sidebar, so its
+    // start areas open and close it and its end area follows the slot.
+    const startTop = fofSection('start_top', 'MastheadFofSection--side');
+    const end = fofSection('end', 'MastheadFofSection--side');
+    const startBottom = fofSection('start_bottom', 'MastheadFofSection--side');
+    if (startTop) items.add('fofStartTop', startTop, 110);
+    if (end) items.add('fofEnd', end, 40);
+    if (startBottom) items.add('fofStartBottom', startBottom, 10);
 
     return items;
   }

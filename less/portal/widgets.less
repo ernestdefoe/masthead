@@ -207,3 +207,41 @@
     line-height: 1.2;
   }
 }
+
+// fof/forum-widgets-core's areas on the portal: each widget is a portal card.
+.MastheadFofSection {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 0;
+
+  &--top,
+  &--bottom {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(~"min(280px, 100%)", 1fr));
+    margin: var(--mh-gap) 0;
+  }
+
+  > .FofWidgets-Widget {
+    min-width: 0;
+    padding: 12px 12px 6px;
+    background: var(--mh-card);
+    border: 1px solid var(--mh-line);
+    border-radius: var(--mh-radius);
+    color: var(--mh-ink);
+
+    .FofWidgets-Widget-title {
+      margin-bottom: 6px;
+      font-family: var(--mh-heading);
+      font-weight: 700;
+      font-size: 15px;
+      line-height: 1.25;
+      text-transform: uppercase;
+      color: var(--mh-ink);
+    }
+
+    .FofWidgets-Widget-title-icon {
+      color: var(--mh-accent);
+    }
+  }
+}
