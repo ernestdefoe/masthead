@@ -264,6 +264,18 @@ export default function topic() {
     }
   });
 
+  // The opening post's polls, when the admin moved them to the sidebar: drawn
+  // there instead (PollCard), so never twice. Taken out of the finished view,
+  // after every extension's `content` has run, so the order fof/polls and
+  // Masthead load in does not matter.
+  extend(CommentPost.prototype, 'view', function (this: any, vdom: any) {
+    const post = this.attrs.post;
+
+    if (post.number() !== 1 || !sidebarPolls(post.discussion()).length) return;
+
+    dropTag(vdom, pollComponent());
+  });
+
   // -- The sidebar -----------------------------------------------------------
 
   extend(DiscussionPage.prototype, 'sidebarItems', function (this: any, items) {
@@ -278,6 +290,9 @@ export default function topic() {
     if (items.has('scrubber')) items.remove('scrubber');
 
     items.add('mastheadAbout', <AboutCard discussion={discussion} page={this} follow={follow} />, 100);
+
+    const polls = sidebarPolls(discussion);
+    if (polls.length) items.add('mastheadPolls', <PollCard post={firstPost(discussion)} polls={polls} />, 95);
 
     const tag = primaryTag(discussion);
     if (tag && isWide()) items.add('mastheadMore', <MoreInTag discussion={discussion} primary={tag} />, 50);
@@ -400,6 +415,59 @@ wide?.addEventListener?.('change', () => m.redraw());
 
 function isWide(): boolean {
   return !!wide?.matches;
+}
+
+/** Removes every vnode drawn by `tag` from a view tree. */
+function dropTag(node: any, tag: any): void {
+  if (!node || !Array.isArray(node.children)) return;
+
+  node.children = node.children.filter((child: any) => child?.tag !== tag);
+  node.children.forEach((child: any) => dropTag(child, tag));
+}
+
+/** fof/polls' own poll component, when fof/polls is installed. */
+function pollComponent(): any {
+  if (!has('fof-polls')) return null;
+
+  try {
+    return (flarum as any).reg.get('fof-polls', 'forum/components/PostPoll') || null;
+  } catch (e) {
+    return null;
+  }
+}
+
+/**
+ * The opening post's polls when they belong in the sidebar: the admin chose
+ * it and the sidebar sits beside the posts. Phones and narrow windows put the
+ * sidebar after every reply, so there the poll stays in the post. Polls in
+ * replies never move.
+ */
+function sidebarPolls(discussion: any): any[] {
+  if (app.forum.attribute('mastheadPolls') !== 'sidebar' || !isWide() || !pollComponent()) return [];
+
+  const post = discussion && firstPost(discussion);
+  if (!post || post.isHidden()) return [];
+
+  return (post.polls?.() || []).filter(Boolean);
+}
+
+/** The opening post's polls, as a sidebar card: fof/polls' own component, so voting, results and its controls are its own. */
+class PollCard {
+  view(vnode: any) {
+    const { post, polls } = vnode.attrs;
+    const PostPoll = pollComponent();
+
+    return (
+      <section className="MastheadWidget MastheadPolls" aria-labelledby="masthead-polls">
+        <h2 id="masthead-polls" className="MastheadWidget-title">
+          {t('topic.polls_title', { count: polls.length })}
+        </h2>
+        {polls.map((poll: any) => (
+          <PostPoll key={poll.id()} post={post} poll={poll} />
+        ))}
+      </section>
+    );
+  }
 }
 
 class Byline {

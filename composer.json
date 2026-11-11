@@ -50,7 +50,10 @@
                 "name": "fas fa-newspaper",
                 "backgroundColor": "#0e2340",
                 "color": "#ffffff"
-            }
+            },
+            "optional-dependencies": [
+                "fof/polls"
+            ]
         }
     },
     "support": {

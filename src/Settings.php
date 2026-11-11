@@ -62,6 +62,10 @@ final class Settings
     // serialised to the forum, read by the discussion page's scrubber rail
     public const SCRUBBER = self::PREFIX.'scrubber';
 
+    // serialised to the forum: where the opening post's fof/polls polls go
+    // on wide screens, "post" (as fof/polls draws them) or "sidebar"
+    public const POLLS = self::PREFIX.'polls';
+
     /**
      * Which pictures the featured stories and a discussion's lead banner use:
      * the post's own picture falling back to the author's Backdrop cover, the

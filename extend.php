@@ -121,6 +121,7 @@ return [
         ->default('ernestdefoe-masthead.powered_by', true)
         ->default('ernestdefoe-masthead.tag_count', 12)
         ->default('ernestdefoe-masthead.scrubber', true)
+        ->default('ernestdefoe-masthead.polls', 'post')
         ->default('ernestdefoe-masthead.pictures', 'both')
         ->default('ernestdefoe-masthead.hero_tags', true)
         ->default('ernestdefoe-masthead.tags_page', true)
@@ -154,7 +155,9 @@ return [
         // read by the portal's TagGrid, clamped there and here
         ->serializeToForum('mastheadTagCount', 'ernestdefoe-masthead.tag_count', fn ($v) => max(1, min(48, (int) $v)))
         // read by the scrubber rail beside a discussion's posts (topic/index.tsx)
-        ->serializeToForum('mastheadScrubber', 'ernestdefoe-masthead.scrubber', 'boolval'),
+        ->serializeToForum('mastheadScrubber', 'ernestdefoe-masthead.scrubber', 'boolval')
+        // read by the discussion page: where the opening post's polls go (topic/index.tsx)
+        ->serializeToForum('mastheadPolls', 'ernestdefoe-masthead.polls', fn ($v) => $v === 'sidebar' ? 'sidebar' : 'post'),
 
     (new Extend\ApiResource(ForumResource::class))
         ->fields(Api\ForumAttributes::class),

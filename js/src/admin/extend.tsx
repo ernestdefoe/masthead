@@ -290,6 +290,20 @@ export default [
       61
     )
 
+    // Read by the discussion page (serialised as mastheadPolls). Only with fof/polls.
+    .setting(() => {
+      if (!has('fof-polls')) return null;
+
+      return {
+        setting: K('polls'),
+        label: t('topic.polls_label'),
+        help: t('topic.polls_help'),
+        type: 'select',
+        options: { post: t('topic.polls_post'), sidebar: t('topic.polls_sidebar') },
+        default: 'post',
+      };
+    }, 61)
+
     // Read by the portal's TagGrid (serialised as mastheadTagCount).
     .setting(() => {
       if (!has('flarum-tags')) return null;

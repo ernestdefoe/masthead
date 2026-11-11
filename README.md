@@ -72,6 +72,12 @@ Every discussion reads as an article with a discussion below it.
   and, when [fof/best-answer](https://github.com/FriendsOfFlarum/best-answer)
   has marked one, a green **Best answer** mark that takes you straight there.
   Phones keep Flarum's own scrubber in the top bar. One setting turns it off.
+- **The poll beside the article**, if you like: with
+  [fof/polls](https://github.com/FriendsOfFlarum/polls), the opening post's
+  poll can sit in the sidebar under *About this discussion* instead of
+  interrupting the article. Voting, results and the poll's own buttons work
+  the same. Phones and narrow windows keep it in the post, and polls in
+  replies stay in their reply. Off by default.
 - **Live replies look the same.** A reply that arrives while you read gets
   exactly the same treatment as the rest.
 - **On phones**, the header, then the article, the replies and *More in* at
@@ -83,6 +89,8 @@ likes, best answers and anything else you have installed keep working.
 ![A discussion in Masthead: the story header, the article and the sidebar](screenshots/02-topic.png)
 
 ![The post scrubber rail at the right of a discussion's replies](screenshots/scrubber.png)
+
+<img src="screenshots/sidebar-poll.png" alt="A fof/polls poll in the discussion sidebar" width="300">
 
 <p>
 <img src="screenshots/phone-topic-ios.png" alt="A discussion on an iPhone" width="260">
@@ -135,6 +143,7 @@ switch presets.
 | **Draw the Tags page as section tiles** | The Tags page in the same tiles as *Browse the forum*, with subtags and the latest discussion. On by default. |
 | **Pictures** | The featured stories' pictures and the banner at the top of a discussion: the post's own picture falling back to the author's Backdrop cover, the post's picture only, the Backdrop cover only, or none. |
 | **Show the post scrubber beside the posts** | The rail at the right of a discussion's posts on computers and tablets. On by default. Off leaves computers without one, as before. |
+| **Where the opening post's poll goes** | With fof/polls: *In the post* (the default) or *In the sidebar*, under About this discussion, on wide screens. Phones and narrow windows always keep it in the post. |
 | **Footer links**, **Show "Powered by Flarum"** | The footer, centred under the page and at the bottom of the window on short pages. Drag links to reorder. A `#` link is a placeholder that goes nowhere; `#name` scrolls to that part of the page. Social links (Facebook, X, Instagram, Threads, Bluesky, YouTube, TikTok, Discord, Reddit, GitHub, LinkedIn, Twitch, Pinterest, Telegram, WhatsApp, Snapchat, Spotify, Patreon, Steam, Mastodon) get their brand icon by themselves; **Icon** takes any Font Awesome class, such as `fas fa-envelope`. Leave **Name** empty to show only the icon. |
 
 ---
@@ -146,6 +155,7 @@ All optional. Masthead checks for each one and does without it.
 - **flarum/tags**: the section grid, tag chips and a tag as the story source.
 - **flarum/sticky**: sticky discussions as the story source.
 - **fof/upload**: its images are used as story pictures.
+- **fof/polls**: the opening post's poll can move to the sidebar.
 - **ernestdefoe/page-builder**: articles as the story source.
 - **ernestdefoe/header-nav**: when installed, it decides what the main navigation holds.
 - **ernestdefoe/backdrop**: an author's profile cover is the picture of last resort.
@@ -157,7 +167,7 @@ All optional. Masthead checks for each one and does without it.
 
 ## Light by design
 
-- **forum.js**: 31 KB (9.1 KB gzipped), the whole theme: portal and discussion page.
+- **forum.js**: 32 KB (9.6 KB gzipped), the whole theme: portal and discussion page.
 - **Stylesheet**: about 22 KB (4.6 KB gzipped) added to the forum's CSS.
 - **The portal page** runs 14 database queries in total on a forum with 60+
   extensions enabled, and the same with 7 tags or 32. Masthead's own share is five

@@ -66,6 +66,26 @@ class ForumTest extends MastheadTestCase
     }
 
     #[Test]
+    public function polls_stay_in_the_post_unless_the_sidebar_is_chosen()
+    {
+        $this->assertSame('post', $this->forum()['mastheadPolls'], 'In the post by default');
+    }
+
+    #[Test]
+    public function polls_can_move_to_the_sidebar()
+    {
+        $this->setting('ernestdefoe-masthead.polls', 'sidebar');
+        $this->assertSame('sidebar', $this->forum()['mastheadPolls']);
+    }
+
+    #[Test]
+    public function an_unknown_polls_value_reads_as_in_the_post()
+    {
+        $this->setting('ernestdefoe-masthead.polls', 'footer');
+        $this->assertSame('post', $this->forum()['mastheadPolls']);
+    }
+
+    #[Test]
     public function the_scrubber_rail_can_be_turned_off()
     {
         $this->setting('ernestdefoe-masthead.scrubber', '0');
