@@ -5,8 +5,9 @@
     margin: 0;
   }
 
-  // fof/polls puts its voters / edit / remove buttons beside the question;
-  // in a narrow column they would squeeze it, so they take their own line.
+  // fof/polls 3.0 pre-releases put three voters / edit / remove buttons
+  // beside the question, squeezing it in a narrow column: they take their own
+  // line. (3.0.1 has one ⋮ menu beside the title, which fits as it is.)
   .PollHeading {
     flex-wrap: wrap;
     gap: 8px;
@@ -17,6 +18,7 @@
     min-width: 0;
   }
 
+  .Poll-title,
   .PollHeading-title {
     margin: 0 0 2px;
     font-size: 16px;
@@ -29,10 +31,12 @@
     margin: 12px 0 0;
   }
 
+  .PollOption-text,
   .PollAnswer-text {
     min-width: 0;
   }
 
+  .PollOption-answer,
   .PollAnswer-text-answer {
     overflow-wrap: anywhere;
   }
