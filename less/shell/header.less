@@ -163,7 +163,10 @@
     gap: 6px;
   }
 
-  .Button {
+  // Only the strip's own buttons: the dropdowns open on a light menu in light
+  // mode, where this colour made "View all messages" (and every other menu
+  // button) near-white on white.
+  .Button:not(.Dropdown-menu .Button) {
     height: 30px;
     padding: 0 8px;
     font-size: 13px;
