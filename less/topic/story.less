@@ -2,21 +2,27 @@
 // The story header: core's DiscussionHero, as a white band under the masthead.
 // ============================================================================
 
-.DiscussionHero.MastheadStory {
+// 🚨 A forum's custom CSS often restyles flarum/tags' coloured hero
+// (`html .Hero.DiscussionHero.DiscussionHero--colored`: a dark card, a white
+// title, its own size and padding), and Wardrobe applies it under every
+// theme. The `html:not(#mh-story)` prefix gives the story band an id's weight
+// so its own layout and colours win; nothing has that id.
+html:not(#mh-story) .DiscussionHero.MastheadStory {
   // flarum/tags colours the hero with the primary tag; the story band is
   // always white, and the tag's colour moves to its kicker chip.
   --hero-bg: var(--mh-card);
   background: var(--mh-card) !important;
   color: var(--mh-ink);
   text-align: left;
+  border: 0;
   border-bottom: 1px solid var(--mh-line);
   border-radius: 0;
+  box-shadow: none;
   margin: 0;
   padding: 0;
 
-  .container {
-    padding-top: 32px;
-    padding-bottom: 28px;
+  > .container {
+    padding: 32px 15px 28px;
   }
 
   .DiscussionHero-items {

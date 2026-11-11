@@ -1,6 +1,13 @@
 @media @phone {
-  .DiscussionHero.MastheadStory {
-    .container {
+  // the id-weight prefix of story.less, so a forum's custom CSS can't win here either
+  html:not(#mh-story) .DiscussionHero.MastheadStory {
+    margin: 0;
+    border-radius: 0;
+
+    > .container {
+      align-self: auto;
+      width: auto;
+      margin: 0 auto;
       padding: 16px 16px 14px;
     }
 
