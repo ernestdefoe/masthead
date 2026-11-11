@@ -58,7 +58,7 @@ return [
 
             $settings = resolve(Settings::class);
             $look = $settings->look();
-            $fonts = (bool) resolve(SettingsRepositoryInterface::class)->get(Settings::FONTS, true);
+            $fonts = (bool) resolve(SettingsRepositoryInterface::class)->get('ernestdefoe-masthead.fonts', true);
 
             $document->extraAttributes['data-masthead-corners'] = fn () => $look['corners'];
             $document->extraAttributes['data-masthead-fonts'] = fn () => $fonts ? 'on' : 'off';
@@ -108,49 +108,53 @@ return [
         ->get('/masthead/portal', 'masthead.portal', Api\PortalController::class)
         ->get('/masthead/top-posters', 'masthead.top-posters', Api\TopPostersController::class),
 
+    // 🚨 Setting keys are written out here, never read from Settings::
+    // constants: extend.php runs on every request, and while composer swaps
+    // Masthead's files during an update, autoloading Masthead's own classes at
+    // load time would fail the whole site. Keep them in step with Settings.
     (new Extend\Settings())
-        ->default(Settings::PRESET, 'gameday')
-        ->default(Settings::FONTS, true)
-        ->default(Settings::HERO_SOURCE, 'latest')
-        ->default(Settings::HERO_TYPE, 'articles')
-        ->default(Settings::HERO_FILL, false)
-        ->default(Settings::POWERED_BY, true)
-        ->default(Settings::TAG_COUNT, 12)
-        ->default(Settings::SCRUBBER, true)
-        ->default(Settings::PICTURES, 'both')
-        ->default(Settings::HERO_TAGS, true)
-        ->default(Settings::TAGS_PAGE, true)
+        ->default('ernestdefoe-masthead.preset', 'gameday')
+        ->default('ernestdefoe-masthead.fonts', true)
+        ->default('ernestdefoe-masthead.hero_source', 'latest')
+        ->default('ernestdefoe-masthead.hero_type', 'articles')
+        ->default('ernestdefoe-masthead.hero_fill', false)
+        ->default('ernestdefoe-masthead.powered_by', true)
+        ->default('ernestdefoe-masthead.tag_count', 12)
+        ->default('ernestdefoe-masthead.scrubber', true)
+        ->default('ernestdefoe-masthead.pictures', 'both')
+        ->default('ernestdefoe-masthead.hero_tags', true)
+        ->default('ernestdefoe-masthead.tags_page', true)
 
         // read by less/lib/tokens.less
-        ->registerLessConfigVar('masthead-accent', Settings::ACCENT, $look('accent'))
-        ->registerLessConfigVar('masthead-bar', Settings::BAR, $look('bar'))
-        ->registerLessConfigVar('masthead-strip', Settings::STRIP, $look('strip'))
-        ->registerLessConfigVar('masthead-ground', Settings::GROUND, $look('ground'))
-        ->registerLessConfigVar('masthead-ground-dark', Settings::GROUND_DARK, $look('groundDark'))
-        ->registerLessConfigVar('masthead-dark-brand', Settings::GROUND_DARK, $look('darkBrand'))
+        ->registerLessConfigVar('masthead-accent', 'ernestdefoe-masthead.accent', $look('accent'))
+        ->registerLessConfigVar('masthead-bar', 'ernestdefoe-masthead.bar', $look('bar'))
+        ->registerLessConfigVar('masthead-strip', 'ernestdefoe-masthead.strip', $look('strip'))
+        ->registerLessConfigVar('masthead-ground', 'ernestdefoe-masthead.ground', $look('ground'))
+        ->registerLessConfigVar('masthead-ground-dark', 'ernestdefoe-masthead.ground_dark', $look('groundDark'))
+        ->registerLessConfigVar('masthead-dark-brand', 'ernestdefoe-masthead.ground_dark', $look('darkBrand'))
         // Unused in the LESS itself; registered so that saving a new preset
         // recompiles the stylesheet (see the note on $look above).
-        ->registerLessConfigVar('masthead-preset', Settings::PRESET, fn () => '0')
+        ->registerLessConfigVar('masthead-preset', 'ernestdefoe-masthead.preset', fn () => '0')
 
         // read by the masthead (logo tile and tagline)
-        ->serializeToForum('mastheadTagline', Settings::TAGLINE)
-        ->serializeToForum('mastheadMonogram', Settings::MONOGRAM)
+        ->serializeToForum('mastheadTagline', 'ernestdefoe-masthead.tagline')
+        ->serializeToForum('mastheadMonogram', 'ernestdefoe-masthead.monogram')
         // read by the footer
-        ->serializeToForum('mastheadPoweredBy', Settings::POWERED_BY, 'boolval')
+        ->serializeToForum('mastheadPoweredBy', 'ernestdefoe-masthead.powered_by', 'boolval')
         // read by Brand
         // null until an admin sets it: the name then shows only when there
         // is no logo. A value saved before 1.0.1 (true or false) still wins.
-        ->serializeToForum('mastheadShowName', Settings::SHOW_NAME, fn ($v) => $v === null || $v === '' ? null : (bool) $v)
+        ->serializeToForum('mastheadShowName', 'ernestdefoe-masthead.show_name', fn ($v) => $v === null || $v === '' ? null : (bool) $v)
         // read by the article's lead image
-        ->serializeToForum('mastheadPictures', Settings::PICTURES, fn ($v) => in_array($v, Settings::PICTURE_MODES, true) ? $v : 'both')
+        ->serializeToForum('mastheadPictures', 'ernestdefoe-masthead.pictures', fn ($v) => in_array($v, Settings::PICTURE_MODES, true) ? $v : 'both')
         // read by the portal's Hero
-        ->serializeToForum('mastheadHeroTags', Settings::HERO_TAGS, 'boolval')
+        ->serializeToForum('mastheadHeroTags', 'ernestdefoe-masthead.hero_tags', 'boolval')
         // read by the tags page
-        ->serializeToForum('mastheadTagsPage', Settings::TAGS_PAGE, 'boolval')
+        ->serializeToForum('mastheadTagsPage', 'ernestdefoe-masthead.tags_page', 'boolval')
         // read by the portal's TagGrid, clamped there and here
-        ->serializeToForum('mastheadTagCount', Settings::TAG_COUNT, fn ($v) => max(1, min(48, (int) $v)))
+        ->serializeToForum('mastheadTagCount', 'ernestdefoe-masthead.tag_count', fn ($v) => max(1, min(48, (int) $v)))
         // read by the scrubber rail beside a discussion's posts (topic/index.tsx)
-        ->serializeToForum('mastheadScrubber', Settings::SCRUBBER, 'boolval'),
+        ->serializeToForum('mastheadScrubber', 'ernestdefoe-masthead.scrubber', 'boolval'),
 
     (new Extend\ApiResource(ForumResource::class))
         ->fields(Api\ForumAttributes::class),
