@@ -94,8 +94,12 @@
     background: var(--mh-accent);
   }
 
+  // Core makes the label the scrollbar's full width AND offsets it to the
+  // right, which in a 132px rail runs off the page at tablet width.
   .MastheadRail .Scrubber-info {
     left: 16px;
+    right: 0;
+    width: auto;
     white-space: nowrap;
   }
 
