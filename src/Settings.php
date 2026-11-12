@@ -62,6 +62,10 @@ final class Settings
     // serialised to the forum, read by the discussion page's scrubber rail
     public const SCRUBBER = self::PREFIX.'scrubber';
 
+    // serialised to the forum, read by the header: keep the bar in view
+    // while the page scrolls, on computers and tablets
+    public const PIN_HEADER = self::PREFIX.'pin_header';
+
     // serialised to the forum: where the opening post's fof/polls polls go
     // on wide screens, "post" (as fof/polls draws them) or "sidebar"
     public const POLLS = self::PREFIX.'polls';

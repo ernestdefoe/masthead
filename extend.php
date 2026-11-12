@@ -121,6 +121,7 @@ return [
         ->default('ernestdefoe-masthead.powered_by', true)
         ->default('ernestdefoe-masthead.tag_count', 12)
         ->default('ernestdefoe-masthead.scrubber', true)
+        ->default('ernestdefoe-masthead.pin_header', true)
         ->default('ernestdefoe-masthead.polls', 'post')
         ->default('ernestdefoe-masthead.pictures', 'both')
         ->default('ernestdefoe-masthead.hero_tags', true)
@@ -154,6 +155,8 @@ return [
         ->serializeToForum('mastheadTagsPage', 'ernestdefoe-masthead.tags_page', 'boolval')
         // read by the portal's TagGrid, clamped there and here
         ->serializeToForum('mastheadTagCount', 'ernestdefoe-masthead.tag_count', fn ($v) => max(1, min(48, (int) $v)))
+        // read by the header (header.tsx): the bar stays in view on wide screens
+        ->serializeToForum('mastheadPinHeader', 'ernestdefoe-masthead.pin_header', 'boolval')
         // read by the scrubber rail beside a discussion's posts (topic/index.tsx)
         ->serializeToForum('mastheadScrubber', 'ernestdefoe-masthead.scrubber', 'boolval')
         // read by the discussion page: where the opening post's polls go (topic/index.tsx)

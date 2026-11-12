@@ -62,6 +62,7 @@ class ForumTest extends MastheadTestCase
         $this->assertTrue($forum['mastheadHeroTags']);
         $this->assertTrue($forum['mastheadTagsPage']);
         $this->assertTrue($forum['mastheadScrubber'], 'The scrubber rail is on by default');
+        $this->assertTrue($forum['mastheadPinHeader'], 'The header stays in view by default');
         $this->assertNull($forum['mastheadShowName'], 'Never set: the name shows only without a logo');
     }
 
@@ -90,6 +91,13 @@ class ForumTest extends MastheadTestCase
     {
         $this->setting('ernestdefoe-masthead.scrubber', '0');
         $this->assertFalse($this->forum()['mastheadScrubber']);
+    }
+
+    #[Test]
+    public function the_pinned_header_can_be_turned_off()
+    {
+        $this->setting('ernestdefoe-masthead.pin_header', '0');
+        $this->assertFalse($this->forum()['mastheadPinHeader']);
     }
 
     #[Test]

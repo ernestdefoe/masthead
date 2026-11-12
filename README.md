@@ -32,6 +32,7 @@ sidebar of widgets, on a grey ground of white cards.
   discussions, its side areas in the portal's sidebar, as cards in Masthead's
   style.
 - **A footer** with your own links. Links to Facebook, X, Instagram, YouTube, Discord, TikTok, Bluesky and other social sites get their brand icon automatically. Any link can take a Font Awesome icon, and a link with no name shows just the icon.
+- **The header stays in view** on computers and tablets: once the strip has scrolled away, the bar with the logo, links and search stays at the top of the window. Links from the portal open a discussion where you left off, as Flarum's own discussion list does.
 - **Phones** get a compact bar, the feature card, a scrolling row of section
   chips, the latest list and a floating **Start a discussion**.
 - **Dark mode**, following Flarum's own light, dark and high-contrast modes.
@@ -135,6 +136,7 @@ switch presets.
 | **Preset**, **Accent colour**, **Masthead colour** | The look, above. |
 | **Utility strip colour**, **Page background** (light and dark) | Exact colours for a brand palette. Empty means the default: the strip a shade darker than the masthead, the mockup grey, Flarum's dark background. A dark background you set also tints the dark-mode cards. |
 | **Tagline**, **Monogram**, **Show the forum name beside the logo** | The title block. The logo is Flarum's own (Appearance). The masthead is dark in both colour modes, so it shows your **dark-mode logo** whenever you have uploaded one, and your normal logo otherwise. The name shows beside a logo only if you turn it on; without a logo it always shows. The tagline shows whenever it is set. |
+| **Keep the header in view on computers** | The bar with the logo, links and search stays at the top of the window as the page scrolls; the strip above it scrolls away. On by default. Off lets the whole header scroll away, as before. Phones keep their own top bar either way. |
 | **Use the theme's fonts** | Barlow Condensed and Figtree, served from your forum. Off uses system fonts. |
 | **Layout**, **Stories from**, **Tag** / **Content type** | The featured stories. Any tag can be the source: primary, child or secondary. Only that source is featured; when it has none yet, visitors see no featured block and admins see a hint. |
 | **Fill the gaps with the newest discussions** | Off by default. On, a source with fewer than four is topped up with the newest discussions from any tag. |

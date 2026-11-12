@@ -157,6 +157,17 @@ export default [
       }),
       73
     )
+    // Read by the header (serialised as mastheadPinHeader).
+    .setting(
+      () => ({
+        setting: K('pin_header'),
+        label: t('brand.pin_header_label'),
+        help: t('brand.pin_header_help'),
+        type: 'boolean',
+        default: true,
+      }),
+      72.5
+    )
     // Read by the font stamp in extend.php and less/lib/fonts.less.
     .setting(
       () => ({

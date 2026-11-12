@@ -126,6 +126,29 @@
   }
 }
 
+// -- Pinned (the "Keep the header in view" setting; header.tsx) -------------
+//
+// html.mh-pin: the setting is on. html.mh-pinned: the strip has scrolled
+// away, so the header is fixed, lifted by the strip's height: only the bar
+// and its accent rule stay. .App's padding keeps holding the header's place,
+// so nothing below moves when it switches.
+@media @tablet-up {
+  html.mh-pin {
+    --mh-pinned-h: calc(var(--mh-bar-h) + var(--mh-rule));
+    // Core's sticky sidebars and list pane stop under the bar.
+    --header-height: calc(var(--mh-pinned-h) + 12px);
+    // A jump to an anchor (a heading, a footnote) lands below the bar.
+    scroll-padding-top: calc(var(--mh-pinned-h) + 12px);
+  }
+
+  html.mh-pinned .App-header {
+    position: fixed;
+    top: calc(-1 * var(--mh-strip-h));
+    right: 0;
+    left: 0;
+  }
+}
+
 // -- The utility strip --------------------------------------------------------
 
 .MastheadStrip {

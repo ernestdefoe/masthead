@@ -18,6 +18,31 @@ import { has, isPhone, t } from './util';
 /** The keys HeaderSecondary keeps on the masthead row; the rest go to the strip. */
 const ROW = ['search', 'mastheadCompose'];
 
+/*
+ * The pinned header (computers and tablets; less/shell/header.less). The
+ * header is absolute and .App's padding already holds its place, so once the
+ * strip has scrolled away the header turns fixed, lifted by the strip's
+ * height, without the page moving: only the bar stays. `position: sticky`
+ * never sticks inside Flarum's page, so this is a class on <html> set from
+ * the scroll position, written only when it changes.
+ */
+function pin() {
+  const root = document.documentElement;
+  const strip = document.getElementById('masthead-strip');
+  let pinned = false;
+
+  root.classList.add('mh-pin');
+
+  const update = () => {
+    const next = window.scrollY >= (strip?.offsetHeight || 0);
+
+    if (next !== pinned) root.classList.toggle('mh-pinned', (pinned = next));
+  };
+
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+}
+
 export default function header() {
   /*
    * The strip and the title block are mounted once, next to core's own
@@ -37,6 +62,8 @@ export default function header() {
     }
 
     if (titleEl) m.mount(titleEl, Brand);
+
+    if (app.forum.attribute('mastheadPinHeader') !== false) pin();
   });
 
   extend(HeaderSecondary.prototype, 'items', function (this: HeaderSecondary, items) {
