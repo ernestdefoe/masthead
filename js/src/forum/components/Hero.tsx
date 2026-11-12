@@ -11,7 +11,7 @@ function href(story: Story): string {
   // The store's copy when this visit has loaded the discussion (read since
   // the portal's data arrived), else where the server said to open it.
   const model = app.store.getById<any>('discussions', String(story.id));
-  const near = model && model.lastReadPostNumber() !== undefined ? nearFor(model) : story.near ?? 0;
+  const near = model && model.lastReadPostNumber() !== undefined ? nearFor(model) : (story.near ?? 0);
 
   return near > 1 ? app.route('discussion.near', { id: story.slug, near }) : app.route('discussion', { id: story.slug });
 }
