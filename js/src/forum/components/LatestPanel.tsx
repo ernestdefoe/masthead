@@ -5,7 +5,7 @@ import LoadingIndicator from 'flarum/common/components/LoadingIndicator';
 import Avatar from 'flarum/common/components/Avatar';
 import humanTime from 'flarum/common/helpers/humanTime';
 import formatNumber from 'flarum/common/utils/formatNumber';
-import { isPhone, t } from '../util';
+import { isPhone, nearFor, t } from '../util';
 
 type Tab = 'latest' | 'top';
 
@@ -124,7 +124,7 @@ export default class LatestPanel extends Component {
 
     return (
       <li key={discussion.id()}>
-        <Link className="MastheadRow" href={app.route.discussion(discussion)}>
+        <Link className="MastheadRow" href={app.route.discussion(discussion, nearFor(discussion))}>
           <Avatar user={user} className="MastheadRow-avatar" />
           <span className="MastheadRow-main">
             <span className="MastheadRow-title">{discussion.title()}</span>

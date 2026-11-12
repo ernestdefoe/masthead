@@ -9,6 +9,7 @@
 
 namespace ErnestDefoe\Masthead\Tests\integration\api;
 
+use Carbon\Carbon;
 use ErnestDefoe\Masthead\Tests\integration\MastheadTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
@@ -83,6 +84,23 @@ class PortalTest extends MastheadTestCase
         $this->assertSame(2, $hero[1]['replies']);
         $this->assertSame(['name' => 'General', 'color' => '#1d4b8f'], $hero[1]['tag']);
         $this->assertSame('1-story-1', $hero[1]['slug']);
+    }
+
+    #[Test]
+    public function a_story_opens_where_the_reader_left_off_as_core_does()
+    {
+        // Five posts each; member 2 has read two of story 1 and all of story 2.
+        $this->database()->table('discussions')->update(['last_post_number' => 5]);
+        $this->database()->table('discussion_user')->insert([
+            ['user_id' => 2, 'discussion_id' => 1, 'last_read_post_number' => 2, 'last_read_at' => Carbon::now()],
+            ['user_id' => 2, 'discussion_id' => 2, 'last_read_post_number' => 5, 'last_read_at' => Carbon::now()],
+        ]);
+
+        $near = fn (?int $actor) => array_column($this->hero($actor), 'near', 'id');
+
+        $this->assertSame([1 => 3, 2 => 5, 6 => 1], $near(2), 'The first unread post, the last once all read, the top when never opened');
+        $this->assertSame([1 => 1, 2 => 1, 6 => 1], $near(null), 'A guest starts at the top');
+        $this->assertSame(1, $near(3)[1], "Another member's reading is not theirs");
     }
 
     #[Test]

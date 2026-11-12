@@ -11,6 +11,7 @@ namespace ErnestDefoe\Masthead\Portal;
 
 use ErnestDefoe\Masthead\Settings;
 use Flarum\Discussion\Discussion;
+use Flarum\Discussion\UserState;
 use Flarum\Extension\ExtensionManager;
 use Flarum\Http\SlugManager;
 use Flarum\Post\CommentPost;
@@ -78,8 +79,30 @@ final class Hero
 
         $stories = new Collection($stories->all());
         $stories->load($this->relations());
+        $read = $this->lastRead($actor, $stories);
 
-        return $stories->map(fn (Discussion $d) => $this->present($d))->values()->all();
+        return $stories->map(fn (Discussion $d) => $this->present($d, $read[$d->id] ?? 0))->values()->all();
+    }
+
+    /**
+     * How far the actor has read each story: one query for the set, none for
+     * a guest.
+     *
+     * @param Collection<int, Discussion> $stories
+     * @return array<int, int>
+     */
+    protected function lastRead(User $actor, Collection $stories): array
+    {
+        if ($actor->isGuest() || $stories->isEmpty()) {
+            return [];
+        }
+
+        return UserState::query()
+            ->where('user_id', $actor->id)
+            ->whereIn('discussion_id', $stories->modelKeys())
+            ->pluck('last_read_post_number', 'discussion_id')
+            ->map(fn ($n) => (int) $n)
+            ->all();
     }
 
     /**
@@ -169,7 +192,7 @@ final class Hero
     /**
      * @return array<string, mixed>
      */
-    protected function present(Discussion $discussion): array
+    protected function present(Discussion $discussion, int $lastRead): array
     {
         $post = $discussion->firstPost;
         $xml = $post instanceof CommentPost ? (string) $post->parsed_content : '';
@@ -187,6 +210,9 @@ final class Hero
             'kind' => 'discussion',
             'id' => (int) $discussion->id,
             'slug' => $this->slugs->forResource(Discussion::class)->toSlug($discussion),
+            // Where core's discussion list opens it: the first unread post
+            // (the last post once it is all read; the first for a guest).
+            'near' => min((int) $discussion->last_post_number, $lastRead + 1),
             'title' => $discussion->title,
             'excerpt' => $this->excerpt($xml),
             'image' => $this->images->pick($this->images->first($xml), $discussion->user),

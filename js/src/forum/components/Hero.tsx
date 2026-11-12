@@ -3,10 +3,17 @@ import Component from 'flarum/common/Component';
 import Link from 'flarum/common/components/Link';
 import humanTime from 'flarum/common/helpers/humanTime';
 import type { Story } from '../portalData';
-import { t } from '../util';
+import { nearFor, t } from '../util';
 
 function href(story: Story): string {
-  return story.kind === 'article' ? app.forum.attribute<string>('basePath') + story.url : app.route('discussion', { id: story.slug });
+  if (story.kind === 'article') return app.forum.attribute<string>('basePath') + story.url;
+
+  // The store's copy when this visit has loaded the discussion (read since
+  // the portal's data arrived), else where the server said to open it.
+  const model = app.store.getById<any>('discussions', String(story.id));
+  const near = model && model.lastReadPostNumber() !== undefined ? nearFor(model) : story.near ?? 0;
+
+  return near > 1 ? app.route('discussion.near', { id: story.slug, near }) : app.route('discussion', { id: story.slug });
 }
 
 /**

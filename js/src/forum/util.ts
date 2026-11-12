@@ -47,3 +47,12 @@ export let PortalMarker: any = null;
 export function markPortal(component: any) {
   PortalMarker = component;
 }
+
+/**
+ * Where a discussion link opens, as core's discussion list does: a member's
+ * first unread post (the last post once they have read it all), the top for
+ * a guest. 0 or 1 is the top, which `app.route.discussion` leaves off.
+ */
+export function nearFor(discussion: any): number {
+  return Math.min(discussion.lastPostNumber() ?? 0, (discussion.lastReadPostNumber() || 0) + 1);
+}

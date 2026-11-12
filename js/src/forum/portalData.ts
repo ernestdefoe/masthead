@@ -4,6 +4,8 @@ export interface Story {
   kind: 'discussion' | 'article';
   id: number;
   slug?: string;
+  /** Where a discussion opens for this reader: their first unread post. */
+  near?: number;
   url?: string;
   title: string;
   excerpt: string;
