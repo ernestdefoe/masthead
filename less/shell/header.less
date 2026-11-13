@@ -1,9 +1,9 @@
 // ============================================================================
 // The masthead: utility strip, the bar, and the accent rule under it.
 //
-// Desktop: the header scrolls away with the page, as an IPS or UI.X masthead
-// does, rather than core's fixed 52px bar — 124px held on screen would cost
-// every page a sixth of its height. Phone: core's own fixed top bar, recoloured.
+// Desktop: the full header is 124px. Pinned (the default), it shrinks to a
+// compact bar once the page scrolls; unpinned, it scrolls away with the page,
+// as an IPS or UI.X masthead does. Phone: core's own fixed top bar, recoloured.
 // ============================================================================
 
 @media @tablet-up {
@@ -128,24 +128,80 @@
 
 // -- Pinned (the "Keep the header in view" setting; header.tsx) -------------
 //
-// html.mh-pin: the setting is on. html.mh-pinned: the strip has scrolled
-// away, so the header is fixed, lifted by the strip's height: only the bar
-// and its accent rule stay. .App's padding keeps holding the header's place,
-// so nothing below moves when it switches.
+// html.mh-pin: the setting is on, and the whole header, strip included, is
+// fixed at the top; .App's padding keeps holding its place. html.mh-pinned:
+// the page has scrolled, and the bar shrinks to its compact height, so the
+// pinned header is barely taller than the bar alone used to be. A dropdown
+// open in it (notifications, the user menu) lifts the header over the
+// composer, as core's own dropdowns are.
 @media @tablet-up {
   html.mh-pin {
-    --mh-pinned-h: calc(var(--mh-bar-h) + var(--mh-rule));
-    // Core's sticky sidebars and list pane stop under the bar.
+    --mh-pinned-h: calc(var(--mh-strip-h) + var(--mh-bar-compact) + var(--mh-rule));
+    // Core's sticky sidebars and list pane stop under the header.
     --header-height: calc(var(--mh-pinned-h) + 12px);
-    // A jump to an anchor (a heading, a footnote) lands below the bar.
+    // A jump to an anchor (a heading, a footnote) lands below the header.
     scroll-padding-top: calc(var(--mh-pinned-h) + 12px);
+
+    .App-header {
+      position: fixed;
+      top: 0;
+      right: 0;
+      left: 0;
+
+      &:has(.Dropdown.open) {
+        z-index: @zindex-dropdown;
+      }
+    }
   }
 
-  html.mh-pinned .App-header {
-    position: fixed;
-    top: calc(-1 * var(--mh-strip-h));
-    right: 0;
+  // Watched by header.tsx: once it has scrolled away, the bar is compact.
+  .MastheadPinMarker {
+    position: absolute;
+    top: 0;
     left: 0;
+    width: 1px;
+    height: calc(var(--mh-bar-h) - var(--mh-bar-compact));
+    pointer-events: none;
+    visibility: hidden;
+  }
+
+  html.mh-pinned {
+    .App-header > .container {
+      min-height: var(--mh-bar-compact);
+    }
+
+    .MastheadBrand-tile {
+      width: 34px;
+      height: 34px;
+      flex-basis: 34px;
+      border-radius: 8px;
+      font-size: 18px;
+    }
+
+    .MastheadBrand-logo .Header-logo {
+      max-height: 36px;
+    }
+
+    .MastheadBrand-name {
+      font-size: 22px;
+    }
+
+    .MastheadBrand-tagline {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html.mh-pin {
+      .App-header > .container {
+        transition: min-height 0.2s ease;
+      }
+
+      .MastheadBrand-tile,
+      .MastheadBrand-logo .Header-logo {
+        transition: all 0.2s ease;
+      }
+    }
   }
 }
 
@@ -162,6 +218,85 @@
   display: flex;
   align-items: center;
   gap: 20px;
+}
+
+// The date and online count, and on a discussion page the discussion's
+// title in the same place (Strip.tsx): html.mh-titled swaps them. Both sit in
+// one grid cell, so the swap never moves the controls beside them.
+.MastheadStrip-lead {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+
+  > * {
+    grid-area: ~"1 / 1";
+    min-width: 0;
+  }
+}
+
+.MastheadStrip-info {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  white-space: nowrap;
+}
+
+html:not(#x-hi) .MastheadStrip-title {
+  justify-self: start;
+  max-width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--mh-on-dark);
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  visibility: hidden;
+  opacity: 0;
+
+  &:focus-visible {
+    text-decoration: underline;
+  }
+
+  // Only a real pointer: after a tap, iOS keeps :hover on the button.
+  @media (hover: hover) {
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+html.mh-titled {
+  .MastheadStrip-info {
+    visibility: hidden;
+    opacity: 0;
+  }
+
+  &:not(#x-hi) .MastheadStrip-title {
+    visibility: visible;
+    opacity: 1;
+  }
+}
+
+// A swap, not a cross-fade: the one coming in waits for the other to go, so
+// the two lines never show on top of each other.
+@media (prefers-reduced-motion: no-preference) {
+  .MastheadStrip-info,
+  html:not(#x-hi) .MastheadStrip-title {
+    transition:
+      opacity 0.12s ease,
+      visibility 0.12s;
+  }
+
+  html:not(.mh-titled) .MastheadStrip-info,
+  html.mh-titled:not(#x-hi) .MastheadStrip-title {
+    transition-delay: 0.12s;
+  }
 }
 
 .MastheadStrip-online {

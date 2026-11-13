@@ -114,6 +114,33 @@ export default function topic() {
     items.add('mastheadByline', <Byline discussion={discussion} />, -10);
   });
 
+  /*
+   * The compact title (Strip.tsx): once the story's title has scrolled under
+   * the pinned header, html.mh-titled swaps the strip's date for it. The
+   * header's own height is the observer's top margin, so the swap happens
+   * just as the title disappears behind it.
+   */
+  extend(DiscussionHero.prototype, 'oncreate', function (this: any) {
+    const root = document.documentElement;
+    const title = this.element.querySelector('.DiscussionHero-title') || this.element;
+
+    if (!root.classList.contains('mh-pin') || isPhone()) return;
+
+    const px = (name: string) => parseFloat(getComputedStyle(root).getPropertyValue(name)) || 0;
+    const top = px('--mh-strip-h') + px('--mh-bar-compact') + px('--mh-rule');
+
+    this.mastheadTitle = new IntersectionObserver(
+      ([entry]) => root.classList.toggle('mh-titled', !entry.isIntersecting && entry.boundingClientRect.top < top),
+      { rootMargin: `-${top}px 0px 0px 0px` }
+    );
+    this.mastheadTitle.observe(title);
+  });
+
+  extend(DiscussionHero.prototype, 'onremove', function (this: any) {
+    this.mastheadTitle?.disconnect();
+    document.documentElement.classList.remove('mh-titled');
+  });
+
   // -- The lead post as the article; replies as cards ------------------------
 
   extend(CommentPost.prototype, 'elementAttrs', function (this: any, attrs: any) {

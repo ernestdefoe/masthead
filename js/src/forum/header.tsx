@@ -20,27 +20,23 @@ const ROW = ['search', 'mastheadCompose'];
 
 /*
  * The pinned header (computers and tablets; less/shell/header.less). The
- * header is absolute and .App's padding already holds its place, so once the
- * strip has scrolled away the header turns fixed, lifted by the strip's
- * height, without the page moving: only the bar stays. `position: sticky`
- * never sticks inside Flarum's page, so this is a class on <html> set from
- * the scroll position, written only when it changes.
+ * whole header, strip included, is fixed at the top, and .App's padding holds
+ * its place. Once the page has scrolled by the difference between the full
+ * bar and the compact one, html.mh-pinned shrinks the bar; the header is
+ * fixed throughout, so nothing below it moves. `position: sticky` never
+ * sticks inside Flarum's page, and an IntersectionObserver on a marker at the
+ * top of the document does the watching instead of a scroll listener.
  */
 function pin() {
   const root = document.documentElement;
-  const strip = document.getElementById('masthead-strip');
-  let pinned = false;
+  const marker = document.createElement('div');
 
+  marker.className = 'MastheadPinMarker';
+  marker.setAttribute('aria-hidden', 'true');
+  document.body.appendChild(marker);
   root.classList.add('mh-pin');
 
-  const update = () => {
-    const next = window.scrollY >= (strip?.offsetHeight || 0);
-
-    if (next !== pinned) root.classList.toggle('mh-pinned', (pinned = next));
-  };
-
-  window.addEventListener('scroll', update, { passive: true });
-  update();
+  new IntersectionObserver(([entry]) => root.classList.toggle('mh-pinned', !entry.isIntersecting)).observe(marker);
 }
 
 export default function header() {

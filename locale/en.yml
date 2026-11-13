@@ -150,7 +150,7 @@ ernestdefoe-masthead:
       show_name_label: Show the forum name beside the logo
       show_name_help: Off by default, because most logos already contain the name. Without a logo the name always shows. The masthead is dark in both colour modes, so it uses your dark-mode logo (Appearance) when you have uploaded one.
       pin_header_label: Keep the header in view on computers
-      pin_header_help: The bar with the logo, links and search stays at the top of the window as the page scrolls, so the forum's pages are always one click away. The strip above it scrolls away. Phones always keep their own top bar.
+      pin_header_help: The header stays at the top of the window as the page scrolls, shrunk to a compact bar, so the forum's pages, notifications and your profile are always one click away. On a discussion, the discussion's title takes the date's place once you scroll past it. Phones always keep their own top bar.
       fonts_label: Use the theme's fonts
       fonts_help: Barlow Condensed for headings and Figtree for text, served from your own forum. Turn off to use the reader's system fonts instead.
 
