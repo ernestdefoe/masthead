@@ -53,7 +53,7 @@ export default class MoreInTag extends Component<{ discussion: any; primary: any
         <ul className="MastheadMore-list">
           {items.map((d) => (
             <li key={d.id()}>
-              <Link className="MastheadMore-item" href={app.route.discussion(d, nearFor(d))}>
+              <Link className="MastheadMore-item" href={app.route.discussion(d, nearFor(d))} title={d.title()}>
                 <span className="MastheadMore-title">{d.title()}</span>
                 <span className="MastheadMore-meta">
                   {t('latest.replies', { count: Math.max(0, (d.commentCount() || 1) - 1) })} · {humanTime(d.lastPostedAt() || d.createdAt())}

@@ -128,7 +128,9 @@ export default class Hero extends Component<HeroAttrs> {
                   {media(story, false)}
                   <div className="MastheadStory-body">
                     {tags && story.tag ? <span className="MastheadKicker">{story.tag.name}</span> : null}
-                    <span className="MastheadStory-title">{story.title}</span>
+                    <span className="MastheadStory-title" title={story.title}>
+                      {story.title}
+                    </span>
                     <span className="MastheadStory-meta">{meta(story)}</span>
                   </div>
                 </>

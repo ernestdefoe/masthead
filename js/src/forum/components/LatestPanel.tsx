@@ -127,7 +127,9 @@ export default class LatestPanel extends Component {
         <Link className="MastheadRow" href={app.route.discussion(discussion, nearFor(discussion))}>
           <Avatar user={user} className="MastheadRow-avatar" />
           <span className="MastheadRow-main">
-            <span className="MastheadRow-title">{discussion.title()}</span>
+            <span className="MastheadRow-title" title={discussion.title()}>
+              {discussion.title()}
+            </span>
             <span className="MastheadRow-meta">
               {tag ? (
                 <span className="MastheadTagChip" style={tag.color() ? { '--mh-tag': tag.color() } : undefined}>

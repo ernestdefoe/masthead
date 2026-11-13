@@ -102,9 +102,15 @@
   }
 }
 
+// Two lines at most; the whole title is the link's tooltip.
 .MastheadMore-title {
   font-weight: 700;
   line-height: 1.3;
+  overflow-wrap: anywhere;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .MastheadMore-meta {
