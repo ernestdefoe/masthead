@@ -41,6 +41,16 @@ body,
   flex: 1 0 auto;
 }
 
+// min-width: 0 on the children of every flex row the page is built from.
+// Flex children default to min-width: auto, so one wide card in the page
+// content (Story Chain's, on /all) stretched it and the whole page scrolled
+// sideways (1607px in a 1440px window).
+.App > *,
+.Page-container > *,
+.sideNavContainer > * {
+  min-width: 0;
+}
+
 // The condensed face is for headlines: Masthead's own section headings and
 // the page heroes. Discussion titles in lists stay in the text face, as in
 // the mockup — a column of condensed capitals reads as shouting.
