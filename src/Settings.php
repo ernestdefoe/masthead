@@ -74,6 +74,10 @@ final class Settings
     // the portal, the discussion page and the featured stories: view counts
     public const SHOW_VIEWS = self::PREFIX.'show_views';
 
+    // serialised to the forum, read by Latest discussions and the featured
+    // stories: who wrote the last reply, and when
+    public const SHOW_LAST_REPLY = self::PREFIX.'show_last_reply';
+
     /**
      * Which pictures the featured stories and a discussion's lead banner use:
      * the post's own picture falling back to the author's Backdrop cover, the
@@ -183,6 +187,11 @@ final class Settings
     public function showViews(): bool
     {
         return (bool) $this->settings->get(self::SHOW_VIEWS, true);
+    }
+
+    public function showLastReply(): bool
+    {
+        return (bool) $this->settings->get(self::SHOW_LAST_REPLY, true);
     }
 
     public function heroType(): string

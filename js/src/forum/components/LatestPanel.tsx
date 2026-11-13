@@ -6,6 +6,7 @@ import Avatar from 'flarum/common/components/Avatar';
 import humanTime from 'flarum/common/helpers/humanTime';
 import formatNumber from 'flarum/common/utils/formatNumber';
 import views, { viewCount } from './Views';
+import lastReply, { showLastReply } from './LastReply';
 import { isPhone, nearFor, t } from '../util';
 
 type Tab = 'latest' | 'top';
@@ -38,7 +39,8 @@ function load(which: Tab): Promise<void> {
   const cached = lists[which];
   if (cached && Date.now() - cached.at < 60_000) return Promise.resolve();
 
-  const params: any = { page: { limit: LIMIT }, include: 'user,tags' };
+  // lastPostedUser as core's discussion list loads it: eager, one query.
+  const params: any = { page: { limit: LIMIT }, include: showLastReply() ? 'user,tags,lastPostedUser' : 'user,tags' };
 
   if (which === 'top') {
     params.sort = '-commentCount';
@@ -121,16 +123,22 @@ export default class LatestPanel extends Component {
     const tag = primaryTag(discussion);
     const user = discussion.user();
     const replies = Math.max(0, (discussion.commentCount() || 1) - 1);
-    const when = humanTime(discussion.lastPostedAt() || discussion.createdAt());
+    const at = discussion.lastPostedAt() || discussion.createdAt();
+    const replier = replies > 0 && showLastReply() ? discussion.lastPostedUser() : null;
+    const when = replier ? lastReply(replier.displayName(), replier.slug(), at) : humanTime(at);
     const seen = viewCount(discussion);
 
+    // The title link stretches over the row (.MastheadCard), so the last
+    // replier's name can be a link of its own.
     return (
       <li key={discussion.id()}>
-        <Link className="MastheadRow" href={app.route.discussion(discussion, nearFor(discussion))}>
+        <div className="MastheadRow MastheadCard">
           <Avatar user={user} className="MastheadRow-avatar" />
           <span className="MastheadRow-main">
             <span className="MastheadRow-title" title={discussion.title()}>
-              {discussion.title()}
+              <Link className="MastheadCard-link" href={app.route.discussion(discussion, nearFor(discussion))}>
+                {discussion.title()}
+              </Link>
             </span>
             <span className="MastheadRow-meta">
               {tag ? (
@@ -152,7 +160,7 @@ export default class LatestPanel extends Component {
               <small>{t('latest.replies_label', { count: replies })}</small>
             </span>
           )}
-        </Link>
+        </div>
       </li>
     );
   }

@@ -79,12 +79,13 @@ final class Hero
 
         // fof/discussion-views' column, already on each row: no query.
         $views = $this->settings->showViews() && $this->extensions->isEnabled('fof-discussion-views');
+        $lastReply = $this->settings->showLastReply();
 
         $stories = new Collection($stories->all());
-        $stories->load($this->relations());
+        $stories->load($this->relations($lastReply));
         $read = $this->lastRead($actor, $stories);
 
-        return $stories->map(fn (Discussion $d) => $this->present($d, $read[$d->id] ?? 0, $views))->values()->all();
+        return $stories->map(fn (Discussion $d) => $this->present($d, $read[$d->id] ?? 0, $views, $lastReply))->values()->all();
     }
 
     /**
@@ -185,18 +186,26 @@ final class Hero
     /**
      * @return list<string>
      */
-    protected function relations(): array
+    protected function relations(bool $lastReply): array
     {
-        return $this->extensions->isEnabled('flarum-tags')
-            ? ['firstPost', 'user', 'tags']
-            : ['firstPost', 'user'];
+        $relations = ['firstPost', 'user'];
+        if ($this->extensions->isEnabled('flarum-tags')) {
+            $relations[] = 'tags';
+        }
+        // One query for the set, like the authors.
+        if ($lastReply) {
+            $relations[] = 'lastPostedUser';
+        }
+
+        return $relations;
     }
 
     /**
      * @return array<string, mixed>
      */
-    protected function present(Discussion $discussion, int $lastRead, bool $views = false): array
+    protected function present(Discussion $discussion, int $lastRead, bool $views = false, bool $lastReply = false): array
     {
+        $replies = max(0, (int) $discussion->comment_count - 1);
         $post = $discussion->firstPost;
         $xml = $post instanceof CommentPost ? (string) $post->parsed_content : '';
 
@@ -220,11 +229,29 @@ final class Hero
             'excerpt' => $this->excerpt($xml),
             'image' => $this->images->pick($this->images->first($xml), $discussion->user),
             'author' => $discussion->user?->display_name,
-            'replies' => max(0, (int) $discussion->comment_count - 1),
+            'replies' => $replies,
             'views' => $views ? (int) $discussion->getAttribute('view_count') : null,
+            'lastReply' => $lastReply && $replies > 0 ? $this->lastReply($discussion) : null,
             'createdAt' => $discussion->created_at?->toAtomString(),
             'tag' => $tag ? ['name' => $tag->name, 'color' => $tag->color ?: null] : null,
         ];
+    }
+
+    /**
+     * Who wrote the last reply and when, as core's discussion list shows it:
+     * null once that member's account is gone.
+     *
+     * @return array{name: string, slug: string, at: string|null}|null
+     */
+    protected function lastReply(Discussion $discussion): ?array
+    {
+        $user = $discussion->lastPostedUser;
+
+        return $user instanceof User ? [
+            'name' => $user->display_name,
+            'slug' => $this->slugs->forResource(User::class)->toSlug($user),
+            'at' => $discussion->last_posted_at?->toAtomString(),
+        ] : null;
     }
 
     protected function excerpt(string $xml): string

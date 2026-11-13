@@ -74,6 +74,7 @@ final class PageBuilderArticles
                 'author' => $record->user?->display_name,
                 'replies' => null,
                 'views' => null,
+                'lastReply' => null,
                 'createdAt' => $record->published_at?->toAtomString(),
                 'tag' => ['name' => (string) $type->name, 'color' => null],
             ];

@@ -141,6 +141,7 @@ switch presets.
 | **Layout**, **Stories from**, **Tag** / **Content type** | The featured stories. Any tag can be the source: primary, child or secondary. Only that source is featured; when it has none yet, visitors see no featured block and admins see a hint. |
 | **Fill the gaps with the newest discussions** | Off by default. On, a source with fewer than four is topped up with the newest discussions from any tag. |
 | **Show the tag on each story** | The tag names in the featured stories. Off keeps their tag colours. |
+| **Show who replied last** | "Last reply by" the member's name, linked to their profile, and how long ago, on the featured stories and in Latest discussions, once a discussion has a reply. On by default. |
 | **Sections in the grid** | How many tags *Browse the forum* shows. |
 | **Draw the Tags page as section tiles** | The Tags page in the same tiles as *Browse the forum*, with subtags and the latest discussion. On by default. |
 | **Pictures** | The featured stories' pictures and the banner at the top of a discussion: the post's own picture falling back to the author's Backdrop cover, the post's picture only, the Backdrop cover only, or none. |

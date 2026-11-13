@@ -56,10 +56,9 @@
   border-bottom: 1px solid var(--mh-line-soft);
   align-items: center;
   color: var(--mh-ink);
-  text-decoration: none !important;
 
   &:hover,
-  &:focus-visible {
+  &:has(.MastheadCard-link:focus-visible) {
     color: var(--mh-ink);
     background: color-mix(in srgb, var(--mh-ground) 60%, var(--mh-card));
 

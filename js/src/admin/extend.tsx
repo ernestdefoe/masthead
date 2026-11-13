@@ -220,17 +220,25 @@ export default [
     .customSetting(function (this: any) {
       if (!has('flarum-tags') || this.setting(K('hero_source'), 'latest')() !== 'tag') return null;
 
+      const value = String(this.setting(K('hero_tag'), '0')());
+
+      // Keyed, and each option says whether it is the chosen one: the tag list
+      // can arrive after the first draw, and unkeyed options are rewritten in
+      // place, so the browser's selection stayed on the row and showed the
+      // tag that slid into it (Ben, Discord).
       return (
         <div className="Form-group">
           <label>{t('hero.tag_label')}</label>
           <span className="Select">
             <select
               className="Select-input FormControl"
-              value={this.setting(K('hero_tag'), '0')()}
+              value={value}
               onchange={(e: Event) => this.setting(K('hero_tag'), '0')((e.target as HTMLSelectElement).value)}
             >
               {tagOptions().map(([id, label]) => (
-                <option value={id}>{label}</option>
+                <option key={id} value={id} selected={id === value}>
+                  {label}
+                </option>
               ))}
             </select>
             <Icon name="fas fa-sort" className="Select-caret" />
@@ -267,6 +275,18 @@ export default [
         type: 'boolean',
       }),
       62.5
+    )
+
+    // Read by Portal\Hero and Latest discussions (serialised as mastheadLastReply).
+    .setting(
+      () => ({
+        setting: K('show_last_reply'),
+        label: t('hero.last_reply_label'),
+        help: t('hero.last_reply_help'),
+        type: 'boolean',
+        default: true,
+      }),
+      62.4
     )
 
     // Read by Portal\Images and the discussion page's article (serialised as

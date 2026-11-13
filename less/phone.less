@@ -223,6 +223,12 @@
   .MastheadRow-meta {
     font-size: 12px;
 
+    // Wrapped, not cut: with "Last reply by …" one line would clip the
+    // reply and view counts.
+    > span:last-child {
+      white-space: normal;
+    }
+
     .MastheadTagChip {
       display: none;
     }

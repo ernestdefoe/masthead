@@ -4,6 +4,7 @@ import Link from 'flarum/common/components/Link';
 import humanTime from 'flarum/common/helpers/humanTime';
 import type { Story } from '../portalData';
 import views from './Views';
+import lastReply from './LastReply';
 import { nearFor, t } from '../util';
 
 function href(story: Story): string {
@@ -40,14 +41,17 @@ function meta(story: Story) {
   if (story.replies !== null) parts.push(t('hero.replies', { count: story.replies }));
   else if (story.createdAt) parts.push(humanTime(new Date(story.createdAt)));
   if (typeof story.views === 'number') parts.push(views(story.views));
+  if (story.lastReply) parts.push(lastReply(story.lastReply.name, story.lastReply.slug, story.lastReply.at ? new Date(story.lastReply.at) : null));
 
   return parts.flatMap((part, i) => (i ? [' · ', part] : [part]));
 }
 
 /**
- * Wraps a story in the right kind of link: an in-app route for a discussion,
- * a plain href for a Page Builder article (its page is Page Builder's to
- * route, and Masthead does not assume its routes are registered).
+ * A story's title as the right kind of link: an in-app route for a
+ * discussion, a plain href for a Page Builder article (its page is Page
+ * Builder's to route, and Masthead does not assume its routes are
+ * registered). It stretches over its card (.MastheadCard-link), so the whole
+ * card still opens the story while the last replier's name links to them.
  */
 function StoryLink(story: Story, className: string, children: any) {
   return story.kind === 'article' ? (
@@ -104,40 +108,32 @@ export default class Hero extends Component<HeroAttrs> {
 
     return (
       <section className={`MastheadHero MastheadHero--${style}`} aria-label={t('hero.label')}>
-        {StoryLink(
-          feature,
-          'MastheadHero-feature',
-          <>
-            {media(feature, true)}
-            <div className="MastheadHero-body">
-              <span className="MastheadKicker MastheadKicker--solid">
-                {tags && feature.tag ? t('hero.kicker_tag', { tag: feature.tag.name }) : t('hero.kicker')}
-              </span>
-              <h2 className="MastheadHero-title">{feature.title}</h2>
-              {feature.excerpt ? <p className="MastheadHero-excerpt">{feature.excerpt}</p> : null}
-              <span className="MastheadHero-meta">{meta(feature)}</span>
-            </div>
-          </>
-        )}
+        <div className="MastheadHero-feature MastheadCard">
+          {media(feature, true)}
+          <div className="MastheadHero-body">
+            <span className="MastheadKicker MastheadKicker--solid">
+              {tags && feature.tag ? t('hero.kicker_tag', { tag: feature.tag.name }) : t('hero.kicker')}
+            </span>
+            <h2 className="MastheadHero-title">{StoryLink(feature, 'MastheadCard-link', feature.title)}</h2>
+            {feature.excerpt ? <p className="MastheadHero-excerpt">{feature.excerpt}</p> : null}
+            <span className="MastheadHero-meta">{meta(feature)}</span>
+          </div>
+        </div>
 
         {side.length ? (
           <div className={`MastheadHero-side MastheadHero-side--${side.length}`}>
-            {side.map((story) =>
-              StoryLink(
-                story,
-                'MastheadStory',
-                <>
-                  {media(story, false)}
-                  <div className="MastheadStory-body">
-                    {tags && story.tag ? <span className="MastheadKicker">{story.tag.name}</span> : null}
-                    <span className="MastheadStory-title" title={story.title}>
-                      {story.title}
-                    </span>
-                    <span className="MastheadStory-meta">{meta(story)}</span>
-                  </div>
-                </>
-              )
-            )}
+            {side.map((story) => (
+              <div key={story.kind + story.id} className="MastheadStory MastheadCard">
+                {media(story, false)}
+                <div className="MastheadStory-body">
+                  {tags && story.tag ? <span className="MastheadKicker">{story.tag.name}</span> : null}
+                  <span className="MastheadStory-title" title={story.title}>
+                    {StoryLink(story, 'MastheadCard-link', story.title)}
+                  </span>
+                  <span className="MastheadStory-meta">{meta(story)}</span>
+                </div>
+              </div>
+            ))}
           </div>
         ) : null}
       </section>

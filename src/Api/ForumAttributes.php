@@ -45,6 +45,11 @@ final class ForumAttributes
             Schema\Boolean::make('mastheadViews')
                 ->get(fn () => resolve(Settings::class)->showViews() && resolve(ExtensionManager::class)->isEnabled('fof-discussion-views')),
 
+            // read by Latest discussions (whether to include lastPostedUser)
+            // and the featured stories: "Last reply by <name>"
+            Schema\Boolean::make('mastheadLastReply')
+                ->get(fn () => resolve(Settings::class)->showLastReply()),
+
             // read by the footer
             Schema\Arr::make('mastheadFooterLinks')
                 ->get(fn () => resolve(Settings::class)->footerLinks()),

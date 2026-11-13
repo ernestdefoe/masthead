@@ -13,6 +13,8 @@ export interface Story {
   author: string | null;
   replies: number | null;
   views?: number | null;
+  /** Who wrote the last reply; null with no replies or the setting off. */
+  lastReply?: { name: string; slug: string; at: string | null } | null;
   createdAt: string | null;
   tag: { name: string; color: string | null } | null;
 }
