@@ -301,6 +301,20 @@ export default [
       61
     )
 
+    // Serialised as mastheadViews, together with whether fof/discussion-views
+    // is enabled. Only with fof/discussion-views, which keeps the counts.
+    .setting(() => {
+      if (!has('fof-discussion-views')) return null;
+
+      return {
+        setting: K('show_views'),
+        label: t('topic.views_label'),
+        help: t('topic.views_help'),
+        type: 'boolean',
+        default: true,
+      };
+    }, 61)
+
     // Read by the discussion page (serialised as mastheadPolls). Only with fof/polls.
     .setting(() => {
       if (!has('fof-polls')) return null;

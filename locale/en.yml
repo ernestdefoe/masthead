@@ -1,6 +1,7 @@
 ernestdefoe-masthead:
   forum:
     compose: Start a discussion
+    views: "{count, plural, one {# view} other {# views}}"
 
     strip:
       online: "{count, plural, one {# member online} other {# members online}}"
@@ -73,6 +74,7 @@ ernestdefoe-masthead:
       started: Started
       last_reply: Last reply
       replies: Replies
+      views: Views
       participants_label: Participants
       more_in: "More in {tag}"
 
@@ -192,6 +194,8 @@ ernestdefoe-masthead:
       polls_help: "In the post, as fof/polls draws it, or in the sidebar under About this discussion, so it doesn't interrupt the article. The sidebar is used only on wide screens; phones and narrow windows keep the poll in the post. Polls in replies always stay in their reply."
       polls_post: In the post
       polls_sidebar: In the sidebar
+      views_label: Show view counts
+      views_help: "How many times each discussion has been viewed, with an eye beside the reply count: on the featured stories, Latest discussions, a discussion's byline and About this discussion, and More in. The counts come from FoF Discussion Views (including those brought over by the Importer); this setting appears only while it is enabled."
 
     portal:
       tag_count_label: Sections in the grid

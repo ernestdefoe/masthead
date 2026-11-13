@@ -3,6 +3,7 @@ import Component from 'flarum/common/Component';
 import Link from 'flarum/common/components/Link';
 import humanTime from 'flarum/common/helpers/humanTime';
 import { nearFor, t } from '../util';
+import views, { viewCount } from '../components/Views';
 
 /*
  * One request per tag, kept for five minutes and shared by every discussion
@@ -56,7 +57,8 @@ export default class MoreInTag extends Component<{ discussion: any; primary: any
               <Link className="MastheadMore-item" href={app.route.discussion(d, nearFor(d))} title={d.title()}>
                 <span className="MastheadMore-title">{d.title()}</span>
                 <span className="MastheadMore-meta">
-                  {t('latest.replies', { count: Math.max(0, (d.commentCount() || 1) - 1) })} · {humanTime(d.lastPostedAt() || d.createdAt())}
+                  {t('latest.replies', { count: Math.max(0, (d.commentCount() || 1) - 1) })}
+                  {viewCount(d) !== null ? [' · ', views(viewCount(d)!)] : null} · {humanTime(d.lastPostedAt() || d.createdAt())}
                 </span>
               </Link>
             </li>

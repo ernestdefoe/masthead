@@ -126,6 +126,7 @@ return [
         ->default('ernestdefoe-masthead.pictures', 'both')
         ->default('ernestdefoe-masthead.hero_tags', true)
         ->default('ernestdefoe-masthead.tags_page', true)
+        ->default('ernestdefoe-masthead.show_views', true)
 
         // read by less/lib/tokens.less
         ->registerLessConfigVar('masthead-accent', 'ernestdefoe-masthead.accent', $look('accent'))

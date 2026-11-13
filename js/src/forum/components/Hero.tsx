@@ -3,6 +3,7 @@ import Component from 'flarum/common/Component';
 import Link from 'flarum/common/components/Link';
 import humanTime from 'flarum/common/helpers/humanTime';
 import type { Story } from '../portalData';
+import views from './Views';
 import { nearFor, t } from '../util';
 
 function href(story: Story): string {
@@ -38,6 +39,7 @@ function meta(story: Story) {
   if (story.author) parts.push(t('hero.byline', { name: story.author }));
   if (story.replies !== null) parts.push(t('hero.replies', { count: story.replies }));
   else if (story.createdAt) parts.push(humanTime(new Date(story.createdAt)));
+  if (typeof story.views === 'number') parts.push(views(story.views));
 
   return parts.flatMap((part, i) => (i ? [' · ', part] : [part]));
 }

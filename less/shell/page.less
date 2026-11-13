@@ -142,3 +142,17 @@ body,
     border-radius: 0 0 calc(var(--mh-radius) - 1px) calc(var(--mh-radius) - 1px);
   }
 }
+
+// A discussion's view count (components/Views.tsx): an eye and a compact
+// number, in the colour of the meta line it sits in.
+.MastheadViews {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+  color: inherit;
+
+  .icon {
+    font-size: 0.9em;
+  }
+}

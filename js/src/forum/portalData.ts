@@ -12,6 +12,7 @@ export interface Story {
   image: string | null;
   author: string | null;
   replies: number | null;
+  views?: number | null;
   createdAt: string | null;
   tag: { name: string; color: string | null } | null;
 }

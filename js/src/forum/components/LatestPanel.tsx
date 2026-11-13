@@ -5,6 +5,7 @@ import LoadingIndicator from 'flarum/common/components/LoadingIndicator';
 import Avatar from 'flarum/common/components/Avatar';
 import humanTime from 'flarum/common/helpers/humanTime';
 import formatNumber from 'flarum/common/utils/formatNumber';
+import views, { viewCount } from './Views';
 import { isPhone, nearFor, t } from '../util';
 
 type Tab = 'latest' | 'top';
@@ -121,6 +122,7 @@ export default class LatestPanel extends Component {
     const user = discussion.user();
     const replies = Math.max(0, (discussion.commentCount() || 1) - 1);
     const when = humanTime(discussion.lastPostedAt() || discussion.createdAt());
+    const seen = viewCount(discussion);
 
     return (
       <li key={discussion.id()}>
@@ -140,6 +142,7 @@ export default class LatestPanel extends Component {
                 {user ? [user.displayName(), ' · '] : null}
                 {when}
                 {phone ? [' · ', t('latest.replies', { count: replies })] : null}
+                {seen !== null ? [' · ', views(seen)] : null}
               </span>
             </span>
           </span>

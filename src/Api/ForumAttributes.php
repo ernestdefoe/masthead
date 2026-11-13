@@ -14,6 +14,7 @@ use ErnestDefoe\Masthead\Portal\OnlineCount;
 use ErnestDefoe\Masthead\Settings;
 use Flarum\Api\Context;
 use Flarum\Api\Schema;
+use Flarum\Extension\ExtensionManager;
 
 /**
  * What every page's masthead and footer draw from.
@@ -37,6 +38,12 @@ final class ForumAttributes
             // read by the portal's Hero, as a modifier class
             Schema\Str::make('mastheadHero')
                 ->get(fn () => resolve(Settings::class)->look()['hero']),
+
+            // read wherever a reply count is drawn: show the discussion's view
+            // count too. Only with fof/discussion-views, which serialises
+            // each discussion's `views`; nothing is counted here.
+            Schema\Boolean::make('mastheadViews')
+                ->get(fn () => resolve(Settings::class)->showViews() && resolve(ExtensionManager::class)->isEnabled('fof-discussion-views')),
 
             // read by the footer
             Schema\Arr::make('mastheadFooterLinks')

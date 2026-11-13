@@ -12,8 +12,10 @@ import humanTime from 'flarum/common/helpers/humanTime';
 import DiscussionControls from 'flarum/forum/utils/DiscussionControls';
 import listItems from 'flarum/common/helpers/listItems';
 import extractText from 'flarum/common/utils/extractText';
+import formatNumber from 'flarum/common/utils/formatNumber';
 import WidgetSlot from '../components/WidgetSlot';
 import MoreInTag from './MoreInTag';
+import views, { viewCount } from '../components/Views';
 import userBadges from './badges';
 import { bannerFor, readMinutes } from './lead';
 import { has, isPhone, t } from '../util';
@@ -506,6 +508,7 @@ class Byline {
     const best = bestAnswer(discussion);
     const replies = replyCount(discussion);
     const participants = discussion.attribute('participantCount');
+    const seen = viewCount(discussion);
 
     return (
       <div className={'MastheadByline' + (vnode.attrs.inArticle ? ' MastheadByline--article' : '')}>
@@ -520,6 +523,7 @@ class Byline {
             {minutes ? [' · ', t('topic.read_time', { count: minutes })] : null}
             {' · '}
             {t('latest.replies', { count: replies })}
+            {seen !== null ? [' · ', views(seen)] : null}
             {participants ? <span className="MastheadByline-phoneOnly">{[' · ', t('topic.participants', { count: participants })]}</span> : null}
             {best ? (
               <Link className="MastheadByline-phoneBest" href={app.route.discussion(discussion, best.number())}>
@@ -574,6 +578,7 @@ class AboutCard {
         {row(t('topic.started'), humanTime(discussion.createdAt()))}
         {discussion.lastPostedAt() ? row(t('topic.last_reply'), humanTime(discussion.lastPostedAt())) : null}
         {row(t('topic.replies'), replyCount(discussion))}
+        {viewCount(discussion) !== null ? row(t('topic.views'), formatNumber(viewCount(discussion)!)) : null}
         {shown.length
           ? row(
               t('topic.participants_label'),

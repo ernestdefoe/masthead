@@ -77,11 +77,14 @@ final class Hero
             );
         }
 
+        // fof/discussion-views' column, already on each row: no query.
+        $views = $this->settings->showViews() && $this->extensions->isEnabled('fof-discussion-views');
+
         $stories = new Collection($stories->all());
         $stories->load($this->relations());
         $read = $this->lastRead($actor, $stories);
 
-        return $stories->map(fn (Discussion $d) => $this->present($d, $read[$d->id] ?? 0))->values()->all();
+        return $stories->map(fn (Discussion $d) => $this->present($d, $read[$d->id] ?? 0, $views))->values()->all();
     }
 
     /**
@@ -192,7 +195,7 @@ final class Hero
     /**
      * @return array<string, mixed>
      */
-    protected function present(Discussion $discussion, int $lastRead): array
+    protected function present(Discussion $discussion, int $lastRead, bool $views = false): array
     {
         $post = $discussion->firstPost;
         $xml = $post instanceof CommentPost ? (string) $post->parsed_content : '';
@@ -218,6 +221,7 @@ final class Hero
             'image' => $this->images->pick($this->images->first($xml), $discussion->user),
             'author' => $discussion->user?->display_name,
             'replies' => max(0, (int) $discussion->comment_count - 1),
+            'views' => $views ? (int) $discussion->getAttribute('view_count') : null,
             'createdAt' => $discussion->created_at?->toAtomString(),
             'tag' => $tag ? ['name' => $tag->name, 'color' => $tag->color ?: null] : null,
         ];

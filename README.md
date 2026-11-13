@@ -145,6 +145,7 @@ switch presets.
 | **Draw the Tags page as section tiles** | The Tags page in the same tiles as *Browse the forum*, with subtags and the latest discussion. On by default. |
 | **Pictures** | The featured stories' pictures and the banner at the top of a discussion: the post's own picture falling back to the author's Backdrop cover, the post's picture only, the Backdrop cover only, or none. |
 | **Show the post scrubber beside the posts** | The rail at the right of a discussion's posts on computers and tablets. On by default. Off leaves computers without one, as before. |
+| **Show view counts** | With FoF Discussion Views: each discussion's view count, with an eye, beside its reply count on the featured stories, Latest discussions, the byline, About this discussion and More in. Large numbers are shortened (12.3K); hover for the exact count. On by default. |
 | **Where the opening post's poll goes** | With fof/polls: *In the post* (the default) or *In the sidebar*, under About this discussion, on wide screens. Phones and narrow windows always keep it in the post. |
 | **Footer links**, **Show "Powered by Flarum"** | The footer, centred under the page and at the bottom of the window on short pages. Drag links to reorder. A `#` link is a placeholder that goes nowhere; `#name` scrolls to that part of the page. Social links (Facebook, X, Instagram, Threads, Bluesky, YouTube, TikTok, Discord, Reddit, GitHub, LinkedIn, Twitch, Pinterest, Telegram, WhatsApp, Snapchat, Spotify, Patreon, Steam, Mastodon) get their brand icon by themselves; **Icon** takes any Font Awesome class, such as `fas fa-envelope`. Leave **Name** empty to show only the icon. |
 
@@ -158,6 +159,7 @@ All optional. Masthead checks for each one and does without it.
 - **flarum/sticky**: sticky discussions as the story source.
 - **fof/upload**: its images are used as story pictures.
 - **fof/polls**: the opening post's poll can move to the sidebar.
+- **[fof/discussion-views](https://github.com/FriendsOfFlarum/discussion-views)**: view counts beside the reply counts, including counts brought over by the Importer.
 - **ernestdefoe/page-builder**: articles as the story source.
 - **ernestdefoe/header-nav**: when installed, it decides what the main navigation holds.
 - **ernestdefoe/backdrop**: an author's profile cover is the picture of last resort.

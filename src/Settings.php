@@ -70,6 +70,10 @@ final class Settings
     // on wide screens, "post" (as fof/polls draws them) or "sidebar"
     public const POLLS = self::PREFIX.'polls';
 
+    // serialised to the forum (with fof/discussion-views enabled), read by
+    // the portal, the discussion page and the featured stories: view counts
+    public const SHOW_VIEWS = self::PREFIX.'show_views';
+
     /**
      * Which pictures the featured stories and a discussion's lead banner use:
      * the post's own picture falling back to the author's Backdrop cover, the
@@ -174,6 +178,11 @@ final class Settings
     public function heroFill(): bool
     {
         return (bool) $this->settings->get(self::HERO_FILL, false);
+    }
+
+    public function showViews(): bool
+    {
+        return (bool) $this->settings->get(self::SHOW_VIEWS, true);
     }
 
     public function heroType(): string

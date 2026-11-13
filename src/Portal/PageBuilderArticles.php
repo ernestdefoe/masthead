@@ -73,6 +73,7 @@ final class PageBuilderArticles
                 'image' => $this->images->pick(Images::safe($record->coverUrl()), $record->user),
                 'author' => $record->user?->display_name,
                 'replies' => null,
+                'views' => null,
                 'createdAt' => $record->published_at?->toAtomString(),
                 'tag' => ['name' => (string) $type->name, 'color' => null],
             ];
