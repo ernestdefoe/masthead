@@ -145,6 +145,35 @@
     font-size: 22px;
   }
 
+  // In the drawer the name and tagline wrap rather than run off both sides
+  // of it: a long forum title, or one long word, used to be cut at either
+  // edge (Ben, Discord). The bar above keeps its one line with an ellipsis.
+  .App-drawer .MastheadBrand {
+    flex-wrap: wrap;
+    max-width: 100%;
+    min-width: 0;
+    text-align: center;
+  }
+
+  .App-drawer .MastheadBrand-text {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .App-drawer .MastheadBrand-name,
+  .App-drawer .MastheadBrand-tagline {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .App-drawer .MastheadBrand-name {
+    line-height: 1.1;
+  }
+
+  .App-drawer .MastheadBrand-tagline {
+    line-height: 1.3;
+  }
+
   .MastheadPortal > .container {
     padding: 14px 14px 96px;
     gap: 18px;
